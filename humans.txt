@@ -1,0 +1,25 @@
+/* Website Design */
+
+Project: Real Math
+Web Design and Development
+
+ Release date: Fall, 2024
+
+ Randal Sean Harrison, Ph.D.
+ Website Developer
+ Employed: Hesburgh Libraries, University of Notre Dame
+ Contact: rharriso@nd.edu
+
+ Sophia Zhang
+ Consulting / Original Site Design
+ Interned: Office of Digital Learning, University of Notre Dame
+
+
+  /* Technologies, Credits  */
+
+    Languages: HTML5, CSS3, Javascript, jQuery
+    Libraries: jQuery, Bootstrap 4
+    Web Fonts: FontAwesome 6
+
+    IDE/Env: VS Code
+
