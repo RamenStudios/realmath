@@ -2,6 +2,9 @@
    --nd-light-grey: #f0f0f0;
    --nd-blue: #0C2340;
    --nd-gold: #AE9142;
+   --bright-blue: #007bff;
+   --light-grey: #f8f9fa;
+   --medium-grey: #666666;
    --white: #FFFFFF;
    --silver: silver;
 }
@@ -56,6 +59,15 @@ body {
    font-size: 1.5rem;
 }
 
+.pointer {
+   cursor: pointer;
+}
+
+.tablikes {
+   color: var(--nd-gold);
+   text-transform: all-caps;
+}
+
 /* color --------------------------------------------- */
 .nd-gold {
    color: var(--nd-gold);
@@ -63,6 +75,18 @@ body {
 
 .white {
    color: var(--white);
+}
+
+.bright-blue {
+   color: var(--bright-blue);
+}
+
+.light-grey {
+   color: var(--light-grey);
+}
+
+.bg-light-grey {
+   background: var(--light-grey);
 }
 
 .text-silver {
