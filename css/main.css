@@ -97,60 +97,59 @@ body {
    background: var(--nd-blue);
 }
 
-.site-title {}
 
+/* Reset modal dialog box ---------------------------- */
+#dialog-confirm {
+   font-size: 1rem;
+}
 
-/* 
-#equationTypeToggleButton {
-   font-size: 15px;
-   background-color: #0c2340;
-   color: white;
-   padding: 15px 35px;
+.ui-widget {
+   font-family: 'Figtree', Arial, sans-serif;
+}
+
+.ui-widget-content {
+   background: var(--white);
    border: none;
-   border-radius: 4px;
-   cursor: pointer;
-   margin-bottom: 20px;
+   padding: 1rem;
+   border-radius: 8px;
 }
 
-#vectorFunction {
-   display: flex;
-   flex-direction: row;
-   align-items: center;
+.ui-widget-header {
+   /* background: rgba(0, 0, 0, .08); */
+   margin-bottom: 1rem;
+   font-weight: bold;
 }
 
-#equations {
-   display: flex;
-   flex-direction: column;
+.ui-dialog .ui-dialog-buttonpane {
+   font-size: 1rem !important;
+   margin-top: 0;
+   /* padding: .3em 1em .5em .4em; */
 }
 
-#qrcode {
-   margin-top: 20px;
-}
-
-#caption {
-   opacity: 0.5;
-   font-size: 15px;
-}
-
-#vectorForm {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-}
-
-.site-content {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   height: 30%;
-}
-
-.main-stuff {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   width: 100vw;
-   max-height: 20vh !important;
+/* .ui-dialog-buttonpane button {
+  font-size: .9rem;
 } */
+
+.ui-dialog-buttonset .btn-default {
+   color: var(--bright-blue);
+   /* background: rgba(0, 0, 0, .05); */
+}
+
+/* Style the reset modal ---------------  */
+.ui-widget-header {
+   background: none;
+   border: none;
+}
+
+.ui-widget-overlay {
+   background: black;
+   opacity: .7;
+}
+
+.ui-sortable-helper {
+   margin-left: 3rem;
+}
+
+.ui-state-highlight {
+   background: var(--alice-blue) !important;
+}
