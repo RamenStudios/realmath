@@ -43,6 +43,18 @@ $(function () {
       }
    });
 
+   // On click the reset button
+   $('#reset-form').on("click", function () {
+
+      // Open the dialog box onClick
+      $("#dialog-confirm").dialog("open");
+
+      // remove the close button on the modal
+      $(".ui-dialog-titlebar-close").remove();
+      $(".ui-icon-alert").remove();
+      $(".ui-dialog-buttonset button:first-of-type").addClass("btn btn-default bg-light");
+      $(".ui-dialog-buttonset button:last-of-type").addClass("btn btn-primary");
+   });
 
 
 });
