@@ -5,6 +5,19 @@ $(function () {
       console.log("Header loaded.");
    });
 
+   $("#site-footer").load("footer.html", function () {
+      console.log("Footer loaded.");
+      // Add the current year to copyright
+      const thisYear = new Date().getFullYear();
+      $("#footer-year").text(thisYear);
+
+      // Initializing tooltips
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+   });
+
+
    const mathField = document.getElementById('math-field');
 
    // Handle button click to convert input to LaTeX
@@ -31,7 +44,7 @@ $(function () {
          "Cancel": function () {
             $(this).dialog("close");
          },
-         "Reset Page": function () {
+         "Reset": function () {
             // Turns the green checked circles to open empty circles
             window.location.reload(true);
             //
@@ -57,5 +70,11 @@ $(function () {
    });
 
 
+   // Zeno Rocha's copy utility
+   new ClipboardJS('.btn', {
+      target: function (trigger) {
+         return trigger.nextElementSibling;
+      }
+   });
 });
 // document.ready
