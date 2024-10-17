@@ -1,6 +1,6 @@
 $(function () {
 
-   // Load Header
+   // Load Header and footer ----------------------------------------------------------
    $("#site-header").load("header.html", function () {
       console.log("Header loaded.");
    });
@@ -11,29 +11,9 @@ $(function () {
       const thisYear = new Date().getFullYear();
       $("#footer-year").text(thisYear);
 
-      // Initializing tooltips
-      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
    });
 
-
-   const mathField = document.getElementById('math-field');
-
-   // Handle button click to convert input to LaTeX
-   document.getElementById('convert-button').addEventListener('click', function () {
-      const latexCode = mathField.getValue('latex-expanded');
-      document.getElementById('latex-output').value = latexCode;
-   });
-
-   // Reset button
-   $("#reset-form").on("click", function () {
-      // Open the dialog box onClick
-      $("#dialog-confirm").dialog("open");
-   });
-
-
-   // Reset form button
+   // Reset form button -----------------------------------------------------------------
    $("#dialog-confirm").dialog({
       autoOpen: false,
       resizable: false,
@@ -56,7 +36,7 @@ $(function () {
       }
    });
 
-   // On click the reset button
+   // Reset button ----------------------------------------------------------------------
    $('#reset-form').on("click", function () {
 
       // Open the dialog box onClick
@@ -69,12 +49,12 @@ $(function () {
       $(".ui-dialog-buttonset button:last-of-type").addClass("btn btn-primary");
    });
 
-
-   // Zeno Rocha's copy utility
-   new ClipboardJS('.btn', {
+   // Zeno Rocha's copy utility ------------------------------------------------------------
+   new ClipboardJS('.copy-btn', {
       target: function (trigger) {
          return trigger.nextElementSibling;
       }
    });
+
 });
 // document.ready

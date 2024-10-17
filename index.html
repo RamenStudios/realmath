@@ -102,8 +102,10 @@
           <p class="nd-gold fs-3 mb-2 mt-4">Enter your equation here</p>
 
           <!-- Math Formula Entry field -->
-          <math-field id="math-field" virtual-keyboard-mode="onfocus"
-            class="d-block bg-light border-0 mb-3 p-3"></math-field>
+          <math-field id="math-input" virtual-keyboard-mode="onfocus" class="d-block bg-light border-0 mb-3 p-3"
+            aria-hidden="false"></math-field>
+
+          <!-- Label and bouncing icon -->
           <p class="text-end pe-4 text-body-tertiary">LaTeX virtual keyboard<i
               class="fa-regular fa-circle-up fa-bounce fa-lg ms-3"></i>
           </p>
@@ -134,14 +136,16 @@
               class="tab-pane fade show active border-start border-bottom border-end border-0 border-default p-4 bg-light"
               id="latex-math-markdown" role="tabpanel" aria-labelledby="latex-md-tab">
 
-              <p class='text-primary text-end pointer btn d-block' data-bs-toggle="tooltip" data-bs-title="Copy this"
-                data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-clipboard-target="#latext-output"><i
-                  class="fa-solid fa-clipboard me-2 fa-lg"></i>Copy
-              </p>
+              <!-- Copy button -->
+              <div class="text-end copy-btn">
+                <p class='text-primary pointer btn btn-primary text-white d-inline-block'
+                  data-clipboard-target="#latext-output">
+                  <i class="fa-solid fa-clipboard me-2 fa-lg"></i>Copy
+                </p>
+              </div>
 
               <!-- Content for Latex math markdown -->
-
-              <textarea name="latex-output" id="latex-output" class="d-block w-100 border-0 bg-light copy-btn"
+              <textarea name="latex-output" id="latex-output" class="d-block w-100 border-0 bg-light"
                 rows="5"></textarea>
 
             </div>
@@ -200,7 +204,24 @@
     <script>
       $(function () {
 
+        // Mathlive ------------------------------------------------------
+        window.addEventListener('DOMContentLoaded',
+          () => MathLive.renderMathInDocument()
+        );
+
+        // Zeno Rocha's clipboard initialized ----------------------------
         new ClipboardJS('.copy-btn');
+
+        // mathLive functions --------------------------------------------------------------------
+        const mathInput = document.getElementById('math-input');
+        const latexOutput = document.getElementById('latex-output');
+
+        // Update textarea whenever the mathfield content changes
+        $('#math-input').on('keyup', function () {
+          const latex = mathInput.getValue();
+          console.log(latex);
+          latexOutput.value = latex;
+        });
 
       });
       // document.ready closes
