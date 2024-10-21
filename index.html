@@ -85,15 +85,15 @@
           <!-- <hr class="mb-5"> -->
 
           <!-- Reset button -->
-          <p class="text-end mt-5">
-            <button type="button" class="btn btn-primary" id="reset-form">
+          <p class="text-end mt-1">
+            <button type="button" class="btn btn-light text-primary" id="reset-form">
               <i class="fa-solid fa-rotate-right me-2"></i>
-              Reset</button>
+              Reset all</button>
           </p>
 
         </div>
 
-        <div class="col-sm-12 bg-white p-3 mt-1 rounded">
+        <div class="col-sm-12 bg-white p-3 mt-0 rounded-1">
           <!-- Content for the tabs -->
 
 
@@ -109,11 +109,6 @@
           <p class="text-end pe-4 text-body-tertiary">LaTeX virtual keyboard<i
               class="fa-regular fa-circle-up fa-bounce fa-lg ms-3"></i>
           </p>
-
-          <!-- Button to Convert Input -->
-          <div class="mt-3 mb-5"><button id="convert-button" class="btn btn-primary px-3">Convert to LaTeX
-              Markdown</button></div>
-
 
           <!-- tab content for latex markdown and js code -->
           <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -146,34 +141,202 @@
 
               <!-- Content for Latex math markdown -->
               <textarea name="latex-output" id="latex-output" class="d-block w-100 border-0 bg-light"
-                rows="5"></textarea>
+                rows="3"></textarea>
 
             </div>
 
             <div class="tab-pane fade border-start border-bottom border-end border-0 border-default p-4 bg-light"
               id="javascript-math-markdown" role="tabpanel" aria-labelledby="javascript-md-tab">
               <!-- Content for Tab 2 -->
-              <p>This is the content for Tab 2.</p>
+
+              <div class="text-end copy-btn">
+                <p class='text-primary pointer btn btn-primary text-white d-inline-block'
+                  data-clipboard-target="#js-output">
+                  <i class="fa-solid fa-clipboard me-2 fa-lg"></i>Copy
+                </p>
+              </div>
+
+              <!-- Content for Latex math markdown -->
+              <textarea name="js-output" id="js-output" class="d-block w-100 border-0 bg-light" rows="3"></textarea>
+
+
             </div>
           </div>
-
-
 
         </div>
         <!-- col-sm-12 -->
       </div>
       <!-- row -->
 
+      <!-- templates section ----------------------------------------------------------------- -->
+
+
+      <div class="row mt-5" id="templates-section">
+
+        <!-- Section title -->
+        <div class="col-12 mt-5 mb-3">
+          <p class="display-5 text-center mb-3 nd-gold">AR Formula Gallery</sup>
+        </div>
+
+        <!-- Card 1 ----------------------------------------------------------------------------------- -->
+        <div class="col-sm-3">
+
+          <div class="card mb-4 border-0 rounded-1">
+            <img src="img/card-headers/card-header-template.png" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Rotating Cube</h5>
+              <p class="card-text">This is the description text for project 1.</p>
+              <p><button class="modal-btn btn btn-primary"><i class="fa-solid fa-eye me-2"></i>view</button></p>
+            </div>
+            <!-- .card-body -->
+          </div>
+          <!-- .card -->
+        </div>
+        <!-- .col-sm-3 -->
+
+        <!-- Card 2 ----------------------------------------------------------------------------------- -->
+        <div class="col-sm-3">
+
+          <div class="card mb-4 border-0">
+            <img src="img/card-headers/card-header-template.png" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Project 2</h5>
+              <p class="card-text">This is the description text for project 2.</p>
+              <p><button class="modal-btn btn btn-primary"><i class="fa-solid fa-eye me-2"></i>view</button></p>
+            </div>
+            <!-- .card-body -->
+          </div>
+          <!-- .card -->
+        </div>
+        <!-- .col-sm-3 -->
+
+        <!-- Card 3 ----------------------------------------------------------------------------------- -->
+        <div class="col-sm-3">
+
+          <div class="card mb-4 border-0">
+            <img src="img/card-headers/card-header-template.png" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Project 3</h5>
+              <p class="card-text">This is the description text for project 3.</p>
+              <p><button class="modal-btn btn btn-primary"><i class="fa-solid fa-eye me-2"></i>view</button></p>
+            </div>
+            <!-- .card-body -->
+          </div>
+          <!-- .card -->
+        </div>
+        <!-- .col-sm-3 -->
+
+        <!-- Card 4 ----------------------------------------------------------------------------------- -->
+        <div class="col-sm-3">
+
+          <div class="card mb-4 border-0">
+            <img src="img/card-headers/card-header-template.png" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Project 4</h5>
+              <p class="card-text">This is the description text for project 4.</p>
+              <p><button class="modal-btn btn btn-primary"><i class="fa-solid fa-eye me-2"></i>view</button></p>
+            </div>
+            <!-- .card-body -->
+          </div>
+          <!-- .card -->
+        </div>
+        <!-- .col-sm-3 -->
+
+        <!-- Card 5 ----------------------------------------------------------------------------------- -->
+        <div class="col-sm-3">
+
+          <div class="card mb-4 border-0">
+            <img src="img/card-headers/card-header-template.png" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Project 5</h5>
+              <p class="card-text">This is the description text for project 5.</p>
+              <p><button class="modal-btn btn btn-primary"><i class="fa-solid fa-eye me-2"></i>view</button></p>
+            </div>
+            <!-- .card-body -->
+          </div>
+          <!-- .card -->
+        </div>
+        <!-- .col-sm-3 -->
+
+        <!-- Card 6 ----------------------------------------------------------------------------------- -->
+        <div class="col-sm-3">
+
+          <div class="card mb-4 border-0">
+            <img src="img/card-headers/card-header-template.png" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Project 6</h5>
+              <p class="card-text">This is the description text for project 6.</p>
+              <p><button class="modal-btn btn btn-primary"><i class="fa-solid fa-eye me-2"></i>view</button></p>
+            </div>
+            <!-- .card-body -->
+          </div>
+          <!-- .card -->
+        </div>
+        <!-- .col-sm-3 -->
+
+        <!-- Card 7 ----------------------------------------------------------------------------------- -->
+        <div class="col-sm-3">
+
+          <div class="card mb-4 border-0">
+            <img src="img/card-headers/card-header-template.png" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Project 7</h5>
+              <p class="card-text">This is the description text for project 7.</p>
+              <p><button class="modal-btn btn btn-primary"><i class="fa-solid fa-eye me-2"></i>view</button></p>
+            </div>
+            <!-- .card-body -->
+          </div>
+          <!-- .card -->
+        </div>
+        <!-- .col-sm-3 -->
+
+        <!-- Card 8 ----------------------------------------------------------------------------------- -->
+        <div class="col-sm-3">
+
+          <div class="card mb-4 border-0">
+            <img src="img/card-headers/card-header-template.png" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Project 8</h5>
+              <p class="card-text">This is the description text for project 8.</p>
+              <p><button class="modal-btn btn btn-primary"><i class="fa-solid fa-eye me-2"></i>view</button></p>
+            </div>
+            <!-- .card-body -->
+          </div>
+          <!-- .card -->
+        </div>
+        <!-- .col-sm-3 -->
+
+
+      </div>
 
     </div>
     <!-- .container -->
 
     <!-- Footer -->
-    <div id="site-footer" class="container-fluid px-0 mt-0ß"></div>
+    <div id="site-footer" class="container-fluid px-0 mt-3"></div>
 
     <!-- Confirmation modal -->
     <div id="dialog-confirm" title="RESET THE PAGE">
       <p>This will reset the page. Are you sure?</p>
+    </div>
+
+    <!-- Gallery modal -->
+    <div class="modal modal-sm" id="gallery-modal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-bottom-0">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer d-none">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- jquery JS minified -->
@@ -211,17 +374,6 @@
 
         // Zeno Rocha's clipboard initialized ----------------------------
         new ClipboardJS('.copy-btn');
-
-        // mathLive functions --------------------------------------------------------------------
-        const mathInput = document.getElementById('math-input');
-        const latexOutput = document.getElementById('latex-output');
-
-        // Update textarea whenever the mathfield content changes
-        $('#math-input').on('keyup', function () {
-          const latex = mathInput.getValue();
-          console.log(latex);
-          latexOutput.value = latex;
-        });
 
       });
       // document.ready closes

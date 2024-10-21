@@ -56,5 +56,101 @@ $(function () {
       }
    });
 
+   // mathLive functions --------------------------------------------------------------------
+   const mathInput = document.getElementById('math-input');
+   const latexOutput = document.getElementById('latex-output');
+   const jsOutput = document.getElementById('js-output');
+
+   // Update textarea whenever the mathfield content changes
+   $('#math-input').on('input change', function () {
+      const latex = mathInput.getValue();
+      latexOutput.value = latex;
+
+
+      jsOutput.value = convertLatexToJs(latex);
+
+   });
+
+   // Convert LaTeX markdown to JS -----------------------------------------------------------
+   function convertLatexToJs(theLatex) {
+      // Log the input for debugging
+      console.log("Original LaTeX:", theLatex);
+
+      // Basic parsing for fraction, square roots, and exponents
+      let jsExpression = theLatex
+         .replace(/\\frac{([^{}]+)}{([^{}]+)}/g, '($1 / $2)')
+
+         // Replace ^ for exponents with ** (e.g., x^2 to x**2)
+         .replace(/\^/g, '**')
+
+         // Replace \sqrt{x} with Math.sqrt(x)
+         .replace(/\\sqrt{([^{}]+)}/g, 'Math.sqrt($1)')
+
+         // Replace Greek symbols, e.g., \alpha to α (Unicode for alpha)
+         .replace(/\\alpha/g, 'α')
+         .replace(/\\beta/g, 'β')
+         .replace(/\\gamma/g, 'γ')
+         // Add more Greek symbols as needed
+
+         // Replace common LaTeX functions with JavaScript equivalents
+         .replace(/\\sin/g, 'Math.sin')
+         .replace(/\\cos/g, 'Math.cos')
+         .replace(/\\tan/g, 'Math.tan')
+         .replace(/\\log/g, 'Math.log')
+
+         // Replace braces with parentheses for function calls
+         .replace(/{/g, '(')
+         .replace(/}/g, ')')
+
+         // Convert LaTeX multiplication to Javascript multiplication
+         .replace(/\\cdot/g, '*');
+
+      // Log the output JS expression for debugging
+      console.log("Converted JS Expression:", jsExpression);
+
+      return jsExpression;
+   }
+
+
+   // Adding a hover effect to the cards --------------------------------------------------------
+   $('.card').on('mouseenter', function () {
+      $(this).addClass("shadow-sm"); // Mouse enters
+   }).on('mouseleave', function () {
+      $(this).removeClass("shadow-sm"); // Mouse leaves
+   });
+
+   // Clear the selection -----------------------------------------------------------------------
+   function clearSelection() {
+      if (window.getSelection) {
+         // Modern browsers
+         window.getSelection().removeAllRanges();
+      } else if (document.selection) {
+         // Older versions of IE
+         document.selection.empty();
+      }
+   }
+
+   $(".copy-btn").on("click", function () {
+      clearSelection();
+   });
+
+
+   // Show the QR code for each card button --------------------------------------------------------
+   $(".modal-btn").on("click", function () {
+
+      // Get the image, title, and description for each card
+      const projectQrCode = $(this).data("qr-code-image");
+      const projectDescription = $(this).parent().parent().find(".card-text").text();
+      const projectTitle = $(this).parent().parent().find(".card-title").text();
+
+      // Write the image to the modal
+      $(".modal").find(".modal-body > p").text(projectDescription);
+      $(".modal").find(".modal-title").text(projectTitle);
+
+      // Display the modal
+      $('#gallery-modal').modal('show');
+
+   });
+
 });
 // document.ready
