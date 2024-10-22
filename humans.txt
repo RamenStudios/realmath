@@ -1,6 +1,6 @@
 /* Website Design */
 
-Project: Real Math
+Project: RealMath AR
 Web Design and Development
 
  Release date: Fall, 2024
