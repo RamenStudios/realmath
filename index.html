@@ -46,9 +46,17 @@
     <!-- Main local styles -->
     <link rel="stylesheet" href="css/main.css">
 
+    <!-- qrcode maker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <!-- MathLive CSS -->
     <link rel="stylesheet" href="https://unpkg.com/mathlive/dist/mathlive.core.css">
     <link rel="stylesheet" href="https://unpkg.com/mathlive/dist/mathlive.css">
+
+    <!-- MathJax -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> -->
+
 
     <title>Real Math AR</title>
 
@@ -85,7 +93,7 @@
           <!-- <hr class="mb-5"> -->
 
           <!-- Reset button -->
-          <p class="text-end mt-1">
+          <p class="text-end mt-1 me-0">
             <button type="button" class="btn btn-light text-primary" id="reset-form">
               <i class="fa-solid fa-rotate-right me-2"></i>
               Reset all</button>
@@ -133,9 +141,10 @@
 
               <!-- Copy button -->
               <div class="text-end copy-btn">
-                <p class='text-primary pointer btn btn-primary text-white d-inline-block'
+                <p class='text-primary pointer btn btn-light text-primary d-inline-block'
                   data-clipboard-target="#latext-output">
-                  <i class="fa-solid fa-clipboard me-2 fa-lg"></i>Copy
+                  <i class="fa-solid fa-clipboard me-2 fa-lg"></i>
+                  Copy
                 </p>
               </div>
 
@@ -150,7 +159,7 @@
               <!-- Content for Tab 2 -->
 
               <div class="text-end copy-btn">
-                <p class='text-primary pointer btn btn-primary text-white d-inline-block'
+                <p class='text-primary pointer btn btn-light text-primary d-inline-block'
                   data-clipboard-target="#js-output">
                   <i class="fa-solid fa-clipboard me-2 fa-lg"></i>Copy
                 </p>
@@ -162,6 +171,9 @@
 
             </div>
           </div>
+
+          <!-- Visualize button -->
+          <button type='button' class='btn btn-primary rounded-1 mt-4' id="qr-create">Visualize it!</button>
 
         </div>
         <!-- col-sm-12 -->
@@ -329,11 +341,10 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p>Modal body text goes here.</p>
+            <p></p>
           </div>
-          <div class="modal-footer d-none">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+          <div class="modal-footer text-center p-3" id="qr-code">
+
           </div>
         </div>
       </div>

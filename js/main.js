@@ -111,13 +111,42 @@ $(function () {
       return jsExpression;
    }
 
+   // Create the QR code from the formula -------------------------------------------------------
+   $("#qr-create").on("click", function () {
+      // concatenate the equation
+      let theEquation = $("#js-output").val();
+      let encodedUriComponent = encodeURIComponent(theEquation);
+      let eightWallUrl = "https://ndlearning.8thwall.app/ar-math-viewer/" + encodedUriComponent;
+
+      // Clear any previous qr code
+      $("#qr-code").empty("");
+
+      // Generate and write new QR code
+      new QRCode(document.querySelector("#qr-code"), {
+         text: eightWallUrl,
+         width: 256,
+         height: 256,
+         colorDark: "#000000",
+         colorLight: "#ffffff",
+         correctLevel: QRCode.CorrectLevel.L
+      });
+
+      // Write the image to the modal
+      $(".modal").find(".modal-body > p").text(theEquation);
+      $(".modal").find(".modal-title").text("QR Code");
+
+      // Display the modal
+      $('#gallery-modal').modal('show');
+
+   });
+
+
 
    // Adding a hover effect to the cards --------------------------------------------------------
-   $('.card').on('mouseenter', function () {
+   $('.card').on('hover', function () {
       $(this).addClass("shadow-sm"); // Mouse enters
-   }).on('mouseleave', function () {
-      $(this).removeClass("shadow-sm"); // Mouse leaves
    });
+
 
    // Clear the selection -----------------------------------------------------------------------
    function clearSelection() {
@@ -137,6 +166,9 @@ $(function () {
 
    // Show the QR code for each card button --------------------------------------------------------
    $(".modal-btn").on("click", function () {
+
+      // Clear any previous qr code
+      $("#qr-code").empty("");
 
       // Get the image, title, and description for each card
       const projectQrCode = $(this).data("qr-code-image");
