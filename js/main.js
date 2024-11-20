@@ -106,20 +106,21 @@ $(function () {
          .replace(/\\tan/g, 'Math.tan')
          .replace(/\\log/g, 'Math.log')
 
-         // Replace braces with parentheses for function calls
-         .replace(/{/g, '(')
-         .replace(/}/g, ')')
-
          // Convert LaTeX multiplication to Javascript multiplication
          .replace(/\\cdot/g, '*')
 
-         // Convert LateX matrices into JS
+         // Convert LaTeX matrices into JS
          // Eventually want to get this as 'pull out string based on beginning and end'
          // this would be best for avoiding contradictions
          .replace(/\\begin{pmatrix}/g, 'Math.matrix([[') // beginning of matrices
          .replace(/\\end{pmatrix}/g, ']])')              // end of matrices
          .replace(/&/g, ',')
-         .replace(/\\\\/g, '],[');
+         .replace(/\\\\/g, '],[')
+
+         // Replace braces with parentheses for function calls
+         // At the end to prevent conflict with LaTeX formatting
+         .replace(/{/g, '(')
+         .replace(/}/g, ')');
 
       // Log the output JS expression for debugging
       console.log("Converted JS Expression:", jsExpression);
