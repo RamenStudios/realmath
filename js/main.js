@@ -1,11 +1,13 @@
 $(function () {
 
    // Load Header and footer ----------------------------------------------------------
-   $("#site-header").load("header.html", function () {
+   $("#site-header").load("header.html", function () 
+   {
       console.log("Header loaded.");
    });
 
-   $("#site-footer").load("footer.html", function () {
+   $("#site-footer").load("footer.html", function () 
+   {
       console.log("Footer loaded.");
       // Add the current year to copyright
       const thisYear = new Date().getFullYear();
@@ -14,7 +16,8 @@ $(function () {
    });
 
    // Reset form button -----------------------------------------------------------------
-   $("#dialog-confirm").dialog({
+   $("#dialog-confirm").dialog(
+   {
       autoOpen: false,
       resizable: false,
       height: "auto",
@@ -37,7 +40,8 @@ $(function () {
    });
 
    // Reset button ----------------------------------------------------------------------
-   $('#reset-form').on("click", function () {
+   $('#reset-form').on("click", function () 
+   {
 
       // Open the dialog box onClick
       $("#dialog-confirm").dialog("open");
@@ -50,8 +54,10 @@ $(function () {
    });
 
    // Zeno Rocha's copy utility ------------------------------------------------------------
-   new ClipboardJS('.copy-btn', {
-      target: function (trigger) {
+   new ClipboardJS('.copy-btn', 
+   {
+      target: function (trigger) 
+      {
          return trigger.nextElementSibling;
       }
    });
@@ -62,7 +68,8 @@ $(function () {
    const jsOutput = document.getElementById('js-output');
 
    // Update textarea whenever the mathfield content changes
-   $('#math-input').on('input change', function () {
+   $('#math-input').on('input change', function () 
+   {
       const latex = mathInput.getValue();
       latexOutput.value = latex;
 
@@ -72,7 +79,8 @@ $(function () {
    });
 
    // Convert LaTeX markdown to JS -----------------------------------------------------------
-   function convertLatexToJs(theLatex) {
+   function convertLatexToJs(theLatex) 
+   {
       // Log the input for debugging
       console.log("Original LaTeX:", theLatex);
 
@@ -103,7 +111,15 @@ $(function () {
          .replace(/}/g, ')')
 
          // Convert LaTeX multiplication to Javascript multiplication
-         .replace(/\\cdot/g, '*');
+         .replace(/\\cdot/g, '*')
+
+         // Convert LateX matrices into JS
+         // Eventually want to get this as 'pull out string based on beginning and end'
+         // this would be best for avoiding contradictions
+         .replace(/\\begin{pmatrix}/g, 'Math.matrix([[') // beginning of matrices
+         .replace(/\\end{pmatrix}/g, ']])')              // end of matrices
+         .replace(/&/g, ',')
+         .replace(/\\\\/g, '],[');
 
       // Log the output JS expression for debugging
       console.log("Converted JS Expression:", jsExpression);
@@ -112,7 +128,8 @@ $(function () {
    }
 
    // Create the QR code from the formula -------------------------------------------------------
-   $("#qr-create").on("click", function () {
+   $("#qr-create").on("click", function () 
+   {
       // concatenate the equation
       let theEquation = $("#js-output").val();
       let encodedUriComponent = encodeURIComponent(theEquation);
@@ -143,29 +160,36 @@ $(function () {
 
 
    // Adding a hover effect to the cards --------------------------------------------------------
-   $('.card').on('hover', function () {
+   $('.card').on('hover', function () 
+   {
       $(this).addClass("shadow-sm"); // Mouse enters
    });
 
 
    // Clear the selection -----------------------------------------------------------------------
-   function clearSelection() {
-      if (window.getSelection) {
+   function clearSelection() 
+   {
+      if (window.getSelection) 
+      {
          // Modern browsers
          window.getSelection().removeAllRanges();
-      } else if (document.selection) {
+      } 
+      else if (document.selection) 
+      {
          // Older versions of IE
          document.selection.empty();
       }
    }
 
-   $(".copy-btn").on("click", function () {
+   $(".copy-btn").on("click", function () 
+   {
       clearSelection();
    });
 
 
    // Show the QR code for each card button --------------------------------------------------------
-   $(".modal-btn").on("click", function () {
+   $(".modal-btn").on("click", function () 
+   {
 
       // Clear any previous qr code
       $("#qr-code").empty("");

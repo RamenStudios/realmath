@@ -14,6 +14,12 @@ Web Design and Development
  Consulting / Original Site Design
  Interned: Office of Digital Learning, University of Notre Dame
 
+ Adamari Rodriguez
+ Software Developer
+ Interned: Office of Digital Learning, University of Notre Dame
+ GitHub: RamenStudios
+ Contact: adasanrodriguez@gmail.com
+
 
   /* Technologies, Credits  */
 
