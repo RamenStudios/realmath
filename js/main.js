@@ -73,7 +73,6 @@ $(function () {
       const latex = mathInput.getValue();
       latexOutput.value = latex;
 
-
       jsOutput.value = convertLatexToJs(latex);
 
    });
@@ -84,9 +83,14 @@ $(function () {
       // Log the input for debugging
       console.log("Original LaTeX:", theLatex);
 
-      // Basic parsing for fraction, square roots, and exponents
-      let jsExpression = theLatex
-         .replace(/\\frac{([^{}]+)}{([^{}]+)}/g, '($1 / $2)')
+
+      // run original LaTeX through basic recursive replacements
+      let jsExpression = theLatex;
+      jsExpression = fractionParser(jsExpression);
+      jsExpression = matrixParser(jsExpression);
+
+      // Run original LaTeX through basic, non-recursive replacements
+      jsExpression = jsExpression
 
          // Replace ^ for exponents with ** (e.g., x^2 to x**2)
          .replace(/\^/g, '**')
@@ -107,25 +111,72 @@ $(function () {
          .replace(/\\log/g, 'Math.log')
 
          // Convert LaTeX multiplication to Javascript multiplication
-         .replace(/\\cdot/g, '*')
-
-         // Convert LaTeX matrices into JS
-         // Eventually want to get this as 'pull out string based on beginning and end'
-         // this would be best for avoiding contradictions
-         .replace(/\\begin{pmatrix}/g, 'Math.matrix([[') // beginning of matrices
-         .replace(/\\end{pmatrix}/g, ']])')              // end of matrices
-         .replace(/&/g, ',')
-         .replace(/\\\\/g, '],[')
-
-         // Replace braces with parentheses for function calls
-         // At the end to prevent conflict with LaTeX formatting
-         .replace(/{/g, '(')
-         .replace(/}/g, ')');
+         .replace(/\\cdot/g, '*');
 
       // Log the output JS expression for debugging
       console.log("Converted JS Expression:", jsExpression);
 
       return jsExpression;
+   }
+
+   // sends fraction specifications to recursive parser
+   function fractionParser(fracstring)
+   {
+      // this regex gets smaller fraction pieces in the form of \frac{x}{y}
+      // allows recursive conversion, ensures no accidental conversions of other operators
+      var regex = /\\frac\{([^\{\}]*)\}\{([^\{\}]*)\}/g;
+      // lets us pass replacements necessary without dumb callbacks
+      var replacementArray = 
+      [
+         [/\\frac{/g,'('], 
+         [/}{/g,')/('],
+         [/}/g,')'] // all these parentheses ensure expressions properly contained
+      ];
+      return recursiveParser(fracstring, regex, replacementArray);
+   }
+
+   // sends matrix specifications to recursive parser
+   function matrixParser(matstring)
+   {
+      // this regex isolates individual matrices
+      // allows recursive conversion, ensures no accidental conversions of other operators
+      var regex = /\\begin\{pmatrix\}([^(?:end)]*)(\\end\{pmatrix\})/g;
+      // lets us pass replacements necessary without dumb callbacks
+      var replacementArray = 
+      [
+         [/\\begin{pmatrix}/g, '[['],
+         [/\\end{pmatrix}/g, ']]'],
+         [/&/g, ','],
+         [/\\\\/g, '],[']
+      ];
+      return recursiveParser(matstring, regex, replacementArray);
+   }
+
+   // Conversion functions, will eventually organize better
+   function recursiveParser(instring, regex, replacementArray)
+   {
+      let found = instring.match(regex); // returns array of matches. null if no matches
+      console.log(instring);
+      // if matches found, commence replacement
+      if(found != null)
+      {
+         for(match of found)
+         {
+               let temp = match;
+               console.log(temp);
+               for(var i in replacementArray)
+               {
+                  let pattern = replacementArray[i];
+                  console.log(pattern);
+                  temp = temp.replace(pattern[0],pattern[1]);
+                  console.log(temp);
+               }
+               instring = instring.replace(match,`(${temp})`); 
+         }
+         return recursiveParser(instring, regex, replacementArray);
+      }
+      // if no matches, recursion ends
+      return instring;
    }
 
    // Create the QR code from the formula -------------------------------------------------------

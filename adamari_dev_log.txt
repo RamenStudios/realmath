@@ -3,4 +3,13 @@
 
 /* OCT 31st 2024 */
 - Actually forked the repo in order to make changes while archiving the 'original'
-- 
+
+/* NOV 20th 2024 */
+- Added functionality for converting LaTeX matrices to JS
+- Noticed bug where visualizations do not seem to be working?
+- TODO: fractions lol
+
+/* DEC 5th 2024 */
+- Started reorganization of conversion from brute force to less fallible specificity
+- Created recursive parsers for fractions and matrices, which can be subject to embedded expressions
+- CAME ACROSS LATEX OUTPUT BUG: when no variable in fraction, fraction display will bug out to not include braces. i.e. 1/2 displays as \frac12
