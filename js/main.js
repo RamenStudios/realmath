@@ -117,11 +117,11 @@ $(function () {
          .replace(/\\cdot/g, '*')
 
          // Convert LaTeX parentheses to Javascript parentheses
-         .replace(/\\left/g, '(')
-         .replace(/\(\\right\)/g, ')');
+         .replace(/\\left\(/g, '(')
+         .replace(/\\right\)/g, ')');
 
       // Log the output JS expression for debugging
-      console.log("update 1-12-25 3:50PM");
+      console.log("update 1-12-25 4:14PM");
       console.log("Converted JS Expression:", jsExpression);
 
       return jsExpression;
