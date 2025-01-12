@@ -13,3 +13,7 @@
 - Started reorganization of conversion from brute force to less fallible specificity
 - Created recursive parsers for fractions and matrices, which can be subject to embedded expressions
 - CAME ACROSS LATEX OUTPUT BUG: when no variable in fraction, fraction display will bug out to not include braces. i.e. 1/2 displays as \frac12
+
+/* JAN 11th 2025 */
+- The issue of AR visualizer not visualizing has been resolved FOR NOW. Would like to go back later and fix possibly unreliable code.
+- Some bugs with LaTeX/JS output still need fixing
