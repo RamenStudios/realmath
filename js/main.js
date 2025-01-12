@@ -114,7 +114,11 @@ $(function () {
          .replace(/\\log/g, 'Math.log')
 
          // Convert LaTeX multiplication to Javascript multiplication
-         .replace(/\\cdot/g, '*');
+         .replace(/\\cdot/g, '*')
+
+         // Convert LaTeX parentheses to Javascript parentheses
+         .replace(/\\left/g, '(')
+         .replace(/\(\\right\)/g, ')');
 
       // Log the output JS expression for debugging
       console.log("Converted JS Expression:", jsExpression);
