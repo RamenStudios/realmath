@@ -186,11 +186,11 @@ $(function () {
       // using '=' as delim
       let theEquation = ($("#js-output").val()).split('=');
       // account for no '=' just in case? you never know
-      let left = encodeUriComponent(theEquation[0]);
+      let left = encodeURIComponent(theEquation[0]);
       let right = 0
       if(theEquation.length > 1)
       {
-         right = encodeUriComponent(theEquation[1]);
+         right = encodeURIComponent(theEquation[1]);
       }
       let eightWallUrl = "https://ndlearning.8thwall.app/ar-math-viewer?left=" + left + "&right=" + right;
 
