@@ -183,9 +183,16 @@ $(function () {
    $("#qr-create").on("click", function () 
    {
       // concatenate the equation
-      let theEquation = $("#js-output").val();
-      let encodedUriComponent = encodeURIComponent(theEquation);
-      let eightWallUrl = "https://ndlearning.8thwall.app/ar-math-viewer?equation=" + encodedUriComponent;
+      // using '=' as delim
+      let theEquation = ($("#js-output").val()).split('=');
+      // account for no '=' just in case? you never know
+      let left = encodeUriComponent(theEquation[0]);
+      let right = 0
+      if(theEquation.length > 1)
+      {
+         right = encodeUriComponent(theEquation[1]);
+      }
+      let eightWallUrl = "https://ndlearning.8thwall.app/ar-math-viewer?left=" + left + "&right=" + right;
 
       // Clear any previous qr code
       $("#qr-code").empty("");
