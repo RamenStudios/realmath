@@ -92,6 +92,9 @@ $(function () {
       // Run original LaTeX through basic, non-recursive replacements
       jsExpression = jsExpression
 
+         // Properly format SIMPLE fractions
+         .replace(/\\frac(\d)(\d)/g, '(($1)/($2))')
+
          // Replace ^ for exponents with ** (e.g., x^2 to x**2)
          .replace(/\^/g, '**')
 
@@ -119,7 +122,7 @@ $(function () {
       return jsExpression;
    }
 
-   // sends fraction specifications to recursive parser
+   // sends COMPLEX fraction specifications to recursive parser
    function fractionParser(fracstring)
    {
       // this regex gets smaller fraction pieces in the form of \frac{x}{y}
@@ -208,7 +211,7 @@ $(function () {
       });
 
       // Write the image to the modal
-      $(".modal").find(".modal-body > p").text(theEquation);
+      $(".modal").find(".modal-body > p").text(`${left} = ${right}`);
       $(".modal").find(".modal-title").text("QR Code");
 
       // Display the modal
