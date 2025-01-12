@@ -121,6 +121,7 @@ $(function () {
          .replace(/\(\\right\)/g, ')');
 
       // Log the output JS expression for debugging
+      console.log("update 1-12-25 3:50PM");
       console.log("Converted JS Expression:", jsExpression);
 
       return jsExpression;
