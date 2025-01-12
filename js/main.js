@@ -185,7 +185,7 @@ $(function () {
       // concatenate the equation
       let theEquation = $("#js-output").val();
       let encodedUriComponent = encodeURIComponent(theEquation);
-      let eightWallUrl = "https://ndlearning.8thwall.app/ar-math-viewer/" + encodedUriComponent;
+      let eightWallUrl = "https://ndlearning.8thwall.app/ar-math-viewer?equation=" + encodedUriComponent;
 
       // Clear any previous qr code
       $("#qr-code").empty("");
