@@ -152,8 +152,8 @@ $(function () {
       // lets us pass replacements necessary without dumb callbacks
       var replacementArray = 
       [
-         [/\\begin{pmatrix}/g, '[['],
-         [/\\end{pmatrix}/g, ']]'],
+         [/\\begin{pmatrix}/g, 'Math.matrix([['],
+         [/\\end{pmatrix}/g, ']])'],
          [/&/g, ','],
          [/\\\\/g, '],[']
       ];
