@@ -94,6 +94,8 @@ $(function () {
 
          // Properly format SIMPLE fractions
          .replace(/\\frac(\d)(\d)/g, '(($1)/($2))')
+         // and SIMPLE sqrts
+         .replace(/\\sqrt(\d)/g, 'Math.sqrt($1)')
 
          // Replace ^ for exponents with ** (e.g., x^2 to x**2)
          .replace(/\^/g, '**')
