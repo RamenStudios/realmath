@@ -192,10 +192,13 @@ $(function () {
    // Create the QR code from the formula -------------------------------------------------------
    $("#qr-create").on("click", function () 
    {
-      // concatenate the equation
-      // using '=' as delim
-      let theEquation = ($("#js-output").val()).split('=');
+      // ensure equation has explicit multiplication
+      // js freaks out with implied mults
+      let theEquation = ($("#js-output").val()).replace(/([^\+\-\*\=]+)([xyz])/g,'($1)*$2')
+      // concatenate the equation using '=' as delim
+      theEquation = theEquation.split('=');
       // account for no '=' just in case? you never know
+      // ideally we'll throw an error if no '=' but not priority
       let left = encodeURIComponent(theEquation[0]);
       let right = 0
       if(theEquation.length > 1)
