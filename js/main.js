@@ -194,7 +194,8 @@ $(function () {
    {
       // ensure equation has explicit multiplication
       // js freaks out with implied mults
-      let theEquation = ($("#js-output").val()).replace(/([^\+\-\*\=]+)([xyz])/g,'($1)*$2')
+      let theEquationReadable = ($("#js-output").val())
+      let theEquation = theEquationReadable.replace(/([^\+\-\*\=]+)([xyz])/g,'($1)*$2')
       // concatenate the equation using '=' as delim
       theEquation = theEquation.split('=');
       // account for no '=' just in case? you never know
@@ -221,7 +222,7 @@ $(function () {
       });
 
       // Write the image to the modal
-      $(".modal").find(".modal-body > p").text(`${left} = ${right}`);
+      $(".modal").find(".modal-body > p").text(`${theEquationReadable}`);
       $(".modal").find(".modal-title").text("QR Code");
 
       // Display the modal
