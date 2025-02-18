@@ -113,7 +113,7 @@ $(function () {
          .replace(/\\sin/g, 'Math.sin')
          .replace(/\\cos/g, 'Math.cos')
          .replace(/\\tan/g, 'Math.tan')
-         .replace(/\\log/g, 'Math.log')
+         .replace(/\\log_/g, 'Math.log')
 
          // Convert LaTeX multiplication to Javascript multiplication
          .replace(/\\cdot/g, '*')
