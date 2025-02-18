@@ -127,7 +127,7 @@ $(function () {
          .replace(/\\left\(/g, '(')
          .replace(/\\right\)/g, ')')
          .replace('{','(')
-         .replace('}','}');
+         .replace('}',')');
 
       // Log the output JS expression for debugging
       console.log("update 1-12-25 4:14PM");
