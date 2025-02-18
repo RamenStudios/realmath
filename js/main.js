@@ -121,13 +121,14 @@ $(function () {
          .replace(/\\log_/g, 'Math.log')
 
          // Convert LaTeX multiplication to Javascript multiplication
-         .replace(/\\cdot/g, '*')
+         .replace(/\\cdot/g, '*');
 
+      jsExpression = jsExpression
          // Convert LaTeX parentheses to Javascript parentheses
          .replace(/\\left\(/g, '(')
          .replace(/\\right\)/g, ')')
-         .replace('{','(')
-         .replace('}',')');
+         .replace(/\{/g,'(')
+         .replace(/\}/g,')');
 
       // Log the output JS expression for debugging
       console.log("update 1-12-25 4:14PM");
