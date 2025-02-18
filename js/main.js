@@ -89,6 +89,11 @@ $(function () {
       jsExpression = fractionParser(jsExpression);
       jsExpression = matrixParser(jsExpression);
 
+      // making sure parentheses are around our powers for portability
+      jsExpression = jsExpression
+         .replace(/\^\{/g, '**')
+         .replace(/\^([^\{][\da-z]*)([^\da-z]|[\+\-\=\*\/])?/g, '**{$1}$2');
+
       // Run original LaTeX through basic, non-recursive replacements
       jsExpression = jsExpression
 
@@ -120,7 +125,9 @@ $(function () {
 
          // Convert LaTeX parentheses to Javascript parentheses
          .replace(/\\left\(/g, '(')
-         .replace(/\\right\)/g, ')');
+         .replace(/\\right\)/g, ')')
+         .replace('{','(')
+         .replace('}','}');
 
       // Log the output JS expression for debugging
       console.log("update 1-12-25 4:14PM");
