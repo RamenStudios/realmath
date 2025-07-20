@@ -3,27 +3,53 @@
    --nd-blue: #0C2340;
    --nd-gold: #AE9142;
    --bright-blue: #007bff;
-   --light-grey: #f8f9fa;
+   --light-grey: #f9f9f9;
    --medium-grey: #666666;
    --darker-grey: #565656;
    --white: #FFFFFF;
    --silver: silver;
+   --default-font: 30px;
 }
 
 html {
-   font-size: 16px;
+   font-size: 24px;
 }
 
-body {
-   font-family: "Figtree", Arial, Helvetica, sans-serif;
+* {
+   font-family: "Instrument Sans", sans-serif;
    font-optical-sizing: auto;
    font-weight: 400;
    font-style: normal;
-   background-color: var(--nd-light-grey);
+   font-size: var(--default-font);
+   font-variation-settings:"wdth" 100;
+   text-align: center;
+   color:var(--nd-blue);
+   --keycap-background:var(--light-grey);
+   --keycap-text:var(--nd-blue);
 }
 
-.small-caps {
-   font-variant: small-caps;
+.semibold, .subtitle {
+   font-weight: 650;
+}
+
+.bold, .title, .site-title, .btntxt {
+   font-weight: 900;
+}
+
+.title, .italic, .btntxt {
+   font-style: italic;
+}
+
+.title {
+   font-size: 150%;
+}
+
+.site-title {
+   font-size: 250%;
+}
+
+.subtitle {
+   font-size: 125%;
 }
 
 .text-larger {
@@ -62,6 +88,10 @@ body {
    text-transform: all-caps;
 }
 
+math-field::part(container) {
+  flex-flow: row-reverse;
+}
+
 /* Tooltips ------------------------------------------ */
 /* Style the tooltip */
 .custom-tooltip {
@@ -77,8 +107,12 @@ body {
 }
 
 /* color --------------------------------------------- */
-.nd-gold {
+.nd-gold, .title, .subtitle {
    color: var(--nd-gold);
+}
+
+.nd-blue {
+   color: var(--nd-blue);
 }
 
 .darker-grey {
@@ -93,7 +127,7 @@ body {
    color: var(--bright-blue);
 }
 
-.light-grey {
+.light-grey, .btntxt {
    color: var(--light-grey);
 }
 
