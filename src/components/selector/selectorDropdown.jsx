@@ -1,4 +1,4 @@
-import { GraphComponents, GraphKeys } from "../../common/graphComponents"
+import { GraphComponents, GraphKeys } from "../../common/utilities/graphComponents"
 
 export const SelectorDropdown = () =>
 {

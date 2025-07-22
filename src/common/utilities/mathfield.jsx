@@ -1,10 +1,11 @@
 import { MathfieldElement } from "mathlive";
 import "https://esm.run/@cortex-js/compute-engine";
 
-export const MathField = ({valueIn, onInput}) =>
+export const MathField = ({idIn, valueIn, onInput}) =>
 {
     return(
             <math-field
+            id={idIn}
             style={{display: "block"}}
             math-virtual-keyboard-policy = "manual"
             onFocusIn={() =>  mathVirtualKeyboard.show()} 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { GraphComponents } from '../../common/graphComponents';
+import { GraphComponents } from '../../common/utilities/graphComponents';
 
 export const SelectorDefine = () =>
 {

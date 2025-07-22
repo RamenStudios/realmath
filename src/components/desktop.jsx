@@ -4,7 +4,7 @@ import { About } from "./about/dabout"
 import { Selector } from "./selector/dselector"
 import { Tabs } from "./tabs/dtabs"
 import { BottomButtons } from "./bottomButtons/dbuttons"
-import { Modal } from "../common/modal"
+import { Modal } from "../common/utilities/modal"
 import { useRef } from "react"
 
 export const Desktop = () =>
