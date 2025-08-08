@@ -11,9 +11,13 @@ export const QRModal = () =>
     // when input is sensed, get the stringified JSON holding all tabs
     const updateUrl = () =>
     {
-        const inputData = document.getElementById('inputData').getAttribute('value')
-        setUrl(`${BASE_URL}${encodeURIComponent(inputData)}`)
-        console.log(inputData)
+        try{
+            const inputData = document.getElementById('inputData').getAttribute('value')
+            setUrl(`${BASE_URL}${encodeURIComponent(inputData)}`)
+            console.log(inputData)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     /* listeners to run above , not ideal*/
