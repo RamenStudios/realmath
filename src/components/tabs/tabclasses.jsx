@@ -74,7 +74,7 @@ export class Tab
                 const inputData = document.getElementById('inputData')
                 const current = JSON.parse(inputData.getAttribute('value'))
                 const newtab = {}
-                newtab[this.name] = {'value': this.value, 'props': this.props}
+                newtab[this.name] = {...this.props}
                 inputData.setAttribute('value', JSON.stringify({...current, ...newtab}))
             }catch(error){
                 console.log(error)

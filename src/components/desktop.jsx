@@ -5,13 +5,14 @@ import { Selector } from "./selector/dselector"
 import { Tabs } from "./tabs/dtabs"
 import { BottomButtons } from "./bottomButtons/dbuttons"
 import { Modal } from "../common/utilities/modal"
-import { useRef } from "react"
+import { QRModal } from "../common/utilities/QRModal"
 
 export const Desktop = () =>
 {
     return(
         <div>
             <Modal/>
+            <QRModal/>
             <Header/>
             <div class="container-lg">
                 <About/>

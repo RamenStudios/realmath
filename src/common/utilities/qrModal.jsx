@@ -1,22 +1,47 @@
-export const QRModal = (code, link='#') =>
+import { use, useEffect, useState } from 'react';
+import { QRCode } from 'react-qrcode-logo';
+
+const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
+
+export const QRModal = () =>
 {
+    // url will be dynamically updated as input is sensed
+    const [url, setUrl] = useState(BASE_URL);
+
+    // when input is sensed, get the stringified JSON holding all tabs
+    const updateUrl = () =>
+    {
+        const inputData = document.getElementById('inputData').getAttribute('value')
+        setUrl(`${BASE_URL}${encodeURIComponent(inputData)}`)
+        console.log(inputData)
+    }
+
+    /* listeners to run above , not ideal*/
+    document.addEventListener('keydown', (() => 
+    {
+        updateUrl()
+    }))
+    document.addEventListener('keyup', (() => 
+    {
+        updateUrl()
+    }))
+
+
     return(
-        <div class="modal fade" id="defnModal" tabindex="-1" aria-labelledby="defnModalLabel" aria-hidden="true">
+        <div class="modal fade" id="qrmodal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true" show="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="defnModalLabel">QR Ready!</h1>
+                        <h1 class="modal-title fs-5">8th Wall Visualization</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-6">
-                                Your graph has been sent to the 8th Wall AR visualizer! Scan the QR code with your mobile device to view it. 
-                                <br/>If you’re already on mobile, simply tap <a href={link}>HERE</a> to view!
-                            </div>
-                            <div class="col-6">
-                                {code}
-                            </div>
+                            Your graph has been sent to the 8th Wall AR visualizer! Scan the QR code with your mobile device to view it. 
+                            <br/>If you’re already on mobile, simply tap <a id="qrLink" href={url}>HERE</a> to view!
+                        </div>
+                        <div class="row">
+                            <QRCode value={url}/>
                         </div>
                     </div>
                 </div>
