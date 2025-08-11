@@ -149,11 +149,6 @@ export class Tab
         <div class="card">
             <div class="card-body">
                 <div class="row">{this.card(this.props, this)}</div>
-                <div class="row">
-                    <button type="button" class="btn btn-danger" id="deleteComponent" onClick={() => {this.parent.removeChild(this.index)}}>
-                        <div class="light-grey italic bold">REMOVE COMPONENT</div>
-                    </button>
-                </div>
             </div>
         </div>
         )
