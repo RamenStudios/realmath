@@ -5,7 +5,7 @@ import { CustomDiv } from '../../common/utilities/customPropDiv';
 import $ from 'jquery';
 
 /* limit elements to avoid crashes */
-const limit = 5
+const limit = 3
 /* ensures limit not reached */
 var numtabs = 1
 /* making trackers const */
@@ -14,6 +14,26 @@ const PtTracker = new TabTracker('Pt')
 const VecTracker = new TabTracker('Vec')
 const VFldTracker = new TabTracker('VFld')
 const SCrvTracker = new TabTracker('SCrv')
+
+/* silly helper for getting tabs */
+const returnCurrentTabs = (tabsList, tabs = {}) =>
+{
+    /* temporary list for adding to tabs collection */
+    let temptabs = {...tabs}
+    for (const [key, value] of Object.entries(tabsList))
+    {
+        try{
+            if(value){
+                temptabs = {...temptabs, ...value.getTabs()}
+            }
+        }catch(error)
+        {
+            console.log(error)
+            continue
+        }
+    }
+    return temptabs
+}
 
 /* THE MAIN EXPORT */
 export const Tabs = () =>
@@ -39,6 +59,22 @@ export const Tabs = () =>
     const [addFlag, setaddFlag] = useState(true)
     /* tells us what input field to display */
     const [card, setCard] = useState()
+    /* signals reload when a tab is deleted */
+    const [deleteFlag, setdeleteFlag] = useState(false)
+
+    /* helper for tab indexing */
+    const returnCurrentTabsHelper = (tabsIn = {}) =>
+    {
+        console.log(tabsIn)
+        /* temporary list for adding to tabs collection */
+        let temptabs = returnCurrentTabs(tabsList, tabsIn)
+        /* finalize tab additions, store names for ease of access */
+        console.log(temptabs)
+        setTabs({...temptabs})
+        setunselectedNames(Array.from(Object.keys(temptabs)))
+        /* indicate we can listen for a new addition */
+        setaddFlag(true)
+    }
 
     /* handles addition of element when add button is clicked */
     const addTab = () =>
@@ -51,9 +87,9 @@ export const Tabs = () =>
             /* if so, add a tab of the chosen type to the queue */
             if(numtabs < limit)
             {
-                console.log(`${numtabs} numtabs`)
+                console.log(`${numtabs} numtabs, addition possible`)
                 const option = selection.options[selection.selectedIndex].text
-                console.log(option)
+                console.log(`Pending type is ${option}`)
                 pendingType.current = GraphComponents[option]["alias"]
                 setPending(true);
             }
@@ -67,15 +103,23 @@ export const Tabs = () =>
     /* listener to run above */
     document.addEventListener('click', (() => 
     {
-        if(addFlag === true)
+        if(addFlag === true && deleteFlag === false)
         {
             try{
-                const hovered = $('#selectorAdd').is(":hover")
-                if(hovered)
+                /* listening for additions */
+                if($('#selectorAdd').is(":hover"))
                 {
                     console.log("Clicked!")
                     setaddFlag(false)
                     addTab()
+                }
+                /* reloads in case of removal */
+                else if($('#deleteComponent').is(":hover"))
+                {
+                    if(numtabs > 1)
+                    {
+                        setdeleteFlag(true)
+                    }
                 }
             }catch(error){
                 console.log(error)
@@ -98,7 +142,6 @@ export const Tabs = () =>
                 numtabs += 1 // only increments once addition successful
                 /* formalize tabs collection additions, indicate queue empty */
                 settabsList({...templist})
-                setPending(false)
             }catch(error)
             {
                 console.log(error)
@@ -109,28 +152,10 @@ export const Tabs = () =>
     /* formats tabs for easier display */
     useEffect(() =>
     {
-        console.log(tabs)
-        /* temporary list for adding to tabs collection */
-        let temptabs = {...tabs}
-        for (const [key, value] of Object.entries(tabsList))
-        {
-            try{
-                if(value){
-                    temptabs = {...temptabs, ...value.getTabs()}
-                }
-            }catch(error)
-            {
-                console.log(error)
-                continue
-            }
-        }
         console.log("TABSLIST USEEFFECT")
+        console.log(tabs)
         /* finalize tab additions, store names for ease of access */
-        console.log(temptabs)
-        setTabs({...temptabs})
-        setunselectedNames(Array.from(Object.keys(temptabs)))
-        /* indicate we can listen for a new addition */
-        setaddFlag(true)
+        returnCurrentTabsHelper(tabs)
     }, [tabsList])
 
     /* handles change in selected tab */
@@ -142,9 +167,12 @@ export const Tabs = () =>
         console.log(`New Selection: ${selection.name}`)
         /* delete selection from list of unselected tabs */
         delete temptabs[name]
-        /* put old selection in that list and deselect it */
-        selected.deselect()
-        temptabs[selected.name] = selected
+        /* if it exists, put old selection in that list and deselect it */
+        if(deleteFlag === false)
+        {   
+            selected.deselect()
+            temptabs[selected.name] = selected
+        }
         selection.select()
         /* set new selection */
         setSelected(selection)
@@ -152,12 +180,19 @@ export const Tabs = () =>
         setTabs({...temptabs})
     }
 
+    /* nothing is pending once tabs are set */
+    useEffect(() => 
+    {
+        setPending(false)
+    }, [tabs])
+
     /* reloads for new input field */
     useEffect(() =>
     {
         setCard(selected.display())
     }, [selected])
 
+    /* displays the input field */
     const getCard = () =>
     {
         console.log(selected)
@@ -165,9 +200,27 @@ export const Tabs = () =>
         return card
     }
 
+    /* deals with deletion */
+    useEffect(() =>
+    {
+        if(deleteFlag === true)
+        {
+            try {
+                document.getElementById('inputData').setAttribute('value', '{}')
+            } catch (error) {
+                console.log(error)
+            }
+            returnCurrentTabsHelper()
+            numtabs -= 1
+            getSelected(Array.from(Object.keys(tabs))[0])
+            setdeleteFlag(false)
+        }
+    }, [deleteFlag])
+
     return(
         <div class="container my-3">
-            <CustomDiv idIn="inputData"/>
+            <CustomDiv idIn="inputData"/> 
+            <CustomDiv idIn="numTabs" inputData={numtabs}/>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">{selected.name}</a>

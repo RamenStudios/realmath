@@ -7,7 +7,7 @@ export const BottomButtons = () =>
         <div class="container">
             <div class="row">
                 <div class="col-5"><div class="d-grid gap-2">
-                    <button type="button" class="btn btn-primary" onClick={GetFormData}>
+                    <button type="button" class="btn btn-primary" id="visualizeButton" onClick={GetFormData}>
                         <div class="light-grey italic bold">VISUALIZE IT!</div>
                     </button>
                 </div></div>

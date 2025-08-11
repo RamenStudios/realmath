@@ -45,13 +45,14 @@ const InputCards    =   {
 
 export class Tab
 {
-    constructor(type, index, numtabs)
+    constructor(parent, numtabs)
     {
-        this.index = index
-        this.type = InputCards[type].alias
-        this.name = `${type} ${index}`
-        this.card = InputCards[type].card
-        this.props = {...InputCards[type].props}
+        this.parent = parent
+        this.index = parent.index
+        this.type = InputCards[parent.type].alias
+        this.name = `${parent.type} ${parent.index}`
+        this.card = InputCards[parent.type].card
+        this.props = {...InputCards[parent.type].props}
         this.selected = numtabs === 0 ? true : false
         this.value = null
         this.setUpdate()
@@ -145,7 +146,16 @@ export class Tab
     {
         console.log(this.props)
         return(
-            <>{this.card(this.props, this)}</>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">{this.card(this.props, this)}</div>
+                <div class="row">
+                    <button type="button" class="btn btn-danger" id="deleteComponent" onClick={() => {this.parent.removeChild(this.index)}}>
+                        <div class="light-grey italic bold">REMOVE COMPONENT</div>
+                    </button>
+                </div>
+            </div>
+        </div>
         )
     }
 }
@@ -178,15 +188,27 @@ export class TabTracker
     {
         this.index += 1
         /* add new element */
-        this.current[this.index]=new Tab(this.type, this.index, numtabs)
+        this.current[this.index]=new Tab(this, numtabs)
         console.log("NEW ELEMENT")
         console.log(this.current[this.index])
     }
-    remove(index)
+    removeChild(index)
     {
-        this.current.delete(index)
-        this.index = index
-        this.update()
+        if(Number(document.getElementById('numTabs')) > 1)
+        {
+            delete this.current[index]
+            this.index = index
+            this.update()
+        }
+        else
+        {
+            let label = document.getElementById('modalLabel')
+            let body = document.getElementById('modalBody')
+            label.innerText = `ERROR!`
+            body.innerText = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
+            let modal = new bootstrap.Modal(document.getElementById('modal'), {});
+            modal.show();
+        }
     }
 }
 
@@ -210,9 +232,11 @@ export const getTabObjects = (trackerCollection) =>
 export const getTabStringify = (trackerCollection) =>
 {
     let tempreturn = {}
-    for (const [name, tracker] of Object.entries(trackerCollection)){
-        for (const [key, value] of Object.entries(tracker.current)){
-            tempreturn[value.name] = value.value
+    for (const key in trackerCollection){
+        const value = trackerCollection[key].current
+        for (const innerKey in value){
+            const tab = value[innerKey]
+            tempreturn[tab.name] = tab.props
         }
     }
     console.log(JSON.stringify(tempreturn))

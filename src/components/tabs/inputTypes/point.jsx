@@ -18,22 +18,18 @@ const PointInput = ({xIn, yIn, zIn, parent}) =>
     }
 
     return(
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">x</div>
-                    <div class="col-lg-2" >
-                        <MathField idIn='xMathField' valueIn={xIn} onInput={parent.update} />
-                    </div>
-                    <div class="col">y</div>
-                    <div class="col-lg-2" >
-                        <MathField valueIn={yIn} idIn='yMathField' onInput={parent.update} />
-                    </div>
-                    <div class="col">z</div>
-                    <div class="col-lg-2" >
-                        <MathField valueIn={zIn} idIn='zMathField' onInput={parent.update} />
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col">x</div>
+            <div class="col-lg-2" >
+                <MathField idIn='xMathField' valueIn={xIn} onInput={parent.update} />
+            </div>
+            <div class="col">y</div>
+            <div class="col-lg-2" >
+                <MathField valueIn={yIn} idIn='yMathField' onInput={parent.update} />
+            </div>
+            <div class="col">z</div>
+            <div class="col-lg-2" >
+                <MathField valueIn={zIn} idIn='zMathField' onInput={parent.update} />
             </div>
         </div>
     )

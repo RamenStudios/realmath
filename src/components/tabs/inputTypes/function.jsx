@@ -16,17 +16,13 @@ const FunctionInput = ({leftIn, rightIn, parent}) =>
     }
 
     return(
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-5" >
-                        <MathField idIn='leftMathField' valueIn={leftIn} onInput={parent.update} />
-                    </div>
-                    <div class="col">=</div>
-                    <div class="col-lg-5" >
-                        <MathField valueIn={rightIn} idIn='rightMathField' onInput={parent.update} />
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-lg-5" >
+                <MathField idIn='leftMathField' valueIn={leftIn} onInput={parent.update} />
+            </div>
+            <div class="col">=</div>
+            <div class="col-lg-5" >
+                <MathField valueIn={rightIn} idIn='rightMathField' onInput={parent.update} />
             </div>
         </div>
     )
