@@ -2,7 +2,9 @@ import { useRef, useState, useEffect } from 'react';
 import { GraphComponents } from "../../common/utilities/graphComponents";
 import { Tab, TabTracker, getTabStringify } from "./tabclasses";
 import { CustomDiv } from '../../common/utilities/customPropDiv';
+import { GetFormData } from '../../common/services/FormService';
 import $ from 'jquery';
+const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 
 /* limit elements to avoid crashes */
 const limit = 3
@@ -36,7 +38,7 @@ const returnCurrentTabs = (tabsList, tabs = {}) =>
 }
 
 /* THE MAIN EXPORT */
-export const Tabs = () =>
+export const Tabs = ({seturl}) =>
 {
 
     /* hooks tracking graph element additions */
@@ -95,6 +97,12 @@ export const Tabs = () =>
                     {
                         setdeleteFlag(true)
                     }
+                }
+                /* sets QR code url and calls parent to reload */
+                else if($('#visualizeButton').is(":focus"))
+                {
+                    seturl(`${BASE_URL}${getTabStringify(tabsList)}`)
+                    GetFormData()
                 }
             }catch(error){
                 console.log(error)
