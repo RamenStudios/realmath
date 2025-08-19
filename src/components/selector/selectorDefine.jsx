@@ -1,19 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GraphComponents } from '../../common/utilities/graphComponents';
+import { ShowModal } from '../../common/services/ModalService';
 
-export const SelectorDefine = () =>
+export const SelectorDefine = ({setmodal}) =>
 {
-    const [content, setContent] = useState("Placeholder");
-    const [showModal, setshowModal] = useState(false);
+    // reload when new content and when modal toggled
+    const [contentReq, setcontentReq] = useState(false)
+    const [modalFlag, setmodalFlag] = useState(false)
+    const content = useRef("Placeholder")
 
-
+    // sets new content and calls reload when button clicked
     const getSelection = () =>
     {
         try
         {
-            let selection = document.getElementById("selector");
-            setContent(selection.options[selection.selectedIndex].text);
-            setshowModal(true)
+            let selection = document.getElementById("selector")
+            content.current = (selection.options[selection.selectedIndex].text)
+            setcontentReq(true)
         }
         catch(error)
         {
@@ -21,36 +24,32 @@ export const SelectorDefine = () =>
             return
         };
     };
-    
-    useEffect (() =>
-    {
-        try
-        {
-            let label = document.getElementById('modalLabel')
-            let body = document.getElementById('modalBody')
-            label.innerText = `${content} Definition`
-            body.innerText = `${GraphComponents[content]['def']}`
-        }
-        catch(error)
-        {
-            console.error(error)
-        }
-    }, [content]);
 
+    // updates modal, sets modal show flag to 'true' after setting content
     useEffect(() =>
     {
-        if(showModal)
-        {
+        if(contentReq){
             try{
-                let modal = new bootstrap.Modal(document.getElementById('modal'), {});
-                modal.show();
+                setmodal(`${content.current} Definition`, `${GraphComponents[content.current]['def']}`)
+                setmodalFlag(true)
+            }catch(e){
+                console.log(`Cannot set modal in SELECTORDEFINE: ${e}`)
             }
-            catch(error){
-                console.error(error)
-            }
-            setshowModal(false)
         }
-    }, [showModal])
+    }, [contentReq])
+
+    // shows modal if flag is true
+    useEffect(() =>
+    {
+        if(modalFlag === true)
+        {
+            ShowModal()
+            setmodalFlag(false)
+        }
+        else{
+            setcontentReq(false)
+        }
+    }, [modalFlag])
 
     return(
         <div class="d-grid gap-2">

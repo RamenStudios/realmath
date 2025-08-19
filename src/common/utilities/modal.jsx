@@ -1,16 +1,16 @@
 import { use, useEffect, useState } from 'react';
 
-export const Modal = () =>
+export const Modal = ({inlabel, incontent}) =>
 {
     return(
         <div class="modal fade" id="modal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true" show="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modalLabel">Placeholder</h1>
+                        <h1 class="modal-title fs-5" id="modalLabel">{inlabel}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body" id="modalBody">Placeholder</div>
+                    <div class="modal-body" id="modalBody">{incontent}</div>
                 </div>
             </div>
         </div>

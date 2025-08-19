@@ -12,16 +12,23 @@ const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 export const Desktop = () =>
 {
     const [qrUrl, setQrUrl] = useState(BASE_URL)
+    const [label, setLabel] = useState('Placeholder')
+    const [content, setContent] = useState('Placeholder')
+
+    const setModal = (newlabel, newcontent) => {
+        setLabel(newlabel)
+        setContent(newcontent)
+    } 
 
     return(
         <div>
-            <Modal/>
+            <Modal inlabel={label} incontent={content}/>
             <QRModal url={qrUrl}/>
             <Header/>
             <div class="container-lg">
                 <About/>
-                <Selector/>
-                <Tabs seturl={setQrUrl}/>
+                <Selector setmodal={setModal}/>
+                <Tabs setmodal={setModal} seturl={setQrUrl}/>
                 <BottomButtons/>
             </div>
             <Footer/>

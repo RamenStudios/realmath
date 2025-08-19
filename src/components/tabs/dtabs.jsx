@@ -38,7 +38,7 @@ const returnCurrentTabs = (tabsList, tabs = {}) =>
 }
 
 /* THE MAIN EXPORT */
-export const Tabs = ({seturl}) =>
+export const Tabs = ({setmodal, seturl}) =>
 {
 
     /* hooks tracking graph element additions */
@@ -137,6 +137,12 @@ export const Tabs = ({seturl}) =>
             };
         }
     }, [addFlag])
+
+    /* begins process of deleting element when deleteflag set and is true */
+    useEffect(() =>
+    {
+
+    }, [deleteFlag])
 
     /* signals for queued tab to be added */
     useEffect(() => 
