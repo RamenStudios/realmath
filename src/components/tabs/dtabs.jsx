@@ -223,7 +223,6 @@ export const Tabs = () =>
 
     return(
         <div class="container my-3">
-            <CustomDiv idIn="inputData"/> 
             <CustomDiv idIn="numTabs" inputData={numtabs}/>
             <ul class="nav nav-tabs">
                 <li class="nav-item">

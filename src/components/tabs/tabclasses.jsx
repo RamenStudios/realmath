@@ -129,16 +129,6 @@ export class Tab
                     // failsafe
                     console.log(`error updating value for tab ${this.name}!`)
             };
-            /* if it has already been loaded, we attach new data to the div cache */
-            try{
-                const inputData = document.getElementById('inputData')
-                const current = JSON.parse(inputData.getAttribute('value'))
-                const newtab = {}
-                newtab[this.name] = {...this.props}
-                inputData.setAttribute('value', JSON.stringify({...current, ...newtab}))
-            }catch(error){
-                console.log(error)
-            }
         }
     }
     // passes any necessary input to display container before user sees it
