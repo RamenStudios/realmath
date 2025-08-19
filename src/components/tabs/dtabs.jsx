@@ -76,45 +76,20 @@ export const Tabs = () =>
         setaddFlag(true)
     }
 
-    /* handles addition of element when add button is clicked */
-    const addTab = () =>
-    {
-        try
-        {
-            /* get selected element type */
-            let selection = document.getElementById("selector");
-            /* check if it is possible to add more */
-            /* if so, add a tab of the chosen type to the queue */
-            if(numtabs < limit)
-            {
-                console.log(`${numtabs} numtabs, addition possible`)
-                const option = selection.options[selection.selectedIndex].text
-                console.log(`Pending type is ${option}`)
-                pendingType.current = GraphComponents[option]["alias"]
-                setPending(true);
-            }
-        }
-        catch(error)
-        {
-            console.error(error)
-            return
-        };
-    }
-    /* listener to run above */
+    /* listener for relevant buttons */
     document.addEventListener('click', (() => 
     {
         if(addFlag === true && deleteFlag === false)
         {
             try{
                 /* listening for additions */
-                if($('#selectorAdd').is(":hover"))
+                if($('#selectorAdd').is(":focus"))
                 {
                     console.log("Clicked!")
                     setaddFlag(false)
-                    addTab()
                 }
                 /* reloads in case of removal */
-                else if($('#deleteComponent').is(":hover"))
+                else if($('#deleteComponent').is(":focus"))
                 {
                     if(numtabs > 1)
                     {
@@ -126,6 +101,34 @@ export const Tabs = () =>
             }
         }
     }))
+
+    /* handles addition of element when add button is clicked */
+    useEffect(() =>
+    {
+        if(addFlag === false && deleteFlag === false)
+        {
+            try
+            {
+                /* get selected element type */
+                let selection = document.getElementById("selector");
+                /* check if it is possible to add more */
+                /* if so, add a tab of the chosen type to the queue */
+                if(numtabs < limit)
+                {
+                    console.log(`${numtabs} numtabs, addition possible`)
+                    const option = selection.options[selection.selectedIndex].text
+                    console.log(`Pending type is ${option}`)
+                    pendingType.current = GraphComponents[option]["alias"]
+                    setPending(true);
+                }
+            }
+            catch(error)
+            {
+                console.error(error)
+                return
+            };
+        }
+    }, [addFlag])
 
     /* signals for queued tab to be added */
     useEffect(() => 
@@ -184,6 +187,7 @@ export const Tabs = () =>
     useEffect(() => 
     {
         setPending(false)
+        setdeleteFlag(false)
     }, [tabs])
 
     /* reloads for new input field */
