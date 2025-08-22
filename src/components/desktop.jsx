@@ -20,6 +20,10 @@ export const Desktop = () =>
         setContent(newcontent)
     } 
 
+    const setURL = (urlin) => {
+        setQrUrl(urlin)
+    }
+
     return(
         <div>
             <Modal inlabel={label} incontent={content}/>
@@ -28,7 +32,7 @@ export const Desktop = () =>
             <div class="container-lg">
                 <About/>
                 <Selector setmodal={setModal}/>
-                <Tabs setmodal={setModal} seturl={setQrUrl}/>
+                <Tabs setmodal={setModal} seturl={setURL}/>
                 <BottomButtons/>
             </div>
             <Footer/>

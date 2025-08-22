@@ -2,9 +2,14 @@ import { useRef, useState, useEffect } from 'react';
 import { GraphComponents } from "../../common/utilities/graphComponents";
 import { Tab, TabTracker, getTabStringify } from "./tabclasses";
 import { CustomDiv } from '../../common/utilities/customPropDiv';
+import { ShowModal, ShowQR } from '../../common/services/ModalService';
 import { GetFormData } from '../../common/services/FormService';
 import $ from 'jquery';
+
+/* useful constants */
 const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
+const DELETION_ERROR_MSG = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
+const VIEW_ERROR_MSG = `You should not be able to see this message! If you can, please report it as a bug.`
 
 /* limit elements to avoid crashes */
 const limit = 3
@@ -63,6 +68,57 @@ export const Tabs = ({setmodal, seturl}) =>
     const [card, setCard] = useState()
     /* signals reload when a tab is deleted */
     const [deleteFlag, setdeleteFlag] = useState(false)
+    /* signals showing modals */
+    const [modalFlag, setmodalFlag] = useState(false)
+    const [qrFlag, setqrFlag] = useState(false)
+    /* 0=deletion warning, 1=qr */
+    const currentmodal = useRef(0) 
+    /* reload when new content and when modal toggled */
+    const [contentReq, setcontentReq] = useState(false)
+
+    /* simple modal call */
+    useEffect(() => {
+        console.log(`MODAL FLAG SET ${modalFlag}`)
+        if(modalFlag === true){
+            ShowModal()
+            setmodalFlag(false)
+        }else{
+            setcontentReq(false)
+        }
+    }, [modalFlag])
+    useEffect(() => {
+        console.log(`QR FLAG SET ${qrFlag}`)
+        if(qrFlag === true){
+            ShowQR()
+            setqrFlag(false)
+        }else{
+            console.log(`SETTING CONTENTREQ`)
+            setcontentReq(false)
+        }
+    }, [qrFlag])
+
+    /* updates modal, sets appropriate modal show flag to 'true' after setting content */
+    useEffect(() =>
+    {
+        console.log(`CONTENTREQ SET ${contentReq}, CURRENTMODAL ${currentmodal.current}`)
+        if(contentReq === true){
+            try{
+                switch(currentmodal.current){
+                    case 0:
+                        setmodal(`ERROR!`, DELETION_ERROR_MSG)
+                        setmodalFlag(true)
+                        break;
+                    case 1:
+                        //setmodal(`ERROR!`, VIEW_ERROR_MSG)
+                        seturl(`${BASE_URL}${getTabStringify(tabsList)}`)
+                        setqrFlag(true)
+                        break;
+                }
+            }catch(e){
+                console.log(`Cannot set modal in DTABS: ${e}`)
+            }
+        }
+    }, [contentReq])
 
     /* helper for tab indexing */
     const returnCurrentTabsHelper = (tabsIn = {}) =>
@@ -87,22 +143,29 @@ export const Tabs = ({setmodal, seturl}) =>
                 /* listening for additions */
                 if($('#selectorAdd').is(":focus"))
                 {
+                    $(':focus').trigger( "blur" )
                     console.log("Clicked!")
                     setaddFlag(false)
                 }
                 /* reloads in case of removal */
                 else if($('#deleteComponent').is(":focus"))
                 {
-                    if(numtabs > 1)
-                    {
+                    $(':focus').trigger( "blur" )
+                    if(numtabs > 1){
                         setdeleteFlag(true)
+                    }else{
+                        currentmodal.current = 0
+                        setcontentReq(true)
                     }
                 }
                 /* sets QR code url and calls parent to reload */
                 else if($('#visualizeButton').is(":focus"))
                 {
-                    seturl(`${BASE_URL}${getTabStringify(tabsList)}`)
-                    GetFormData()
+                    $(':focus').trigger( "blur" )
+                    currentmodal.current = 1
+                    console.log(`VIZ CLICKED`)
+                    console.log(`CONTENTREQ IS CURRENTLY ${contentReq}`)
+                    setcontentReq(true)
                 }
             }catch(error){
                 console.log(error)
@@ -184,11 +247,15 @@ export const Tabs = ({setmodal, seturl}) =>
         console.log(`New Selection: ${selection.name}`)
         /* delete selection from list of unselected tabs */
         delete temptabs[name]
-        /* if it exists, put old selection in that list and deselect it */
-        if(deleteFlag === false)
-        {   
-            selected.deselect()
+        /* deselect current selection */
+        selected.deselect()
+        /* if no deletion requested, push it to list of tabs */
+        /* otherwise, get its parent and call for deletion */
+        if(deleteFlag === false){   
             temptabs[selected.name] = selected
+        }else{
+            const selectedparent = selected.parent
+            selectedparent.removeTab(selected.index)
         }
         selection.select()
         /* set new selection */
@@ -223,15 +290,9 @@ export const Tabs = ({setmodal, seturl}) =>
     {
         if(deleteFlag === true)
         {
-            try {
-                document.getElementById('inputData').setAttribute('value', '{}')
-            } catch (error) {
-                console.log(error)
-            }
             returnCurrentTabsHelper()
             numtabs -= 1
             getSelected(Array.from(Object.keys(tabs))[0])
-            setdeleteFlag(false)
         }
     }, [deleteFlag])
 

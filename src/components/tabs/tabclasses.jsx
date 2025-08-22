@@ -177,22 +177,14 @@ export class TabTracker
         console.log("NEW ELEMENT")
         console.log(this.current[this.index])
     }
-    removeChild(index)
+    removeTab(index)
     {
-        if(Number(document.getElementById('numTabs')) > 1)
-        {
+        try{
             delete this.current[index]
             this.index = index
             this.update()
-        }
-        else
-        {
-            let label = document.getElementById('modalLabel')
-            let body = document.getElementById('modalBody')
-            label.innerText = `ERROR!`
-            body.innerText = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
-            let modal = new bootstrap.Modal(document.getElementById('modal'), {});
-            modal.show();
+        }catch(e){
+            console.log(`Error with ${this.type} TAB DELETION: ${e}`)
         }
     }
 }
