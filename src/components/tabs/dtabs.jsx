@@ -86,6 +86,7 @@ export const Tabs = ({setmodal, seturl}) =>
             setcontentReq(false)
         }
     }, [modalFlag])
+    /* simple qr call */
     useEffect(() => {
         console.log(`QR FLAG SET ${qrFlag}`)
         if(qrFlag === true){

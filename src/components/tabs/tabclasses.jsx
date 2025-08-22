@@ -139,6 +139,14 @@ export class Tab
         <div class="card">
             <div class="card-body">
                 <div class="row">{this.card(this.props, this)}</div>
+                <div class="row mt-2">
+                    <div class="col col-10"></div>
+                    <div class="col col-2">
+                        <button id="deleteComponent" type="button" class="btn btn-danger">
+                            <div class="light-grey italic bold">REMOVE</div>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         )
@@ -181,7 +189,6 @@ export class TabTracker
     {
         try{
             delete this.current[index]
-            this.index = index
             this.update()
         }catch(e){
             console.log(`Error with ${this.type} TAB DELETION: ${e}`)
