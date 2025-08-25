@@ -5,7 +5,7 @@ import { Selector } from "./selector/dselector"
 import { Tabs } from "./tabs/dtabs"
 import { BottomButtons } from "./bottomButtons/dbuttons"
 import { Modal } from "../common/utilities/modal"
-import { QRModal } from "../common/utilities/QRModal"
+import { QRModal } from "../common/utilities/qrModal"
 import { useState } from "react"
 const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 
