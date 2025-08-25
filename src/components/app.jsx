@@ -9,7 +9,7 @@ import { QRModal } from "../common/utilities/QRModal"
 import { useState } from "react"
 const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 
-export const App = () =>
+export default function App()
 {
     const [qrUrl, setQrUrl] = useState(BASE_URL)
     const [label, setLabel] = useState('Placeholder')
