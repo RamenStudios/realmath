@@ -3,34 +3,8 @@ import { QRCode } from 'react-qrcode-logo';
 
 const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 
-export const QRModal = () =>
+export const QRModal = ({url}) =>
 {
-    // url will be dynamically updated as input is sensed
-    const [url, setUrl] = useState(BASE_URL);
-
-    // when input is sensed, get the stringified JSON holding all tabs
-    const updateUrl = () =>
-    {
-        try{
-            const inputData = document.getElementById('inputData').getAttribute('value')
-            setUrl(`${BASE_URL}${encodeURIComponent(inputData)}`)
-            console.log(inputData)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    /* listeners to run above , not ideal*/
-    document.addEventListener('keydown', (() => 
-    {
-        updateUrl()
-    }))
-    document.addEventListener('keyup', (() => 
-    {
-        updateUrl()
-    }))
-
-
     return(
         <div class="modal fade" id="qrmodal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true" show="false">
             <div class="modal-dialog">

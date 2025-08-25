@@ -129,16 +129,6 @@ export class Tab
                     // failsafe
                     console.log(`error updating value for tab ${this.name}!`)
             };
-            /* if it has already been loaded, we attach new data to the div cache */
-            try{
-                const inputData = document.getElementById('inputData')
-                const current = JSON.parse(inputData.getAttribute('value'))
-                const newtab = {}
-                newtab[this.name] = {...this.props}
-                inputData.setAttribute('value', JSON.stringify({...current, ...newtab}))
-            }catch(error){
-                console.log(error)
-            }
         }
     }
     // passes any necessary input to display container before user sees it
@@ -149,6 +139,14 @@ export class Tab
         <div class="card">
             <div class="card-body">
                 <div class="row">{this.card(this.props, this)}</div>
+                <div class="row mt-2">
+                    <div class="col col-10"></div>
+                    <div class="col col-2">
+                        <button id="deleteComponent" type="button" class="btn btn-danger">
+                            <div class="light-grey italic bold">REMOVE</div>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         )
@@ -187,22 +185,13 @@ export class TabTracker
         console.log("NEW ELEMENT")
         console.log(this.current[this.index])
     }
-    removeChild(index)
+    removeTab(index)
     {
-        if(Number(document.getElementById('numTabs')) > 1)
-        {
+        try{
             delete this.current[index]
-            this.index = index
             this.update()
-        }
-        else
-        {
-            let label = document.getElementById('modalLabel')
-            let body = document.getElementById('modalBody')
-            label.innerText = `ERROR!`
-            body.innerText = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
-            let modal = new bootstrap.Modal(document.getElementById('modal'), {});
-            modal.show();
+        }catch(e){
+            console.log(`Error with ${this.type} TAB DELETION: ${e}`)
         }
     }
 }

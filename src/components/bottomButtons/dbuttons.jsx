@@ -1,5 +1,4 @@
 import "https://esm.run/@cortex-js/compute-engine";
-import { GetFormData } from "../../common/services/FormService";
 
 export const BottomButtons = () =>
 {
@@ -7,7 +6,7 @@ export const BottomButtons = () =>
         <div class="container">
             <div class="row">
                 <div class="col-5"><div class="d-grid gap-2">
-                    <button type="button" class="btn btn-primary" id="visualizeButton" onClick={GetFormData}>
+                    <button type="button" class="btn btn-primary" id="visualizeButton">
                         <div class="light-grey italic bold">VISUALIZE IT!</div>
                     </button>
                 </div></div>

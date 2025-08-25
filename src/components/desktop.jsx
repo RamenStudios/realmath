@@ -6,18 +6,33 @@ import { Tabs } from "./tabs/dtabs"
 import { BottomButtons } from "./bottomButtons/dbuttons"
 import { Modal } from "../common/utilities/modal"
 import { QRModal } from "../common/utilities/QRModal"
+import { useState } from "react"
+const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 
 export const Desktop = () =>
 {
+    const [qrUrl, setQrUrl] = useState(BASE_URL)
+    const [label, setLabel] = useState('Placeholder')
+    const [content, setContent] = useState('Placeholder')
+
+    const setModal = (newlabel, newcontent) => {
+        setLabel(newlabel)
+        setContent(newcontent)
+    } 
+
+    const setURL = (urlin) => {
+        setQrUrl(urlin)
+    }
+
     return(
         <div>
-            <Modal/>
-            <QRModal/>
+            <Modal inlabel={label} incontent={content}/>
+            <QRModal url={qrUrl}/>
             <Header/>
             <div class="container-lg">
                 <About/>
-                <Selector/>
-                <Tabs/>
+                <Selector setmodal={setModal}/>
+                <Tabs setmodal={setModal} seturl={setURL}/>
                 <BottomButtons/>
             </div>
             <Footer/>
