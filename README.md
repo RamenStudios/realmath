@@ -1,6 +1,7 @@
 # Project: RealMath AR 
 The user-facing website integrating with the RealMath 8th Wall visualizer app.
-  
+Forks who use a custom repo name should change REPO_NAME in vite.config.js
+
 **Web Design and Development**  
 **Release date:** Fall, 2024
 
