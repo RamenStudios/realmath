@@ -1,22 +1,11 @@
 import { Mobile} from "./mobile"
 import { Desktop } from "./desktop"
 
-export const Components = ({loadtype}) =>
+export const Components = () =>
 {
-    if(loadtype === 'desktop')
-    {
-        return(
-            <div>
-                <Desktop/>
-            </div>
-        )
-    }
-    else
-    {
-        return(
-            <div>
-                <Mobile/>
-            </div>
-        )
-    }
+    return(
+        <div>
+            <Desktop/>
+        </div>
+    )
 }
