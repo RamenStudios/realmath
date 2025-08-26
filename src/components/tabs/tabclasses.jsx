@@ -132,21 +132,36 @@ export class Tab
         }
     }
     // passes any necessary input to display container before user sees it
-    display()
+    display(userframe)
     {
         console.log(this.props)
-        return(
-        <div class="card">
-            <div class="card-body">
-                <div class="row">{this.card(this.props, this)}</div>
-                <div class="row mt-2">
-                    <div class="col col-10"></div>
-                    <div class="col col-2">
+        const button = () => {
+            if(userframe === 'desktop'){
+                return(
+                    <div class="row mt-2">
+                        <div class="col col-10"></div>
+                        <div class="col col-2">
+                            <button id="deleteComponent" type="button" class="btn btn-danger">
+                                <div class="light-grey italic bold">REMOVE</div>
+                            </button>
+                        </div>
+                    </div>
+                )
+            }else{
+                return(
+                    <div class="row mt-2">
                         <button id="deleteComponent" type="button" class="btn btn-danger">
                             <div class="light-grey italic bold">REMOVE</div>
                         </button>
                     </div>
-                </div>
+                )
+            }
+        }
+        return(
+        <div class="card">
+            <div class="card-body">
+                <div class="row">{this.card(this.props, this, userframe)}</div>
+                {button()}
             </div>
         </div>
         )

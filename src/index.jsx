@@ -5,8 +5,19 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min'
 import '../stylesheets/main.css'
 
+/* determines if desktop or mobile by checking for mouse */
+/* credit: https://xobyte.org/scripts/isMobile.js */
+const checkMobile = () => 
+{
+  if(window.matchMedia("(any-hover:none)").matches) {
+    return 'mobile';
+  } else {
+    return 'desktop';
+  }
+};
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <App userframe={checkMobile()}/>
   </StrictMode>,
 )

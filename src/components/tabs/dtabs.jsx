@@ -43,7 +43,7 @@ const returnCurrentTabs = (tabsList, tabs = {}) =>
 }
 
 /* THE MAIN EXPORT */
-export const Tabs = ({setmodal, seturl}) =>
+export const Tabs = ({setmodal, seturl, userframe}) =>
 {
 
     /* hooks tracking graph element additions */
@@ -275,14 +275,12 @@ export const Tabs = ({setmodal, seturl}) =>
     /* reloads for new input field */
     useEffect(() =>
     {
-        setCard(selected.display())
+        setCard(selected.display(userframe))
     }, [selected])
 
     /* displays the input field */
     const getCard = () =>
     {
-        console.log(selected)
-        console.log(selected.display())
         return card
     }
 
@@ -296,7 +294,7 @@ export const Tabs = ({setmodal, seturl}) =>
             getSelected(Array.from(Object.keys(tabs))[0])
         }
     }, [deleteFlag])
-
+    
     return(
         <div class="container my-3">
             <CustomDiv idIn="numTabs" inputData={numtabs}/>
@@ -312,7 +310,7 @@ export const Tabs = ({setmodal, seturl}) =>
                     </>
                 }
             </ul>
-            {getCard()}
+            {getCard(userframe)}
         </div>
     )
 }
