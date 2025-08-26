@@ -135,8 +135,9 @@ export const Tabs = ({setmodal, seturl, userframe}) =>
         setaddFlag(true)
     }
 
-    /* listener for relevant buttons */
-    document.addEventListener('click', (() => 
+    /* conditions for button listener */
+    /* like this so i dont have to rewrite for click and touch */
+    const buttonEvents = () => 
     {
         if(addFlag === true && deleteFlag === false)
         {
@@ -172,6 +173,16 @@ export const Tabs = ({setmodal, seturl, userframe}) =>
                 console.log(error)
             }
         }
+    }
+
+    /* click listener for relevant buttons */
+    document.addEventListener('click', (() => {
+        buttonEvents()
+    }))
+
+    /* touch listener for relevant buttons */
+    document.addEventListener('touchstart', (() => {
+        buttonEvents()
     }))
 
     /* handles addition of element when add button is clicked */
