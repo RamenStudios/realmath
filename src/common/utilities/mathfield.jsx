@@ -7,7 +7,7 @@ export const MathField = ({idIn, valueIn, onInput}) =>
             <math-field
             id={idIn}
             style={{display: "block"}}
-            math-virtual-keyboard-policy = "manual"
+            math-virtual-keyboard-policy = "auto"
             onFocusIn={() =>  mathVirtualKeyboard.show()} 
             onFocusOut={() =>  mathVirtualKeyboard.hide()}
             onInput={onInput}

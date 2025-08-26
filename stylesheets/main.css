@@ -9,6 +9,14 @@
    --white: #FFFFFF;
    --silver: silver;
    --default-font: 30px;
+   --keycap-height: 2rem;
+   --keycap-font-size: .75rem;
+   --keycap-shift-font-size: .25rem;
+   --keycap-small-font-size: .25rem;
+   --keycap-extra-small-font-size: .25rem;
+   --keyboard-toolbar-font-size: 1rem;
+   --variant-keycap-font-size: .25rem;
+   --keycap-gap: 4px;
 }
 
 html {

@@ -32,28 +32,26 @@ export const BottomButtons = ({userframe}) =>
         )
     }else{
         return(
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row">
                     <button type="button" class="btn btn-primary" id="visualizeButton">
                             <div class="light-grey italic bold">VISUALIZE IT!</div>
                     </button>
                 </div>
-                <div class="row mt-2">
-                    <div class="col col-3">
-                        <button type="button" class="btn btn-secondary">
-                            <div class="light-grey italic bold">HELP</div>
-                        </button>
-                    </div>
-                    <div class="col col-3">
-                        <button type="button" class="btn btn-secondary">
-                            <div class="light-grey italic bold">RESET</div>
-                        </button>
-                    </div>
-                    <div class="col col-6">
-                        <button type="button" class="btn btn-secondary">
-                            <div class="light-grey italic bold">REPORT BUG</div>
-                        </button>
-                    </div>
+                <div class="row">
+                    <button type="button" class="btn btn-secondary">
+                        <div class="light-grey italic bold">HELP</div>
+                    </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-secondary">
+                        <div class="light-grey italic bold">RESET</div>
+                    </button>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-secondary">
+                        <div class="light-grey italic bold">REPORT BUG</div>
+                    </button>
                 </div>
             </div>
         )
