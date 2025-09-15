@@ -175,18 +175,25 @@ export const Tabs = ({setmodal, seturl, userframe}) =>
         }
     }
 
+    /* click listener for relevant buttons */
+    document.addEventListener('click', (() => {
+        buttonEvents()
+    }))
+
+    /*
     if(userframe === 'desktop'){
-        /* click listener for relevant buttons */
+        /* click listener for relevant buttons /
         document.addEventListener('click', (() => {
             buttonEvents()
         }))
     }else{
-        /* touch listener for relevant buttons */
+        /* touch listener for relevant buttons /
         document.addEventListener('touchstart', (() => {
             buttonEvents()
         }))
     }
-    
+    */
+
     /* handles addition of element when add button is clicked */
     useEffect(() =>
     {
