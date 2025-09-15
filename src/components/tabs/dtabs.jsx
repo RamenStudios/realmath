@@ -7,7 +7,7 @@ import { GetFormData } from '../../common/services/FormService';
 import $ from 'jquery';
 
 /* useful constants */
-const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
+const BASE_URL = 'https://ndlearning.8thwall.app/realmath/'
 const DELETION_ERROR_MSG = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
 const VIEW_ERROR_MSG = `You should not be able to see this message! If you can, please report it as a bug.`
 
