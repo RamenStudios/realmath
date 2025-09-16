@@ -3,6 +3,8 @@ import { PointInputContainer } from "./inputTypes/point";
 import { VectorInputContainer } from "./inputTypes/vector";
 import { useRef, useState, useEffect } from 'react';
 
+// TODO: FIX DELETION
+
 // makes setting alias and input field faster
 const InputCards    =   {
                             'Func'  :   {
@@ -45,7 +47,7 @@ const InputCards    =   {
 
 export class Tab
 {
-    constructor(parent, numtabs)
+    constructor(parent, numtabs, setTrigger)
     {
         this.parent = parent
         this.index = parent.index
@@ -55,6 +57,8 @@ export class Tab
         this.props = {...InputCards[parent.type].props}
         this.selected = numtabs === 0 ? true : false
         this.value = null
+        this.setTrigger = setTrigger
+        console.log(this.setTrigger)
         this.setUpdate()
     }
     // just makes life easier tbh
@@ -141,7 +145,12 @@ export class Tab
                     <div class="row mt-2">
                         <div class="col col-10"></div>
                         <div class="col col-2">
-                            <button id="deleteComponent" type="button" class="btn btn-danger">
+                            <button 
+                                id="deleteComponent" 
+                                type="button" 
+                                class="btn btn-danger" 
+                                onClick={() => {this.parent.setDelete(this.index)}}
+                            >
                                 <div class="light-grey italic bold">REMOVE</div>
                             </button>
                         </div>
@@ -150,7 +159,12 @@ export class Tab
             }else{
                 return(
                     <div class="row mt-2">
-                        <button id="deleteComponent" type="button" class="btn btn-danger">
+                        <button 
+                            id="deleteComponent" 
+                            type="button" 
+                            class="btn btn-danger" 
+                            onClick={this.setDelete}
+                        >
                             <div class="light-grey italic bold">REMOVE</div>
                         </button>
                     </div>
@@ -192,13 +206,19 @@ export class TabTracker
         }
         return tempreturn
     }
-    add(numtabs)
+    add(numtabs, setTrigger)
     {
         this.index += 1
+        this.setTrigger = setTrigger
         /* add new element */
-        this.current[this.index]=new Tab(this, numtabs)
+        this.current[this.index] = new Tab(this, numtabs, setTrigger)
         console.log("NEW ELEMENT")
         console.log(this.current[this.index])
+    }
+    setDelete()
+    {
+        console.log(this.setTrigger)
+        this.setTrigger('delete', true)
     }
     removeTab(index)
     {

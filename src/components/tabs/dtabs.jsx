@@ -43,7 +43,7 @@ const returnCurrentTabs = (tabsList, tabs = {}) =>
 }
 
 /* THE MAIN EXPORT */
-export const Tabs = ({setmodal, seturl, userframe}) =>
+export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, contentTrigger, setTrigger}) =>
 {
 
     /* hooks tracking graph element additions */
@@ -53,11 +53,11 @@ export const Tabs = ({setmodal, seturl, userframe}) =>
                                                 Vec: VecTracker,
                                                 VFld: VFldTracker,
                                                 SCrv: SCrvTracker
-                                            });
-    const [pending, setPending] = useState(false);
+                                            })
+    const [pending, setPending] = useState(false)
     const pendingType = useRef()
     /* hook for displaying selected tab */
-    const [selected, setSelected] = useState(tabsList.Func.current[1]);
+    const [selected, setSelected] = useState(tabsList.Func.current[1])
     /* stores unselected tabs for easier display */
     const [tabs, setTabs] = useState({});
     /* hook to store just the names */
@@ -99,10 +99,9 @@ export const Tabs = ({setmodal, seturl, userframe}) =>
     }, [qrFlag])
 
     /* updates modal, sets appropriate modal show flag to 'true' after setting content */
-    useEffect(() =>
-    {
+    useEffect(() => {
         console.log(`CONTENTREQ SET ${contentReq}, CURRENTMODAL ${currentmodal.current}`)
-        if(contentReq === true){
+        if (contentReq === true) {
             try{
                 switch(currentmodal.current){
                     case 0:
@@ -118,12 +117,14 @@ export const Tabs = ({setmodal, seturl, userframe}) =>
             }catch(e){
                 console.log(`Cannot set modal in DTABS: ${e}`)
             }
+        } else if (contentReq === false) {
+            console.log("Content req false")
+            setTrigger('content', false)
         }
     }, [contentReq])
 
     /* helper for tab indexing */
-    const returnCurrentTabsHelper = (tabsIn = {}) =>
-    {
+    const returnCurrentTabsHelper = (tabsIn = {}) => {
         console.log(tabsIn)
         /* temporary list for adding to tabs collection */
         let temptabs = returnCurrentTabs(tabsList, tabsIn)
@@ -131,114 +132,76 @@ export const Tabs = ({setmodal, seturl, userframe}) =>
         console.log(temptabs)
         setTabs({...temptabs})
         setunselectedNames(Array.from(Object.keys(temptabs)))
-        /* indicate we can listen for a new addition */
-        setaddFlag(true)
     }
 
-    /* conditions for button listener */
-    /* like this so i dont have to rewrite for click and touch */
-    const buttonEvents = () => 
-    {
-        if(addFlag === true && deleteFlag === false)
-        {
-            try{
-                /* listening for additions */
-                if($('#selectorAdd').is(":focus"))
-                {
-                    $(':focus').trigger( "blur" )
-                    console.log("Clicked!")
-                    setaddFlag(false)
-                }
-                /* reloads in case of removal */
-                else if($('#deleteComponent').is(":focus"))
-                {
-                    $(':focus').trigger( "blur" )
-                    if(numtabs > 1){
-                        setdeleteFlag(true)
-                    }else{
-                        currentmodal.current = 0
-                        setcontentReq(true)
-                    }
-                }
-                /* sets QR code url and calls parent to reload */
-                else if($('#visualizeButton').is(":focus"))
-                {
-                    $(':focus').trigger( "blur" )
-                    currentmodal.current = 1
-                    console.log(`VIZ CLICKED`)
-                    console.log(`CONTENTREQ IS CURRENTLY ${contentReq}`)
+    /* reacts to button click reloads */
+    if(addFlag === true && deleteFlag === false) {
+        try {
+            /* listening for additions */
+            if (addTrigger === true) {
+                console.log('ADD TRIGGER TRUE')
+                setaddFlag(false)
+            }
+            /* reloads in case of removal */
+            else if (deleteTrigger === true) {
+                console.log('DELETE TRIGGER TRUE')
+                if(numtabs > 1){
+                    setdeleteFlag(true)
+                }else{
+                    currentmodal.current = 0
                     setcontentReq(true)
                 }
-            }catch(error){
-                console.log(error)
             }
+            /* sets QR code url and calls parent to reload */
+            else if (contentTrigger === true && contentReq === false) {
+                currentmodal.current = 1
+                console.log(`VIZ CLICKED`)
+                console.log(`CONTENTREQ IS CURRENTLY ${contentReq}`)
+                setcontentReq(true)
+            }
+        } catch(error) {
+            console.log(error)
         }
     }
-
-    /* click listener for relevant buttons */
-    document.addEventListener('click', (() => {
-        buttonEvents()
-    }))
-
-    /*
-    if(userframe === 'desktop'){
-        /* click listener for relevant buttons /
-        document.addEventListener('click', (() => {
-            buttonEvents()
-        }))
-    }else{
-        /* touch listener for relevant buttons /
-        document.addEventListener('touchstart', (() => {
-            buttonEvents()
-        }))
-    }
-    */
 
     /* handles addition of element when add button is clicked */
     useEffect(() =>
     {
-        if(addFlag === false && deleteFlag === false)
-        {
+        console.log(`ADDFLAG USEEFFECT: ADDFLAG IS ${addFlag} & ADDTRIGGER IS ${addTrigger}`)
+        if (addFlag === false && deleteFlag === false) {
             try
             {
                 /* get selected element type */
                 let selection = document.getElementById("selector");
                 /* check if it is possible to add more */
                 /* if so, add a tab of the chosen type to the queue */
-                if(numtabs < limit)
-                {
+                if (numtabs < limit) {
                     console.log(`${numtabs} numtabs, addition possible`)
                     const option = selection.options[selection.selectedIndex].text
                     console.log(`Pending type is ${option}`)
                     pendingType.current = GraphComponents[option]["alias"]
-                    setPending(true);
+                    setPending(true)
+                } else {
+                    setaddFlag(true)
                 }
-            }
-            catch(error)
-            {
+            } catch (error) {
                 console.error(error)
                 return
-            };
+            }
         }
     }, [addFlag])
-
-    /* begins process of deleting element when deleteflag set and is true */
-    useEffect(() =>
-    {
-
-    }, [deleteFlag])
 
     /* signals for queued tab to be added */
     useEffect(() => 
     {
-        if(pending)
-        {
+        console.log("PENDING USEEFFECT")
+        if (pending === true) {
             try{
                 console.log(`pending set to ${pendingType.current}`)
                 /* temporary list for adding to tabs collection */
                 let templist = {...tabsList}
                 console.log(templist)
-                templist[pendingType.current].add(numtabs)
+                templist[pendingType.current].add(numtabs, setTrigger)
                 console.log(templist)
                 numtabs += 1 // only increments once addition successful
                 /* formalize tabs collection additions, indicate queue empty */
@@ -247,8 +210,21 @@ export const Tabs = ({setmodal, seturl, userframe}) =>
             {
                 console.log(error)
             }
+        } else {
+            if (deleteFlag === true) {
+                console.log("PENDING FALSE: DELETEFLAG SET")
+                setdeleteFlag(false)
+                setTrigger('delete', false)
+            } else if (addFlag === false) {
+                /* indicate we can listen for a new addition */
+                console.log("PENDING FALSE: ADDFLAG SET")
+                setaddFlag(true)
+                setTrigger('add', false)
+            }
         }
     }, [pending])
+
+    /*  */
 
     /* formats tabs for easier display */
     useEffect(() =>
@@ -282,36 +258,42 @@ export const Tabs = ({setmodal, seturl, userframe}) =>
         /* set new selection */
         setSelected(selection)
         setunselectedNames(Array.from(Object.keys(temptabs)))
+        setdeleteFlag(false)
         setTabs({...temptabs})
+        setTrigger('delete', false)
     }
 
     /* nothing is pending once tabs are set */
-    useEffect(() => 
-    {
+    useEffect(() => {
+        if (deleteFlag === true) {
+            console.log('TABS USEEFFECT: FINISHING DELETION')
+            numtabs -= 1
+            const tabArray = Array.from(Object.keys(tabs))
+            console.log(tabArray)
+            if (tabArray[0] == selected) {
+                getSelected(tabArray[1])
+            } else {
+                getSelected(tabArray[0])
+            }
+        }
         setPending(false)
-        setdeleteFlag(false)
     }, [tabs])
 
     /* reloads for new input field */
-    useEffect(() =>
-    {
+    useEffect(() => {
         setCard(selected.display(userframe))
     }, [selected])
 
     /* displays the input field */
-    const getCard = () =>
-    {
+    const getCard = () => {
         return card
     }
 
     /* deals with deletion */
-    useEffect(() =>
-    {
-        if(deleteFlag === true)
-        {
+    useEffect(() => {
+        console.log(`DELETEFLAG USEEFFECT: CURRENT VALUE ${deleteFlag}`)
+        if (deleteFlag === true) {
             returnCurrentTabsHelper()
-            numtabs -= 1
-            getSelected(Array.from(Object.keys(tabs))[0])
         }
     }, [deleteFlag])
     

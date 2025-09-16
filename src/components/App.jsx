@@ -16,6 +16,9 @@ export default function App({userframe})
     const [qrUrl, setQrUrl] = useState(BASE_URL)
     const [label, setLabel] = useState('Placeholder')
     const [content, setContent] = useState('Placeholder')
+    const [addTrigger, setaddTrigger] = useState(false)
+    const [deleteTrigger, setdeleteTrigger] = useState(false)
+    const [contentTrigger, setcontentTrigger] = useState(false)
 
     const setModal = (newlabel, newcontent) => {
         setLabel(newlabel)
@@ -26,6 +29,20 @@ export default function App({userframe})
         setQrUrl(urlin)
     }
 
+    const setTrigger = (trigger, flag) => {
+        switch(trigger){
+            case 'add':
+                setaddTrigger(flag)
+                break
+            case 'delete':
+                setdeleteTrigger(flag)
+                break
+            case 'content':
+                setcontentTrigger(flag)
+                break
+        }
+    }
+
     return(
         <div>
             <Modal inlabel={label} incontent={content}/>
@@ -33,9 +50,16 @@ export default function App({userframe})
             <Header userframe={userframe}/>
             <div class="container-lg">
                 <About/>
-                <Selector setmodal={setModal} userframe={userframe}/>
-                <Tabs setmodal={setModal} seturl={setURL} userframe={userframe}/>
-                <BottomButtons userframe={userframe}/>
+                <Selector setmodal={setModal} userframe={userframe} setTrigger={setTrigger}/>
+                <Tabs 
+                    setmodal={setModal} 
+                    seturl={setURL} 
+                    userframe={userframe}
+                    addTrigger={addTrigger}
+                    deleteTrigger={deleteTrigger}
+                    contentTrigger={contentTrigger}
+                    setTrigger={setTrigger} />
+                <BottomButtons userframe={userframe} contentTrigger={setTrigger}/>
             </div>
             <Footer userframe={userframe}/>
         </div>

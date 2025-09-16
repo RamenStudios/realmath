@@ -1,6 +1,6 @@
 import "https://esm.run/@cortex-js/compute-engine";
 
-export const BottomButtons = ({userframe}) =>
+export const BottomButtons = ({userframe, contentTrigger}) =>
 {
     if(userframe === 'desktop')
     {
@@ -8,7 +8,7 @@ export const BottomButtons = ({userframe}) =>
             <div class="container">
                 <div class="row">
                     <div class="col-5"><div class="d-grid gap-2">
-                        <button type="button" class="btn btn-primary" id="visualizeButton">
+                        <button type="button" class="btn btn-primary" id="visualizeButton" onClick={() => {contentTrigger('content', true)}}>
                             <div class="light-grey italic bold">VISUALIZE IT!</div>
                         </button>
                     </div></div>
@@ -34,7 +34,7 @@ export const BottomButtons = ({userframe}) =>
         return(
             <div class="container">
                 <div class="row mb-2">
-                    <button type="button" class="btn btn-primary" id="visualizeButton">
+                    <button type="button" class="btn btn-primary" id="visualizeButton" onClick={contentTrigger}>
                             <div class="light-grey italic bold">VISUALIZE IT!</div>
                     </button>
                 </div>
