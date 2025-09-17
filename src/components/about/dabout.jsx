@@ -8,7 +8,7 @@ export const About = ({userframe}) =>
             </div>
             <div class="row">
                     <div>
-                        Add and define graph components below, then VISUALIZE to watch LaTeX equations come to life in augmented reality on your mobile device. 
+                        Add/define graph components below, then VISUALIZE to watch LaTeX equations come to life in AR on your mobile device. 
                         Boost your understanding and bring abstract math into the real world in seconds!
                     </div>
             </div>
@@ -22,7 +22,7 @@ export const About = ({userframe}) =>
             </div>
             <div class="row">
                     <div class="mobile-body">
-                        Add and define graph components below, then VISUALIZE to watch LaTeX equations come to life in augmented reality on your mobile device. 
+                        Add/define graph components below, then VISUALIZE to watch LaTeX equations come to life in AR on your mobile device. 
                         Boost your understanding and bring abstract math into the real world in seconds!
                     </div>
             </div>
