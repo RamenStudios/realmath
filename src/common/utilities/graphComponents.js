@@ -18,6 +18,31 @@ export const GraphComponents =
         "def":"def",
         "alias": "Vec"
     },
+}
+
+export const GraphKeys = ["Function (xyz)", "Point (xyz)", "Vector <a,b,c>"]
+
+/* might readd vfield and scrv eventaully?
+export const GraphComponents = 
+{
+    "Function (xyz)":
+    {
+        "value":1, 
+        "def":"A basic 3-variable function evaluated on the x, y, z coordinate plane.",
+        "alias": "Func"
+    },
+    "Point (xyz)":
+    {
+        "value":2, 
+        "def":"def",
+        "alias": "Pt"
+    },
+    "Vector <a,b,c>":
+    {
+        "value":3, 
+        "def":"def",
+        "alias": "Vec"
+    },
     "Vector Field":
     {
         "value":4, 
@@ -32,4 +57,4 @@ export const GraphComponents =
     },
 }
 
-export const GraphKeys = ["Function (xyz)", "Point (xyz)", "Vector <a,b,c>", "Vector Field", "Space Curve r(t)"]
+export const GraphKeys = ["Function (xyz)", "Point (xyz)", "Vector <a,b,c>", "Vector Field", "Space Curve r(t)"]*/

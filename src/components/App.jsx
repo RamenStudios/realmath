@@ -66,7 +66,7 @@ export default function App({userframe})
                     deleteTrigger={deleteTrigger}
                     contentTrigger={contentTrigger}
                     setTrigger={setTrigger} />
-                <BottomButtons userframe={userframe} setTrigger={setTrigger}/>
+                <BottomButtons userframe={userframe} setTrigger={setTrigger} setmodal={setModal}/>
             </div>
             <Footer userframe={userframe}/>
         </div>
