@@ -56,7 +56,7 @@ export default function App({userframe})
             <QRModal url={qrUrl}/>
             <Header userframe={userframe}/>
             <div class="container-lg">
-                <About/>
+                <About userframe={userframe}/>
                 <Selector setmodal={setModal} userframe={userframe} setTrigger={setTrigger}/>
                 <Tabs 
                     setmodal={setModal} 

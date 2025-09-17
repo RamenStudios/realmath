@@ -21,16 +21,14 @@ export const Header = ({userframe}) =>
             )
         }else{
             return(
-                <><div class="row">
-                    <div class="row subtitle white justify-content-center">
+                <div class="justify-content-center">
+                    <div class="row mobile-subtitle white justify-content-center">
                         NOTRE DAME LEARNING
                     </div>
-                </div>
-                <div class="row">
-                    <div id="site-title " class="row site-title white justify-content-center">
+                    <div id="site-title " class="row mobile-site-title white justify-content-center">
                         RealMath AR
                     </div>
-                </div></>
+                </div>
             )
         }
     }

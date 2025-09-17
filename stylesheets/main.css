@@ -36,15 +36,25 @@ html {
    --keycap-text:var(--nd-blue);
 }
 
-.semibold, .subtitle {
+.mobile-site-title {
+   font-size: 1.5rem;
+}
+.mobile-title, .mobile-subtitle {
+   font-size: 1.05rem;
+}
+.mobile-body {
+   font-size: 0.85rem;
+}
+
+.semibold, .subtitle, .mobile-subtitle {
    font-weight: 650;
 }
 
-.bold, .title, .site-title, .btntxt {
+.bold, .title, .mobile-title, .mobile-site-title, .site-title, .btntxt {
    font-weight: 900;
 }
 
-.title, .italic, .btntxt {
+.title, .mobile-title, .italic, .btntxt {
    font-style: italic;
 }
 
@@ -115,7 +125,7 @@ math-field::part(container) {
 }
 
 /* color --------------------------------------------- */
-.nd-gold, .title, .subtitle {
+.nd-gold, .title,  .mobile-title, .subtitle {
    color: var(--nd-gold);
 }
 
