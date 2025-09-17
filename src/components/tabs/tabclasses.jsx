@@ -138,18 +138,20 @@ export class Tab
     // checks validity of inputs
     checkValid()
     {
+        let inputval
         switch(this.type) 
         {
+            
             case 1:     
-                const eq = `${this.props.left}-${this.props.right}`
+                inputval = `${this.props.left}-${this.props.right}`
                 // check if any null input or missing vars
                 try{
-                    if (eq.includes('null')) {
+                    if (inputval.includes('null') || inputval.includes('=')) {
                         return false
                     } else {
                         //  regex to detect variables
                         const regex = /[^a-z](?<var>[xyz])/g
-                        if (eq.search(regex) === -1) {
+                        if (inputval.search(regex) === -1) {
                             return false
                         }
                     }
@@ -159,8 +161,9 @@ export class Tab
                 break
             case 2:
                 // in case of singular point, get coords
+                inputval = `(${this.props.x}, ${this.props.y}, ${this.props.z})`
                 try{
-                    if (`(${this.props.x}, ${this.props.y}, ${this.props.z})`.includes(null)) {
+                    if (inputval.includes(null) || inputval.includes('=')) {
                         return false
                     }
                 }catch(error){
@@ -171,12 +174,14 @@ export class Tab
                 // in case of vector, get vec + pt
                 try{
                     for (const prop in this.props.vec) {
-                        if (`${this.props.vec[prop]}`.includes('null')) {
+                        inputval = `${this.props.vec[prop]}`
+                        if (inputval.includes('null') || inputval.includes('=')) {
                             return false
                         }
                     }
                     for (const prop in this.props.init) {
-                        if (`${this.props.init[prop]}`.includes('null')) {
+                        inputval = `${this.props.init[prop]}`
+                        if (inputval.includes('null') || inputval.includes('=')) {
                             return false
                         }
                     }

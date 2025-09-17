@@ -10,7 +10,8 @@ import $ from 'jquery';
 const BASE_URL = 'https://ndlearning.8thwall.app/realmath/'
 const DELETION_ERROR_MSG = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
 const INPUT_ERROR_MSG = `If you are seeing this message, there was a problem with your inputs! 
-                         Input fields cannot be left empty. Function inputs must include at least one variable on at least one side of the equation.`
+                         Input fields cannot be left empty. Function inputs must include at least one variable on at least one side of the equation.
+                         Additionally, the assignment character '=' will cause your input to throw an error!`
 const VIEW_ERROR_MSG = `You should not be able to see this message! If you can, please report it as a bug.`
 
 /* limit elements to avoid crashes */
