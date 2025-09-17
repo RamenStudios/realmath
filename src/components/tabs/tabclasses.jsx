@@ -220,7 +220,7 @@ export class Tab
                             class="btn btn-danger" 
                             onClick={() => {this.parent.setDelete()}}
                         >
-                            <div class="light-grey italic bold">REMOVE</div>
+                            <div class="mobile-body light-grey italic bold">REMOVE</div>
                         </button>
                     </div>
                 )

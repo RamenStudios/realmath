@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { GraphComponents } from '../../common/utilities/graphComponents';
 import { ShowModal } from '../../common/services/ModalService';
 
-export const SelectorDefine = ({setmodal}) =>
+export const SelectorDefine = ({userframe, setmodal}) =>
 {
     // reload when new content and when modal toggled
     const [contentReq, setcontentReq] = useState(false)
@@ -48,11 +48,21 @@ export const SelectorDefine = ({setmodal}) =>
         }
     }, [modalFlag])
 
-    return(
-        <div class="d-grid gap-2">
-            <button type="button" class="btn btn-primary" onClick={getSelection}>
-                <div class="light-grey italic bold">DEFINE</div>
-            </button>
-        </div>
-    )
+    if (userframe == 'desktop') {
+        return(
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-primary" onClick={getSelection}>
+                    <div class="light-grey italic bold">DEFINE</div>
+                </button>
+            </div>
+        )
+    } else {
+        return(
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-primary" onClick={getSelection}>
+                    <div class="mobile-body light-grey italic bold">DEFINE</div>
+                </button>
+            </div>
+        )
+    }
 }

@@ -88,22 +88,22 @@ export const BottomButtons = ({userframe, setTrigger, setmodal}) =>
             <div class="container">
                 <div class="row mb-2">
                     <button type="button" class="btn btn-primary" id="visualizeButton" onClick={clickTrigger}>
-                            <div class="light-grey italic bold">VISUALIZE IT!</div>
+                            <div class="mobile-body light-grey italic bold">VISUALIZE IT!</div>
                     </button>
                 </div>
                 <div class="row mb-2">
                     <button type="button" class="btn btn-secondary" onClick={getHelp}>
-                        <div class="light-grey italic bold">HELP</div>
+                        <div class="mobile-body light-grey italic bold">HELP</div>
                     </button>
                 </div>
                 <div class="row mb-2">
                     <button type="button" class="btn btn-secondary" onClick={reload}>
-                        <div class="light-grey italic bold">RESET</div>
+                        <div class="mobile-body light-grey italic bold">RESET</div>
                     </button>
                 </div>
                 <div class="row">
                     <button type="button" class="btn btn-secondary" disabled="true">
-                        <div class="light-grey italic bold">REPORT BUG</div>
+                        <div class="mobile-body light-grey italic bold">REPORT BUG</div>
                     </button>
                 </div>
             </div>

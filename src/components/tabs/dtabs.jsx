@@ -326,12 +326,12 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
             <CustomDiv idIn="numTabs" inputData={numtabs}/>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">{selected.name}</a>
+                    <a class="nav-link active" aria-current="page" href="#"><div class="mobile-body">{selected.name}</div></a>
                 </li>
                 {
                     <>
                         {unselectedNames.map((tab) => (
-                            <li class="page-item"><a class="page-link" href="#" onClick={() => {getSelected(tab)}}>{tab}</a></li>
+                            <li class="page-item"><a class="page-link" href="#" onClick={() => {getSelected(tab)}}><div class="mobile-body">{tab}</div></a></li>
                         ))}
                     </>
                 }
