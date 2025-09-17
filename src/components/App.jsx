@@ -30,15 +30,22 @@ export default function App({userframe})
     }
 
     const setTrigger = (trigger, flag) => {
+        console.log(`CALLING SETTRIGGER`)
         switch(trigger){
             case 'add':
-                setaddTrigger(flag)
+                if (addTrigger !== flag) {
+                    setaddTrigger(flag)
+                }
                 break
             case 'delete':
-                setdeleteTrigger(flag)
+                if (deleteTrigger !== flag) {
+                    setdeleteTrigger(flag)
+                }
                 break
             case 'content':
-                setcontentTrigger(flag)
+                if (contentTrigger !== flag) {
+                    setcontentTrigger(flag)
+                }
                 break
         }
     }
@@ -59,7 +66,7 @@ export default function App({userframe})
                     deleteTrigger={deleteTrigger}
                     contentTrigger={contentTrigger}
                     setTrigger={setTrigger} />
-                <BottomButtons userframe={userframe} contentTrigger={setTrigger}/>
+                <BottomButtons userframe={userframe} setTrigger={setTrigger}/>
             </div>
             <Footer userframe={userframe}/>
         </div>

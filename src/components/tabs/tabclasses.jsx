@@ -142,14 +142,14 @@ export class Tab
         const button = () => {
             if(userframe === 'desktop'){
                 return(
-                    <div class="row mt-2">
-                        <div class="col col-10"></div>
-                        <div class="col col-2">
+                    <div class="row mt-2 justify-content-end">
+                        <div class="col col-8"></div>
+                        <div class="col col-2 mx-2">
                             <button 
                                 id="deleteComponent" 
                                 type="button" 
                                 class="btn btn-danger" 
-                                onClick={() => {this.parent.setDelete(this.index)}}
+                                onClick={() => {this.parent.setDelete()}}
                             >
                                 <div class="light-grey italic bold">REMOVE</div>
                             </button>
@@ -163,7 +163,7 @@ export class Tab
                             id="deleteComponent" 
                             type="button" 
                             class="btn btn-danger" 
-                            onClick={this.setDelete}
+                            onClick={() => {this.parent.setDelete()}}
                         >
                             <div class="light-grey italic bold">REMOVE</div>
                         </button>
@@ -174,7 +174,7 @@ export class Tab
         return(
         <div class="card">
             <div class="card-body">
-                <div class="row">{this.card(this.props, this, userframe)}</div>
+                <div class="row justify-content-center">{this.card(this.props, this, userframe)}</div>
                 {button()}
             </div>
         </div>
@@ -205,6 +205,10 @@ export class TabTracker
             }
         }
         return tempreturn
+    }
+    mountSetTrigger(setTrigger)
+    {
+        this.setTrigger = setTrigger
     }
     add(numtabs, setTrigger)
     {

@@ -16,7 +16,7 @@ export const Selector = ({setmodal, userframe, setTrigger}) =>
         return(
             <><div class="row"><SelectorDropdown/></div>
             <div class="row mt-2"><SelectorDefine setmodal={setmodal}/></div>
-            <div class="row mt-2"><SelectorAdd/></div></>
+            <div class="row mt-2"><SelectorAdd setTrigger={setTrigger}/></div></>
         )
     }
 }

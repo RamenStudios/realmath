@@ -15,6 +15,8 @@ const VIEW_ERROR_MSG = `You should not be able to see this message! If you can, 
 const limit = 3
 /* ensures limit not reached */
 var numtabs = 1
+/* lets us mount func 1 to app */
+const mounted = {current: false}
 /* making trackers const */
 const FuncTracker = new TabTracker('Func', true)
 const PtTracker = new TabTracker('Pt')
@@ -45,7 +47,6 @@ const returnCurrentTabs = (tabsList, tabs = {}) =>
 /* THE MAIN EXPORT */
 export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, contentTrigger, setTrigger}) =>
 {
-
     /* hooks tracking graph element additions */
     const [tabsList, settabsList] = useState({
                                                 Func: FuncTracker,
@@ -56,6 +57,11 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
                                             })
     const [pending, setPending] = useState(false)
     const pendingType = useRef()
+    /* mount app to first tab */
+    if (mounted.current === false) {
+        mounted.current = true
+        tabsList.Func.mountSetTrigger(setTrigger)
+    }
     /* hook for displaying selected tab */
     const [selected, setSelected] = useState(tabsList.Func.current[1])
     /* stores unselected tabs for easier display */
@@ -82,6 +88,11 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
         if(modalFlag === true){
             ShowModal()
             setmodalFlag(false)
+            if (currentmodal.current === 0) {
+                setTrigger('delete', false)
+            } else {
+                setTrigger('content', false)
+            }
         }else{
             setcontentReq(false)
         }
@@ -92,6 +103,7 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
         if(qrFlag === true){
             ShowQR()
             setqrFlag(false)
+            setTrigger('content', false)
         }else{
             console.log(`SETTING CONTENTREQ`)
             setcontentReq(false)
@@ -112,7 +124,7 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
                         //setmodal(`ERROR!`, VIEW_ERROR_MSG)
                         seturl(`${BASE_URL}${getTabStringify(tabsList)}`)
                         setqrFlag(true)
-                        break;
+                        break
                 }
             }catch(e){
                 console.log(`Cannot set modal in DTABS: ${e}`)
@@ -144,12 +156,16 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
             }
             /* reloads in case of removal */
             else if (deleteTrigger === true) {
-                console.log('DELETE TRIGGER TRUE')
+                console.log(`DELETE TRIGGER TRUE, NUMTABS ${numtabs}, CONTENTREQ ${contentReq}`)
                 if(numtabs > 1){
+                    console.log('SETTING DELETEFLAG')
                     setdeleteFlag(true)
                 }else{
-                    currentmodal.current = 0
-                    setcontentReq(true)
+                    if (contentReq === false) {
+                        console.log('SETTING CONTENTREQ')
+                        currentmodal.current = 0
+                        setcontentReq(true)
+                    }
                 }
             }
             /* sets QR code url and calls parent to reload */

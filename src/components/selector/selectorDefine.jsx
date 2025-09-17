@@ -39,14 +39,11 @@ export const SelectorDefine = ({setmodal}) =>
     }, [contentReq])
 
     // shows modal if flag is true
-    useEffect(() =>
-    {
-        if(modalFlag === true)
-        {
+    useEffect(() => {
+        if (modalFlag === true) {
             ShowModal()
             setmodalFlag(false)
-        }
-        else{
+        } else {
             setcontentReq(false)
         }
     }, [modalFlag])
