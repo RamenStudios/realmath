@@ -31,10 +31,10 @@ Forks who use a custom repo name should change REPO_NAME in vite.config.js
 > - jQuery  
 
 > #### Libraries: 
-> - React (via Vite)
-> - jQuery
-> - Bootstrap 5
-> - CortexJS Mathlive  
+> - [React](https://react.dev/) (via [Vite](https://vite.dev/guide/))
+> - [jQuery](https://jquery.com/)
+> - [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+> - [CortexJS Mathlive](https://mathlive.io/mathfield/guides/getting-started/)  
 
 > #### Web Fonts:
 > - Instrument Sans (via Google)
