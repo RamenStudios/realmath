@@ -23,6 +23,11 @@ html {
    font-size: 1.4rem;
 }
 
+/* Hide the virtual keyboard toggle */
+math-field::part(virtual-keyboard-toggle) {
+  display: none;
+}
+
 * {
    font-family: "Instrument Sans", sans-serif;
    font-optical-sizing: auto;

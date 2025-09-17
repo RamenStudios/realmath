@@ -1,6 +1,6 @@
 import React from "react";
 import { MathField } from "../../../common/utilities/mathfield";
-import { MathFieldMobile } from "../../../common/utilities/mathfieldMobile";
+import { MathFieldMobile } from "../../../common/utilities/mathfieldMobile"; //as of now this does exactly nothing. not sure how to implement
 import { useRef, useState, useEffect } from 'react';
 
 const FunctionInput = ({leftIn, rightIn, parent, userframe}) =>
