@@ -323,7 +323,7 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
     }, [deleteFlag])
     
     return(
-        <div class="container my-3">
+        <div class="container container-lg my-3">
             <CustomDiv idIn="numTabs" inputData={numtabs}/>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
