@@ -20,7 +20,7 @@
 }
 
 html {
-   font-size: 1.8rem;
+   font-size: 1.6rem;
 }
 
 * {
@@ -49,19 +49,19 @@ html {
 }
 
 .title {
-   font-size: 150%;
-}
-
-.site-title {
-   font-size: 250%;
-}
-
-.subtitle {
    font-size: 125%;
 }
 
+.site-title {
+   font-size: 225%;
+}
+
+.subtitle {
+   font-size: 107%;
+}
+
 .text-larger {
-   font-size: 115%;
+   font-size: 110%;
 }
 
 .letter-spacing {
