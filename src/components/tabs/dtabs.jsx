@@ -9,6 +9,8 @@ import $ from 'jquery';
 /* useful constants */
 const BASE_URL = 'https://ndlearning.8thwall.app/realmath/'
 const DELETION_ERROR_MSG = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
+const INPUT_ERROR_MSG = `If you are seeing this message, there was a problem with your inputs! 
+                         Input fields cannot be left empty. Function inputs must include at least one variable on at least one side of the equation.`
 const VIEW_ERROR_MSG = `You should not be able to see this message! If you can, please report it as a bug.`
 
 /* limit elements to avoid crashes */
@@ -114,19 +116,25 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
     useEffect(() => {
         console.log(`CONTENTREQ SET ${contentReq}, CURRENTMODAL ${currentmodal.current}`)
         if (contentReq === true) {
-            try{
+            try {
                 switch(currentmodal.current){
                     case 0:
                         setmodal(`ERROR!`, DELETION_ERROR_MSG)
                         setmodalFlag(true)
-                        break;
+                        break
                     case 1:
                         //setmodal(`ERROR!`, VIEW_ERROR_MSG)
-                        seturl(`${BASE_URL}${getTabStringify(tabsList)}`)
-                        setqrFlag(true)
+                        const url = getTabStringify(tabsList)
+                        if(url !== -1) {
+                            seturl(`${BASE_URL}${url}`)
+                            setqrFlag(true)
+                        } else {
+                            setmodal(`ERROR!`, INPUT_ERROR_MSG)
+                            setmodalFlag(true)
+                        }
                         break
                 }
-            }catch(e){
+            } catch(e) {
                 console.log(`Cannot set modal in DTABS: ${e}`)
             }
         } else if (contentReq === false) {

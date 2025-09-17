@@ -132,8 +132,63 @@ export class Tab
                 default:
                     // failsafe
                     console.log(`error updating value for tab ${this.name}!`)
-            };
+            }
         }
+    }
+    // checks validity of inputs
+    checkValid()
+    {
+        switch(this.type) 
+        {
+            case 1:     
+                const eq = `${this.props.left}-${this.props.right}`
+                // check if any null input or missing vars
+                try{
+                    if (eq.includes('null')) {
+                        return false
+                    } else {
+                        //  regex to detect variables
+                        const regex = /[^a-z](?<var>[xyz])/g
+                        if (eq.search(regex) === -1) {
+                            return false
+                        }
+                    }
+                }catch(error){
+                    console.log(error)
+                }
+                break
+            case 2:
+                // in case of singular point, get coords
+                try{
+                    if (`(${this.props.x}, ${this.props.y}, ${this.props.z})`.includes(null)) {
+                        return false
+                    }
+                }catch(error){
+                    console.log(error)
+                }
+                break
+            case 3:
+                // in case of vector, get vec + pt
+                try{
+                    for (const prop in this.props.vec) {
+                        if (`${this.props.vec[prop]}`.includes('null')) {
+                            return false
+                        }
+                    }
+                    for (const prop in this.props.init) {
+                        if (`${this.props.init[prop]}`.includes('null')) {
+                            return false
+                        }
+                    }
+                }catch(error){
+                    console.log(error)
+                }
+                break
+            default:
+                // failsafe
+                console.log(`error verifying value for tab ${this.name}!`)
+        }
+        return true
     }
     // passes any necessary input to display container before user sees it
     display(userframe)
@@ -259,7 +314,11 @@ export const getTabStringify = (trackerCollection) =>
         const value = trackerCollection[key].current
         for (const innerKey in value){
             const tab = value[innerKey]
-            tempreturn[tab.name] = tab.props
+            if (tab.checkValid() === true) {
+                tempreturn[tab.name] = tab.props
+            } else {
+                return -1
+            }
         }
     }
     console.log(JSON.stringify(tempreturn))
