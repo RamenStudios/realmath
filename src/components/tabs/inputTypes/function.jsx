@@ -1,6 +1,5 @@
 import React from "react";
 import { MathField } from "../../../common/utilities/mathfield";
-import { MathFieldMobile } from "../../../common/utilities/mathfieldMobile"; //as of now this does exactly nothing. not sure how to implement
 import { useRef, useState, useEffect } from 'react';
 
 const FunctionInput = ({leftIn, rightIn, parent, userframe}) =>
@@ -34,11 +33,11 @@ const FunctionInput = ({leftIn, rightIn, parent, userframe}) =>
         return(
             <div class="row">
                 <div class="col-lg-5" >
-                    <MathFieldMobile idIn='leftMathField' valueIn={leftIn} onInput={parent.update} />
+                    <MathField idIn='leftMathField' valueIn={leftIn} onInput={parent.update} />
                 </div>
                 <div class="col">=</div>
                 <div class="col-lg-5" >
-                    <MathFieldMobile valueIn={rightIn} idIn='rightMathField' onInput={parent.update} />
+                    <MathField valueIn={rightIn} idIn='rightMathField' onInput={parent.update} />
                 </div>
             </div>
         )

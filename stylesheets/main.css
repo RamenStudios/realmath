@@ -4,19 +4,13 @@
    --nd-gold: #AE9142;
    --bright-blue: #007bff;
    --light-grey: #f9f9f9;
-   --medium-grey: #666666;
+   --medium-grey: #777777;
    --darker-grey: #565656;
    --white: #FFFFFF;
    --silver: silver;
    --default-font: 1.2rem;
-   --keycap-height: 2rem;
-   --keycap-font-size: .75rem;
-   --keycap-shift-font-size: .25rem;
-   --keycap-small-font-size: .25rem;
-   --keycap-extra-small-font-size: .25rem;
-   --keyboard-toolbar-font-size: 1rem;
-   --variant-keycap-font-size: .25rem;
-   --keycap-gap: 4px;
+   --keycap-width: 5rem;
+   --keyboard-background: var(--medium-grey);
 }
 
 html {
