@@ -11,6 +11,8 @@ const checkMobile = () =>
 {
   if(window.matchMedia("(any-hover:none)").matches) {
     return 'mobile';
+  } else if (window.screen.width < window.screen.height) {
+    return 'mobile';
   } else {
     return 'desktop';
   }
