@@ -203,8 +203,8 @@ export class Tab
             if(userframe === 'desktop'){
                 return(
                     <div class="row mt-2 justify-content-end">
-                        <div class="col col-8"></div>
-                        <div class="col col-2 mx-2">
+                        <div class="col col-8 d-md-none"></div>
+                        <div class="col col-lg-2 col-md-12 mx-2">
                             <button 
                                 id="deleteComponent" 
                                 type="button" 
