@@ -32,7 +32,7 @@ export const BottomButtons = ({userframe, setTrigger, setmodal}) =>
     {
         if(contentReq){
             try{
-                setmodal(`HELP/FAQ`, `${HelpMessage()}`)
+                setmodal(`HELP/FAQ`, `${HelpMessage}`)
                 setmodalFlag(true)
             }catch(e){
                 console.log(`Cannot set modal in DBUTTONS: ${e}`)

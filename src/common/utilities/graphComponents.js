@@ -3,19 +3,19 @@ export const GraphComponents =
     "Function (xyz)":
     {
         "value":1, 
-        "def":"A basic 3-variable function evaluated on the x, y, z coordinate plane.",
+        "def":"A basic function f(u,v) evaluated on the x, y, z coordinate plane.",
         "alias": "Func"
     },
     "Point (xyz)":
     {
         "value":2, 
-        "def":"def",
+        "def":"A set of coordinates (x,y,z)",
         "alias": "Pt"
     },
     "Vector <a,b,c>":
     {
         "value":3, 
-        "def":"def",
+        "def":"A vector is an object with direction and magnitude. There is one exception to this definition: the zero vector, <0,0,0>, which has magnitude 0, has no specified direction.",
         "alias": "Vec"
     },
 }
