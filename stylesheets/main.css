@@ -105,9 +105,6 @@ math-field::part(virtual-keyboard-toggle) {
    text-transform: all-caps;
 }
 
-math-field::part(container) {
-  flex-flow: row-reverse;
-}
 
 /* Tooltips ------------------------------------------ */
 /* Style the tooltip */
