@@ -144,35 +144,38 @@ export class Tab
             
             case 1:     
                 inputval = `${this.props.left}-${this.props.right}`
+                console.log(inputval)
                 // check if any null input or missing vars
-                try{
+                try {
                     if (inputval.includes('null') || inputval.includes('=')) {
+                        console.log("NULL FOUND")
                         return false
                     } else {
-                        //  regex to detect variables
-                        const regex = /[^a-z](?<var>[xyz])/g
+                        // regex to detect variables
+                        const regex = /[^a-z]*(?<var>[xyz])/g
+                        console.log(inputval.search(regex))
                         if (inputval.search(regex) === -1) {
                             return false
                         }
                     }
-                }catch(error){
+                } catch(error) {
                     console.log(error)
                 }
                 break
             case 2:
                 // in case of singular point, get coords
                 inputval = `(${this.props.x}, ${this.props.y}, ${this.props.z})`
-                try{
+                try {
                     if (inputval.includes(null) || inputval.includes('=')) {
                         return false
                     }
-                }catch(error){
+                } catch(error) {
                     console.log(error)
                 }
                 break
             case 3:
                 // in case of vector, get vec + pt
-                try{
+                try {
                     for (const prop in this.props.vec) {
                         inputval = `${this.props.vec[prop]}`
                         if (inputval.includes('null') || inputval.includes('=')) {
@@ -185,7 +188,7 @@ export class Tab
                             return false
                         }
                     }
-                }catch(error){
+                } catch(error) {
                     console.log(error)
                 }
                 break

@@ -16,10 +16,10 @@ export const QRModal = ({url}) =>
                     <div class="modal-body">
                         <div class="row">
                             Your graph has been sent to the 8th Wall AR visualizer! Scan the QR code with your mobile device to view it. 
-                            <br/>If you’re already on mobile, simply tap <a id="qrLink" href={url}>HERE</a> to view!
                         </div>
-                        <div class="row">
-                            <QRCode value={url}/>
+                        <div class="row mt-3 gx-0">
+                            <div class="col-6 text-start">If you’re already on mobile, just tap <a id="qrLink" href={url}>HERE</a> to view!</div>
+                            <div class="col-6"><QRCode value={url} quietZone={5}/></div>
                         </div>
                     </div>
                 </div>
