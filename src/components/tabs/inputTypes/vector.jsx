@@ -4,20 +4,19 @@ import { useRef, useState, useEffect } from 'react';
 
 const VectorInput = ({vecIn, posIn, parent}) =>
 {
-    // failsafe in case of null defaults
-    vecIn = typeof(vecIn) == "string" ? JSON.parse(vecIn) : {x: '0', y: '0', z: '0'};
-    posIn = typeof(posIn) == "string" ? JSON.parse(posIn) : {x: '0', y: '0', z: '0'};
-
-    try{
-        document.getElementById('vxMathField').setValue(vecIn.x)
-        document.getElementById('vyMathField').setValue(vecIn.y)
-        document.getElementById('vzMathField').setValue(vecIn.z)
-        document.getElementById('xMathField').setValue(posIn.x)
-        document.getElementById('yMathField').setValue(posIn.y)
-        document.getElementById('zMathField').setValue(posIn.z)
-    }catch(error){
-        console.log(error)
+    // helper to correct remaining nulls
+    const replaceNull = (obj) => {
+        for (const property in obj) {
+            if (obj[property] == null) {
+                obj[property] = '0'
+            }
+        }
+        return obj
     }
+
+    // failsafe in case of null defaults
+    vecIn = typeof(vecIn) == "object" ? replaceNull(vecIn) : {x: '0', y: '0', z: '0'}
+    posIn = typeof(posIn) == "object" ? replaceNull(posIn) : {x: '0', y: '0', z: '0'}
 
     return(
         <>
