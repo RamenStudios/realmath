@@ -76,8 +76,8 @@ export const BottomButtons = ({userframe, setTrigger, setmodal}) =>
                         </button>
                     </div></div>
                     <div class="col-lg-3 col-sm-4 mb-2"><div class="d-grid">
-                        <button type="button" class="btn btn-secondary" disabled="true">
-                            <div class="light-grey italic bold">REPORT BUG</div>
+                        <button type="button" class="btn btn-secondary">
+                            <a class="light-grey italic bold" href="mailto:arodri37@nd.edu">REPORT BUG</a>
                         </button>
                     </div></div>
                 </div>

@@ -1,4 +1,0 @@
-/* Hide the virtual keyboard toggle */
-math-field::part(virtual-keyboard-toggle) {
-  display: none;
-}
