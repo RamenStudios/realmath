@@ -147,7 +147,7 @@ export class Tab
                 console.log(inputval)
                 // check if any null input or missing vars
                 try {
-                    if (inputval.includes('null') || inputval.includes('=')) {
+                    if (inputval.includes('null') || inputval.includes('=') || inputval.length === 0) {
                         console.log("NULL FOUND")
                         return false
                     } else {
