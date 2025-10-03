@@ -1,10 +1,19 @@
 import { MathfieldElement } from "mathlive";
+import { useRef } from "react";
 import "https://esm.run/@cortex-js/compute-engine";
 
 const vsep = { label: '[separator]', width: 0.5 }
 
 export const MathField = ({idIn, valueIn, onInput}) =>
 {
+    const preventLatex = (e) => {
+        const inputfield = document.getElementById(idIn)
+        if ((e.key === '\\') || (e.key === 'Escape')) {
+            e.preventDefault()
+            inputfield.executeCommand(['insert', '\\backslash'])
+        }
+    }
+
     mathVirtualKeyboard.layouts =   {
                                         label: 'Basic',
                                         rows: [
@@ -40,6 +49,7 @@ export const MathField = ({idIn, valueIn, onInput}) =>
                 math-virtual-keyboard-policy = "auto"
                 onInput={onInput}
                 value={valueIn}
+                onKeyDown={preventLatex}
             />
     )
 }
