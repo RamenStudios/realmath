@@ -1,6 +1,8 @@
 import { FunctionInputContainer } from "./inputTypes/function"
 import { PointInputContainer } from "./inputTypes/point";
 import { VectorInputContainer } from "./inputTypes/vector";
+import { SpaceCurveInputContainer } from "./inputTypes/spacecurve";
+import { VectorFieldInputContainer } from "./inputTypes/vectorfield";
 import { useRef, useState, useEffect } from 'react';
 
 // TODO: FIX DELETION
@@ -29,18 +31,20 @@ const InputCards    =   {
                             },
                             'VFld'  :   {
                                 'alias': 4, 
-                                'card': null, 
+                                'card': VectorFieldInputContainer, 
                                 'props': {
-                                    'left':'x', 
-                                    'right':'z'
+                                    'x': null, 
+                                    'y': null,
+                                    'z': null,
                                 }
                             },
                             'SCrv'  :   {
                                 'alias': 5, 
-                                'card': null, 
+                                'card': SpaceCurveInputContainer, 
                                 'props': {
-                                    'left':'x', 
-                                    'right':'z'
+                                    'x': null, 
+                                    'y': null,
+                                    'z': null,
                                 }
                             }
                         }
@@ -90,19 +94,6 @@ export class Tab
                         console.log(error)
                     }
                     break;
-                case 2:
-                    // in case of singular point, get coords
-                    try{
-                        this.props.x = document.getElementById('xMathField').getValue('latex')
-                        this.props.y = document.getElementById('yMathField').getValue('latex')
-                        this.props.z = document.getElementById('zMathField').getValue('latex')
-                        this.value = `(${this.props.x}, ${this.props.y}, ${this.props.z})`
-                        console.log(this.value)
-                        console.log(this.props)
-                    }catch(error){
-                        console.log(error)
-                    }
-                    break;
                 case 3:
                     // in case of vector, get vec + pt
                     try{
@@ -122,16 +113,19 @@ export class Tab
                     }catch(error){
                         console.log(error)
                     }
-                    break;
-                case 4:
-                    // in case of vector field, 
-                    break;
-                case 5:
-                    // in case of space curve, 
-                    break;
+                    break
                 default:
-                    // failsafe
-                    console.log(`error updating value for tab ${this.name}!`)
+                    // point, vfld, and scrv all have the same props
+                    try {
+                        this.props.x = document.getElementById('xMathField').getValue('latex')
+                        this.props.y = document.getElementById('yMathField').getValue('latex')
+                        this.props.z = document.getElementById('zMathField').getValue('latex')
+                        this.value = `(${this.props.x}, ${this.props.y}, ${this.props.z})`
+                        console.log(this.value)
+                        console.log(this.props)
+                    } catch (error) {
+                        console.log(`error updating value for tab ${this.name}!: ${error}`)
+                    }
             }
         }
     }
@@ -139,6 +133,14 @@ export class Tab
     checkValid()
     {
         let inputval
+        const checkNullEqual = (val) => {
+            if (val.includes('null') || val.includes('=') || val.length === 0) {
+                console.log("NULL FOUND")
+                return true
+            } else {
+                return false
+            }
+        }
         switch(this.type) 
         {
             
@@ -147,8 +149,7 @@ export class Tab
                 console.log(inputval)
                 // check if any null input or missing vars
                 try {
-                    if (inputval.includes('null') || inputval.includes('=') || inputval.length === 0) {
-                        console.log("NULL FOUND")
+                    if (checkNullEqual(inputval)) {
                         return false
                     } else {
                         // regex to detect variables
@@ -162,29 +163,18 @@ export class Tab
                     console.log(error)
                 }
                 break
-            case 2:
-                // in case of singular point, get coords
-                inputval = `(${this.props.x}, ${this.props.y}, ${this.props.z})`
-                try {
-                    if (inputval.includes(null) || inputval.includes('=')) {
-                        return false
-                    }
-                } catch(error) {
-                    console.log(error)
-                }
-                break
             case 3:
                 // in case of vector, get vec + pt
                 try {
                     for (const prop in this.props.vec) {
                         inputval = `${this.props.vec[prop]}`
-                        if (inputval.includes('null') || inputval.includes('=')) {
+                        if (checkNullEqual(inputval)) {
                             return false
                         }
                     }
                     for (const prop in this.props.init) {
                         inputval = `${this.props.init[prop]}`
-                        if (inputval.includes('null') || inputval.includes('=')) {
+                        if (checkNullEqual(inputval)) {
                             return false
                         }
                     }
@@ -193,8 +183,20 @@ export class Tab
                 }
                 break
             default:
-                // failsafe
-                console.log(`error verifying value for tab ${this.name}!`)
+                // point, vfld, and scrv all have the same props
+                try {
+                    inputval = `(${this.props.x}, ${this.props.y}, ${this.props.z})`
+                    try {
+                        if (checkNullEqual(inputval)) {
+                            return false
+                        }
+                    } catch(error) {
+                        console.log(error)
+                    }
+                } catch (error) {
+                    console.log(`error verifying value for tab ${this.name}!: ${error}`)
+                }
+                
         }
         return true
     }
