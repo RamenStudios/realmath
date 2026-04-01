@@ -271,6 +271,10 @@ export class TabTracker
         }
         return tempreturn
     }
+    getLatest()
+    {
+        return this.current[this.index]
+    }
     mountSetTrigger(setTrigger)
     {
         this.setTrigger = setTrigger
@@ -282,7 +286,6 @@ export class TabTracker
         /* add new element */
         this.current[this.index] = new Tab(this, numtabs, setTrigger)
         console.log("NEW ELEMENT")
-        console.log(this.current[this.index])
     }
     setDelete()
     {
