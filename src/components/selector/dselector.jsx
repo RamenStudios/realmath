@@ -1,14 +1,31 @@
 import { SelectorDropdown } from "./selectorDropdown"
 import { SelectorAdd } from "./selectorAdd"
 import { SelectorDefine } from "./selectorDefine"
+import { GraphComponents } from '../../common/utilities/graphComponents'
+import { useState, useEffect, useRef } from "react"
 
-export const Selector = ({setmodal, userframe, setTrigger}) =>
+export const Selector = ({setmodal, userframe, setTrigger, updateSelectedRef}) =>
 {
+	const selection = useRef('Function (xyz)')
+	
+	const setSelection = (key) => {
+		selection.current = key
+		updateSelectedRef(key)
+	}
+	
+	const defineSelection = () => {
+		setmodal(`${key} Definition`, `${GraphComponents[key]['def']}`)
+	}
+	
+	const addSelection = () => {
+		setTrigger('add', true)
+	}
+	
     if(userframe === 'desktop'){
         return(
             <div class="row">
-                <div class="col-lg-7 col-sm-12 mb-2"><SelectorDropdown/></div>
-                <div class="col-lg-2 col-sm-6 mb-2"><SelectorDefine userframe={userframe} setmodal={setmodal}/></div>
+                <div class="col-lg-7 col-sm-12 mb-2"><SelectorDropdown setSelection={setSelection}/></div>
+                <div class="col-lg-2 col-sm-6 mb-2"><SelectorDefine userframe={userframe} defineSelection={defineSelection}/></div>
                 <div class="col-lg-2 col-sm-6 mb-2"><SelectorAdd userframe={userframe} setTrigger={setTrigger}/></div>
             </div>
         )

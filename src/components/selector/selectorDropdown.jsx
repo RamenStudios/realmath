@@ -1,12 +1,15 @@
 import { GraphComponents, GraphKeys } from "../../common/utilities/graphComponents"
 
-export const SelectorDropdown = () =>
+export const SelectorDropdown = ({setSelection}) =>
 {
-    return(
-        <select class="form-select" id="selector" aria-label="Default select example">
-            {GraphKeys.map((key)=>(
-                <option value={GraphComponents[key]["value"]}>{key}</option>
-            ))}
-        </select>
-    )
+	return(
+		<select class="form-select" id="selector" aria-label="Graph component selector">
+			{GraphKeys.map((key)=>(
+				<option>
+					{key}
+					onclick={setSelection(key)}
+				</option>
+			))}
+		</select>
+	)
 }

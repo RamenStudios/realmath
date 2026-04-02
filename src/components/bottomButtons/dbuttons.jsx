@@ -9,46 +9,16 @@ export const BottomButtons = ({userframe, setTrigger, setmodal}) =>
     const clickTrigger = () => {
         setTrigger('content', true)
     }
-    
-    // reload when new content and when modal toggled
-    const [contentReq, setcontentReq] = useState(false)
-    const [modalFlag, setmodalFlag] = useState(false)
 
     // sets new content and calls reload when button clicked
     const getHelp = () =>
     {
-        try{
-            setcontentReq(true)
-        }
-        catch(error)
-        {
-            console.error(error)
-            return
-        };
-    };
-
-    // updates modal, sets modal show flag to 'true' after setting content
-    useEffect(() =>
-    {
-        if(contentReq){
-            try{
-                setmodal(`HELP/FAQ`, `${HelpMessage}`)
-                setmodalFlag(true)
-            }catch(e){
-                console.log(`Cannot set modal in DBUTTONS: ${e}`)
-            }
-        }
-    }, [contentReq])
-
-    // shows modal if flag is true
-    useEffect(() => {
-        if (modalFlag === true) {
-            ShowModal()
-            setmodalFlag(false)
-        } else {
-            setcontentReq(false)
-        }
-    }, [modalFlag])
+			try {
+				setmodal(`HELP/FAQ`, `${HelpMessage}`)
+			} catch(e) {
+				console.log(`Cannot set modal in DBUTTONS: ${e}`)
+			}
+    }
 
     // reloads page
     const reload = () => {
