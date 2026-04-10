@@ -40,8 +40,6 @@ export default function App({userframe})
         }
     }
 
-
-
 	/* set qr url */
     const setURL = (urlin) => {
         label.current = `QR`
@@ -72,11 +70,13 @@ export default function App({userframe})
 
     useEffect(() => {
      if (pending === true) {
+		 let modal = null
         if (label.current === `QR`) {
-            document.getElementById('qrModal').show()
+            modal = new bootstrap.Modal(document.getElementById('qrModal'))
         } else {
-            document.getElementById('modal').show()
+            modal = new bootstrap.Modal(document.getElementById('modal'))
         }
+		modal.show()
         setPending(false)
      }   
     }, [pending])
