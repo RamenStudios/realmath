@@ -12,7 +12,6 @@ const INPUT_ERROR_MSG = `If you are seeing this message, there was a problem wit
 const VIEW_ERROR_MSG = `You should not be able to see this message! If you can, please report it as a bug.`
 
 /* limit elements to avoid crashes */
-const limit = 3
 const GraphKeys =   {
                         "Function (xyz)": 'Func', 
                         "Point (xyz)": 'Pt', 
@@ -143,28 +142,20 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	/* ****************************************
 	LISTENING FOR TRIGGERS FROM PARENT
 	*	useEffect ensures it runs AFTER render 
+	*	always update URL
 	*   addTrigger -> tab addition
 	*   deleteTrigger -> tab deletion
 	**************************************** */
 	useEffect(() => {
 		if ((mounted === true) && (selected !== null)) {
+			seturl(TabUIHook.Container.stringify_tabs())
 			if ((pending && ErrorOut) === false) {
 				if (addTrigger === true) {
-					if (numTabs <= limit) {
-						setPending(true)
-						addRoutine()
-					} else {
-						setmodal(`ADDITION ERROR`, LIMIT_ERROR_MSG, 0)
-						setTrigger('add', false)
-					}
+					setPending(true)
+					addRoutine()
 				} else if (deleteTrigger === true) {
-					if (numTabs > 1) {
-						setPending(true)
-						deleteRoutine()
-					} else {
-						setmodal(`DELETION ERROR`, DELETION_ERROR_MSG, 1)
-						setTrigger('delete', false)
-					}
+					setPending(true)
+					deleteRoutine()
 				} else if (contentTrigger === true) {
 					setPending(true)
 					contentRoutine()
@@ -217,7 +208,6 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 			
 	return(
 		<div className="container container-lg my-3">
-			<CustomDiv idIn="numTabs" inputData={numTabs}/>
 			<ul className="nav nav-tabs">
 				<li className="nav-item">
 					<a className="nav-link active" aria-current="page" href="#"><div className="mobile-body">{getSelectedDisplay()}</div></a>

@@ -143,17 +143,18 @@ export class Tab
                 // check if any null input or missing vars
                 try {
                     if (checkNullEqual(inputval)) {
-                        return false
+                        throw new Error(`null input found`)
                     } else {
                         // regex to detect variables
                         const regex = /[^a-z]*(?<var>[xyz])/g
                         console.log(inputval.search(regex))
                         if (inputval.search(regex) === -1) {
-                            return false
+                            throw new Error(`no valid variables found`)
                         }
                     }
-                } catch(error) {
-                    console.error(error)
+                } catch(e) {
+                    console.error(`Error in case 1: ${e}`)
+                    return false
                 }
                 break
             case 3:
@@ -289,8 +290,9 @@ export class TabTracker
 			for (const key in this.current) {
 				if (this.current[key].check_valid() === true) {
 					tempDict[this.current[key].name] = this.current[key].props
-				}
-				throw new Error(`Tab at index ${key} in the ${this.type} tracker has invalid input.`)
+				} else {
+				    throw new Error(`Tab at index ${key} in the ${this.type} tracker has invalid input.`)
+                }
 			}
 		} catch (e) {
             console.error(`Error with ${this.type} TAB STRINGIFY: ${e}`)

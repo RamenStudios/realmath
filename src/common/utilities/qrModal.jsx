@@ -1,23 +1,16 @@
-import { use, useEffect, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 
-const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
-
-export const QRModal = ({url, state, toggle}) =>
+export const QRModal = ({url}) =>
 {
     console.log(`QRMODAL`)
-
-	const getClass = () => {
-		return state ? 'modal-show' : ''
-	}
 	
     return(
-        <div className={getClass()} id="qrModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal" id="qrModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h1 className="modal-title fs-5">8th Wall Visualization</h1>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={toggle}></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
                         <div className="row">

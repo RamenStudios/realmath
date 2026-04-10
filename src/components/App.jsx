@@ -8,25 +8,20 @@ import { Modal } from "../common/utilities/modal"
 import { QRModal } from "../common/utilities/qrModal"
 import { useState, useEffect, useRef } from "react"
 import { ErrorBoundary } from "./ErrorBoundary"
+
 const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
+const URL = {current:''}
 
 export default function App({userframe})
 {
     console.log(`APP: User is accessing from ${userframe}`)
 
-    const qrUrl = useRef(BASE_URL)
     const label = useRef('Placeholder')
     const content = useRef('Placeholder')
+    const [pending, setPending] = useState(false)
     const [addTrigger, setaddTrigger] = useState(false)
     const [deleteTrigger, setdeleteTrigger] = useState(false)
     const [contentTrigger, setcontentTrigger] = useState(false)
-    const [show, setShow] = useState(false)
-    const errorFlags = 	{
-                                                0: 'add',
-                                                1: 'delete',
-                                                2: 'content'
-                                            }
-    const pendingModal = useRef(false)
     const [selectedComponent, setSelectedComponent] = useState('Function (xyz)')
     
     /* updates component selected by selector */
@@ -37,54 +32,37 @@ export default function App({userframe})
 	/* set modal content and adjust trigger flag if needed */
     const setModal = (newlabel, newcontent, error = null) => {
         label.current = newlabel
-        label.content = newcontent
-		setShowRef(error)
-    }
-		
-    /* allows us to call pending flag outside render call */
-    const setShowRef = (error = null) => {
-        pendingModal.current = false
-        if (error === null) {	
-            setShow(true)
+        content.current = newcontent
+		if (error !== null) {
+            setTrigger(error, false)
         } else {
-            pendingModal.current = true
-            setTrigger(errorFlags[error], false)
+            setPending(true)
         }
     }
-    
-    /* shows modal after trigger flags updated (if pending) */
-    useEffect(() => {
-        console.log(`APP: pendingmodal is ${pendingModal.current}`)
-        if (pendingModal.current === true) {
-            setShowRef()
-        }
-    }, [])
-    
-    /* updates modal state on x click */
-    const hideModal = () => {
-        setShow(false)
-    }
+
+
 
 	/* set qr url */
     const setURL = (urlin) => {
-        qrUrl.current = urlin
+        label.current = `QR`
+        URL.current = `${BASE_URL}${urlin}`
     }
 
 	/* components can set these triggers for universal processes */
     const setTrigger = (trigger, flag) => {
         console.log(`CALLING SETTRIGGER ${trigger} ${flag}`)
         switch(trigger){
-            case 'add':
+            case 'add' || 0:
                 if (addTrigger !== flag) {
                     setaddTrigger(flag)
                 }
                 break
-            case 'delete':
+            case 'delete' || 1:
                 if (deleteTrigger !== flag) {
                     setdeleteTrigger(flag)
                 }
                 break
-            case 'content':
+            case 'content' || 2:
                 if (contentTrigger !== flag) {
                     setcontentTrigger(flag)
                 }
@@ -92,11 +70,22 @@ export default function App({userframe})
         }
     }
 
+    useEffect(() => {
+     if (pending === true) {
+        if (label.current === `QR`) {
+            document.getElementById('qrModal').show()
+        } else {
+            document.getElementById('modal').show()
+        }
+        setPending(false)
+     }   
+    }, [pending])
+
     return(
         <div>
             <ErrorBoundary fallback={<p>Something went wrong</p>}>
-            <Modal inlabel={label} incontent={content} state={show} toggle={hideModal}/>
-            <QRModal url={qrUrl}/>
+            <Modal inlabel={label} incontent={content}/>
+            <QRModal url={URL}/>
             <Header userframe={userframe}/>
             <div className="container-lg">
                 <About userframe={userframe}/>
