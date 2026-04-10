@@ -7,11 +7,12 @@ import { BottomButtons } from "./bottomButtons/dbuttons"
 import { Modal } from "../common/utilities/modal"
 import { QRModal } from "../common/utilities/qrModal"
 import { useState, useEffect, useRef } from "react"
+import { ErrorBoundary } from "./ErrorBoundary"
 const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 
 export default function App({userframe})
 {
-    console.log(`User is accessing from ${userframe}`)
+    console.log(`APP: User is accessing from ${userframe}`)
 
     const qrUrl = useRef(BASE_URL)
     const label = useRef('Placeholder')
@@ -19,58 +20,59 @@ export default function App({userframe})
     const [addTrigger, setaddTrigger] = useState(false)
     const [deleteTrigger, setdeleteTrigger] = useState(false)
     const [contentTrigger, setcontentTrigger] = useState(false)
-		const [show, setShow] = useState(false)
-		const errorFlags = 	{
-													0: 'add',
-													1: 'delete',
-													2: 'content'
-												}
-		const pendingModal = useRef(false)
-		const selectedComponent = useRef('Function (xyz)')
-		
-		/* updates component selected by selector */
-		const updateSelectedRef = (selection) => {
-			selectedComponent.current = selection
-		}
+    const [show, setShow] = useState(false)
+    const errorFlags = 	{
+                                                0: 'add',
+                                                1: 'delete',
+                                                2: 'content'
+                                            }
+    const pendingModal = useRef(false)
+    const [selectedComponent, setSelectedComponent] = useState('Function (xyz)')
+    
+    /* updates component selected by selector */
+    const updateSelectedRef = (selection) => {
+        setSelectedComponent(selection)
+    }
 
-		/* set modal content and adjust trigger flag if needed */
+	/* set modal content and adjust trigger flag if needed */
     const setModal = (newlabel, newcontent, error = null) => {
         label.current = newlabel
         label.content = newcontent
-				setShowRef(error)
+		setShowRef(error)
     }
 		
-		/* allows us to call pending flag outside render call */
-		const setShowRef = (error = null) => {
-				pendingModal.current = false
-				if (error === null) {	
-					setShow(true)
-				} else {
-					pendingModal.current = true
-					setTrigger(errorFlags[error], false)
-				}
-		}
-		
-		/* shows modal after trigger flags updated (if pending) */
-		useEffect(() => {
-			if (pendingModal.current === true) {
-				setShowRef()
-			}
-		}, [addTrigger, deleteTrigger, contentTrigger])
-		
-		/* updates modal state on x click */
-		const hideModal = () => {
-			setShow(false)
-		}
+    /* allows us to call pending flag outside render call */
+    const setShowRef = (error = null) => {
+        pendingModal.current = false
+        if (error === null) {	
+            setShow(true)
+        } else {
+            pendingModal.current = true
+            setTrigger(errorFlags[error], false)
+        }
+    }
+    
+    /* shows modal after trigger flags updated (if pending) */
+    useEffect(() => {
+        console.log(`APP: pendingmodal is ${pendingModal.current}`)
+        if (pendingModal.current === true) {
+            setShowRef()
+        }
+    }, [])
+    
+    /* updates modal state on x click */
+    const hideModal = () => {
+        setShow(false)
+    }
 
-		/* set qr url */
+	/* set qr url */
     const setURL = (urlin) => {
         qrUrl.current = urlin
     }
 
-		/* components can set these triggers for universal processes */
+	/* components can set these triggers for universal processes */
     const setTrigger = (trigger, flag) => {
-        console.log(`CALLING SETTRIGGER`)
+        console.log(`CALLING SETTRIGGER ${trigger} ${flag}`)
         switch(trigger){
             case 'add':
                 if (addTrigger !== flag) {
@@ -92,17 +94,18 @@ export default function App({userframe})
 
     return(
         <div>
+            <ErrorBoundary fallback={<p>Something went wrong</p>}>
             <Modal inlabel={label} incontent={content} state={show} toggle={hideModal}/>
             <QRModal url={qrUrl}/>
             <Header userframe={userframe}/>
-            <div class="container-lg">
+            <div className="container-lg">
                 <About userframe={userframe}/>
                 <Selector 
-									setmodal={setModal} 
-									userframe={userframe} 
-									updateSelectedRef={updateSelectedRef}
-									setTrigger={setTrigger}
-								/>
+                    setmodal={setModal} 
+                    userframe={userframe} 
+                    updateSelectedRef={updateSelectedRef}
+                    setTrigger={setTrigger}
+				/>
                 <Tabs 
                     setmodal={setModal} 
                     seturl={setURL} 
@@ -111,11 +114,11 @@ export default function App({userframe})
                     deleteTrigger={deleteTrigger}
                     contentTrigger={contentTrigger}
                     setTrigger={setTrigger}
-										selectedComponent={selectedComponent}
-									/>
+                    selectedComponent={selectedComponent}
+                />
                 <BottomButtons userframe={userframe} setTrigger={setTrigger} setmodal={setModal}/>
             </div>
-            <Footer userframe={userframe}/>
+            <Footer userframe={userframe}/></ErrorBoundary>
         </div>
     )
 }

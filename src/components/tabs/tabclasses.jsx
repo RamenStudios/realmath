@@ -51,7 +51,7 @@ const InputCards    =   {
 
 export class Tab
 {
-    constructor(parent, numtabs, setTrigger)
+    constructor(parent, numtabs)
     {
         this.parent = parent
         this.index = parent.index
@@ -61,22 +61,17 @@ export class Tab
         this.props = {...InputCards[parent.type].props}
         this.selected = numtabs === 0 ? true : false
         this.value = null
-        this.setTrigger = setTrigger
-        console.log(this.setTrigger)
-        this.setUpdate()
+        this.set_update()
     }
     // just makes life easier tbh
-    select()
-    {
+    select() {
         this.selected = true
     }
-    deselect()
-    {
+    deselect() {
         this.selected = false
     }
     // caches value, making it accessible even when another tab is shown
-    setUpdate()
-    {
+    set_update() {
         this.update = () => 
         {
             /* switch case is for object data saving */
@@ -91,7 +86,7 @@ export class Tab
                         console.log(this.value)
                         console.log(this.props)
                     }catch(error){
-                        console.log(error)
+                        console.error(error)
                     }
                     break;
                 case 3:
@@ -111,7 +106,7 @@ export class Tab
                         console.log(this.value)
                         console.log(this.props)
                     }catch(error){
-                        console.log(error)
+                        console.error(error)
                     }
                     break
                 default:
@@ -124,13 +119,13 @@ export class Tab
                         console.log(this.value)
                         console.log(this.props)
                     } catch (error) {
-                        console.log(`error updating value for tab ${this.name}!: ${error}`)
+                        console.error(`error updating value for tab ${this.name}!: ${error}`)
                     }
             }
         }
     }
     // checks validity of inputs
-    checkValid()
+    check_valid()
     {
         let inputval
         const checkNullEqual = (val) => {
@@ -141,9 +136,7 @@ export class Tab
                 return false
             }
         }
-        switch(this.type) 
-        {
-            
+        switch (this.type) {
             case 1:     
                 inputval = `${this.props.left}-${this.props.right}`
                 console.log(inputval)
@@ -160,7 +153,7 @@ export class Tab
                         }
                     }
                 } catch(error) {
-                    console.log(error)
+                    console.error(error)
                 }
                 break
             case 3:
@@ -179,7 +172,7 @@ export class Tab
                         }
                     }
                 } catch(error) {
-                    console.log(error)
+                    console.error(error)
                 }
                 break
             default:
@@ -191,10 +184,10 @@ export class Tab
                             return false
                         }
                     } catch(error) {
-                        console.log(error)
+                        console.error(error)
                     }
                 } catch (error) {
-                    console.log(`error verifying value for tab ${this.name}!: ${error}`)
+                    console.error(`error verifying value for tab ${this.name}!: ${error}`)
                 }
                 
         }
@@ -203,46 +196,46 @@ export class Tab
     // passes any necessary input to display container before user sees it
     display(userframe)
     {
-        console.log(this.props)
+        console.log(`displaying card`)
         const button = () => {
             if(userframe === 'desktop'){
                 return(
-                    <div class="row mt-2 justify-content-end">
-                        <div class="col col-8 d-md-none"></div>
-                        <div class="col col-lg-2 col-md-12 mx-2">
+                    <div className="row mt-2 justify-content-end">
+                        <div className="col col-8 d-md-none"></div>
+                        <div className="col col-lg-2 col-md-12 mx-2">
                             <button 
                                 id="deleteComponent" 
                                 type="button" 
-                                class="btn btn-danger" 
-                                onClick={() => {this.parent.setDelete()}}
+                                className="btn btn-danger" 
+                                onClick={() => {this.parent.setTrigger('delete', true)}}
                             >
-                                <div class="light-grey italic bold">REMOVE</div>
+                                <div className="light-grey italic bold">REMOVE</div>
                             </button>
                         </div>
                     </div>
                 )
             }else{
                 return(
-                    <div class="row mt-2">
+                    <div className="row mt-2">
                         <button 
                             id="deleteComponent" 
                             type="button" 
-                            class="btn btn-danger" 
-                            onClick={() => {this.parent.setDelete()}}
+                            className="btn btn-danger" 
+                            onClick={() => {this.parent.setTrigger('delete', true)}}
                         >
-                            <div class="mobile-body light-grey italic bold">REMOVE</div>
+                            <div className="mobile-body light-grey italic bold">REMOVE</div>
                         </button>
                     </div>
                 )
             }
         }
         return(
-        <div class="card">
-            <div class="card-body">
-                <div class="row justify-content-center">{this.card(this.props, this, userframe)}</div>
-                {button()}
-            </div>
-        </div>
+			<div className="card">
+				<div className="card-body">
+					<div className="row justify-content-center">{this.card(this.props, this, userframe)}</div>
+					{button()}
+				</div>
+			</div>
         )
     }
 }
@@ -250,90 +243,58 @@ export class Tab
 /* ************************************ */
 export class TabTracker
 {
-    constructor(type, defaultIn=false)
-    {
+    constructor(type, setTrigger, defaultIn=false) {
         this.type = type
         this.current = {}
         this.index = 0
+        this.setTrigger = setTrigger
+        this.default = defaultIn
         if(defaultIn)
         {
+            console.error(`default tracker detected`)
             this.add(0)
         }
     }
-    getTabs()
-    {
-        let tempreturn = {}
-        for (const [key, value] of Object.entries(this.current))
-        {
-            if(!(value.selected)){
-                tempreturn[value.name] = value
-            }
-        }
-        return tempreturn
-    }
-    getLatest()
-    {
+	
+    get_latest () {
         return this.current[this.index]
     }
-    mountSetTrigger(setTrigger)
-    {
-        this.setTrigger = setTrigger
+	
+    add (numtabs) {
+		try {
+			this.index += 1
+			this.current[this.index] = new Tab(this, numtabs)
+			return 1
+		} catch (e) {
+            console.error(`Error with ${this.type} TAB ADDITION: ${e}`)
+			return -1
+		}
     }
-    add(numtabs, setTrigger)
-    {
-        this.index += 1
-        this.setTrigger = setTrigger
-        /* add new element */
-        this.current[this.index] = new Tab(this, numtabs, setTrigger)
-        console.log("NEW ELEMENT")
-    }
-    setDelete()
-    {
-        console.log(this.setTrigger)
-        this.setTrigger('delete', true)
-    }
-    removeTab(index)
-    {
-        try{
+	
+    del (index) {
+        try {
             delete this.current[index]
-            this.update()
-        }catch(e){
-            console.log(`Error with ${this.type} TAB DELETION: ${e}`)
+			this.update()
+			return 1
+        } catch (e) {
+            console.error(`Error with ${this.type} TAB DELETION: ${e}`)
+			return -1
         }
     }
-}
-
-/* ************************************ */
-// clunky implementation but whatever right now
-export const getTabObjects = (trackerCollection) =>
-{
-    let tempreturn = {}
-    console.log(trackerCollection)
-    Object.keys(trackerCollection).forEach((type) =>
-    {
-        const tracker = trackerCollection[type]
-        console.log(tracker)
-        for (const [key, value] of Object.entries(tracker.current)){
-            tempreturn[value.name] = value
+	
+	stringify () {
+		const tempDict = {}
+		try {
+			const tempDict = {}
+			for (const key in this.current) {
+				if (this.current[key].check_valid() === true) {
+					tempDict[this.current[key].name] = this.current[key].props
+				}
+				throw new Error(`Tab at index ${key} in the ${this.type} tracker has invalid input.`)
+			}
+		} catch (e) {
+            console.error(`Error with ${this.type} TAB STRINGIFY: ${e}`)
         }
-    })
-    return tempreturn
-}
-
-export const getTabStringify = (trackerCollection) =>
-{
-    let tempreturn = {}
-    for (const key in trackerCollection){
-        const value = trackerCollection[key].current
-        for (const innerKey in value){
-            const tab = value[innerKey]
-            if (tab.checkValid() === true) {
-                tempreturn[tab.name] = tab.props
-            } else {
-                return -1
-            }
-        }
-    }
-    console.log(JSON.stringify(tempreturn))
-    return JSON.stringify(tempreturn)
+		return tempDict
+	}
 }

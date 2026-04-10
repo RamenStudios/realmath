@@ -19,24 +19,24 @@ const FunctionInput = ({leftIn, rightIn, parent, userframe}) =>
 
     if(userframe == 'desktop') {
         return(
-            <div class="row">
-                <div class="col-lg-5" >
+            <div className="row">
+                <div className="col-lg-5" >
                     <MathField idIn='leftMathField' valueIn={leftIn} onInput={parent.update} />
                 </div>
-                <div class="col">=</div>
-                <div class="col-lg-5" >
+                <div className="col">=</div>
+                <div className="col-lg-5" >
                     <MathField valueIn={rightIn} idIn='rightMathField' onInput={parent.update} />
                 </div>
             </div>
         )
     } else {
         return(
-            <div class="row">
-                <div class="col-lg-5" >
+            <div className="row">
+                <div className="col-lg-5" >
                     <MathField idIn='leftMathField' valueIn={leftIn} onInput={parent.update} />
                 </div>
-                <div class="col">=</div>
-                <div class="col-lg-5" >
+                <div className="col">=</div>
+                <div className="col-lg-5" >
                     <MathField valueIn={rightIn} idIn='rightMathField' onInput={parent.update} />
                 </div>
             </div>

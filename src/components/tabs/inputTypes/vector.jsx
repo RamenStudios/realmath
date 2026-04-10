@@ -20,33 +20,33 @@ const VectorInput = ({vecIn, posIn, parent}) =>
 
     return(
         <>
-            <div class="row">Vector</div>
-            <div class="row">
-                <div class="col mx-0">x</div>
-                <div class="col-lg-2" >
+            <div className="row">Vector</div>
+            <div className="row">
+                <div className="col mx-0">x</div>
+                <div className="col-lg-2" >
                     <MathField idIn='vxMathField' valueIn={vecIn.x} onInput={parent.update} />
                 </div>
-                <div class="col mx-0">y</div>
-                <div class="col-lg-2" >
+                <div className="col mx-0">y</div>
+                <div className="col-lg-2" >
                     <MathField valueIn={vecIn.y} idIn='vyMathField' onInput={parent.update} />
                 </div>
-                <div class="col mx-0">z</div>
-                <div class="col-lg-2" >
+                <div className="col mx-0">z</div>
+                <div className="col-lg-2" >
                     <MathField valueIn={vecIn.z} idIn='vzMathField' onInput={parent.update} />
                 </div>
             </div>
-            <div class="row">Initial Position/Intersecting Point</div>
-            <div class="row">
-                <div class="col mx-0">x</div>
-                <div class="col-lg-2" >
+            <div className="row">Initial Position/Intersecting Point</div>
+            <div className="row">
+                <div className="col mx-0">x</div>
+                <div className="col-lg-2" >
                     <MathField idIn='xMathField' valueIn={posIn.x} onInput={parent.update} />
                 </div>
-                <div class="col mx-0">y</div>
-                <div class="col-lg-2" >
+                <div className="col mx-0">y</div>
+                <div className="col-lg-2" >
                     <MathField valueIn={posIn.y} idIn='yMathField' onInput={parent.update} />
                 </div>
-                <div class="col mx-0">z</div>
-                <div class="col-lg-2" >
+                <div className="col mx-0">z</div>
+                <div className="col-lg-2" >
                     <MathField valueIn={posIn.z} idIn='zMathField' onInput={parent.update} />
                 </div>
             </div>

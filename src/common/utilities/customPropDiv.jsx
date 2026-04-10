@@ -5,6 +5,6 @@
 export const CustomDiv = ({idIn, inputData}) =>
 {
     return(
-        <div id={idIn} class="my-0 mx-0" value={inputData}/>
+        <div id={idIn} className="my-0 mx-0" value={inputData}/>
     )
 }

@@ -1,6 +1,6 @@
 export const HelpMessage = () => {
     return (
-        <div class="justify-content-start">
+        <div className="justify-content-start">
             <ul>
                 <li>
                     The input fields are LaTeX input, and only LaTeX input is accepted. If you are having trouble with manual formatting, each input field allows you to open an on-screen math keyboard!

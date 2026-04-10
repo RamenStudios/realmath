@@ -2,35 +2,29 @@ import $ from 'jquery'
 
 export const SelectorAdd = ({userframe, setTrigger}) =>
 {
-
-    const setaddTrigger = () => {
-        console.log("Add button clicked")
-        setTrigger('add', true)
-    }
-
     if (userframe == 'desktop') {
         return(
-            <div class="d-grid gap-2">
+            <div className="d-grid gap-2">
                 <button 
                     type="button" 
-                    class="btn btn-primary" 
+                    className="btn btn-primary" 
                     id="selectorAdd" 
-                    onClick={setaddTrigger}
+                    onClick={setTrigger}
                 >
-                    <div class="light-grey italic bold">ADD!</div>
+                    <div className="light-grey italic bold">ADD!</div>
                 </button>
             </div>
         )
     } else {
         return(
-            <div class="d-grid gap-2">
+            <div className="d-grid gap-2">
                 <button 
                     type="button" 
-                    class="btn btn-primary" 
+                    className="btn btn-primary" 
                     id="selectorAdd" 
-                    onClick={setaddTrigger}
+                    onClick={setTrigger}
                 >
-                    <div class="mobile-body light-grey italic bold">ADD!</div>
+                    <div className="mobile-body light-grey italic bold">ADD!</div>
                 </button>
             </div>
         )

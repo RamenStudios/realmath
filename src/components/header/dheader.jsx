@@ -6,26 +6,26 @@ export const Header = ({userframe}) =>
     {
         if(userframe === 'desktop'){
             return(
-                <div class="row">
-                    <div class="col-1" />
-                    <div class="col-6 align-self-start justify-content-start">
-                        <div class="row subtitle white justify-content-start">
+                <div className="row">
+                    <div className="col-1" />
+                    <div className="col-6 align-self-start justify-content-start">
+                        <div className="row subtitle white justify-content-start">
                             NOTRE DAME LEARNING
                         </div>
-                        <div id="site-title " class="row site-title white justify-content-start">
+                        <div id="site-title " className="row site-title white justify-content-start">
                             RealMath AR
                         </div>
                     </div>
-                    <div class="col" />
+                    <div className="col" />
                 </div>
             )
         }else{
             return(
-                <div class="justify-content-center">
-                    <div class="row mobile-subtitle white justify-content-center">
+                <div className="justify-content-center">
+                    <div className="row mobile-subtitle white justify-content-center">
                         NOTRE DAME LEARNING
                     </div>
-                    <div id="site-title " class="row mobile-site-title white justify-content-center">
+                    <div id="site-title " className="row mobile-site-title white justify-content-center">
                         RealMath AR
                     </div>
                 </div>
@@ -34,7 +34,7 @@ export const Header = ({userframe}) =>
     }
 
     return(
-        <div class="container-fluid bg-nd-blue pt-2 pb-2 mb-2" id="page-top-header">
+        <div className="container-fluid bg-nd-blue pt-2 pb-2 mb-2" id="page-top-header">
             {headertext()}
         </div>
     )

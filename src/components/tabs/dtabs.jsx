@@ -1,10 +1,6 @@
-import { useRef, useState, useEffect } from 'react';
-import { GraphComponents } from "../../common/utilities/graphComponents";
-import { Tab, TabTracker, getTabStringify } from "./tabclasses";
-import { CustomDiv } from '../../common/utilities/customPropDiv';
-import { ShowModal, ShowQR } from '../../common/services/ModalService';
-import { GetFormData } from '../../common/services/FormService';
-import $ from 'jquery';
+import { useRef, useState, useEffect } from 'react'
+import { TabUIContainer } from './tabuihook'
+import { CustomDiv } from '../../common/utilities/customPropDiv'
 
 /* useful constants */
 const BASE_URL = 'https://ndlearning.8thwall.app/realmath/'
@@ -17,97 +13,59 @@ const VIEW_ERROR_MSG = `You should not be able to see this message! If you can, 
 
 /* limit elements to avoid crashes */
 const limit = 3
-/* ensures limit not reached */
-var numtabs = 1
-/* lets us mount func 1 to app */
-const mounted = {current: false}
-/* making trackers const */
-const FuncTracker = new TabTracker('Func', true)
-const PtTracker = new TabTracker('Pt')
-const VecTracker = new TabTracker('Vec')
-const VFldTracker = new TabTracker('VFld')
-const SCrvTracker = new TabTracker('SCrv')
+const GraphKeys =   {
+                        "Function (xyz)": 'Func', 
+                        "Point (xyz)": 'Pt', 
+                        "Vector <a,b,c>": 'Vec', 
+                        "Vector Field": 'VFld', 
+                        "Space Curve r(t)": 'SCrv',
+                    }
+/* contains necessary UI functions while sidestepping SOME useState/useEffect mess */
+const TabUIHook = {}
+/* quick n dirty error flag solution */
+const ErrorOut = {current: false}
 
 export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, contentTrigger, setTrigger, selectedComponent}) => 
 {
+    console.log(`DTABS`)
 	/* ****************************************
 	INITIALIZING TABS
 	**************************************** */
-	/* hooks tracking graph element additions */
-	const [tabsList, settabsList] = useState({
-																						Func: FuncTracker,
-																						Pt: PtTracker,
-																						Vec: VecTracker,
-																						VFld: VFldTracker,
-																						SCrv: SCrvTracker,
-																						Unselected:{},
-																						Selected: None,
-																					})
-	/* status for add tab requests */
+	/* # of tabs is dynamic */
+	const [numTabs, setnumTabs] = useState(1)
+	/* selected/displayed tab affects render */
+	const [selected, setSelected] = useState(null)
+	/* pending flag prevents double render */
 	const [pending, setPending] = useState(false)
-	const pendingType = useRef()
-	/* status for change tab requests */
-	const [change, setChange] = useState(false)
-	const changeName = useRef()
-	/* mount app to first tab */
-	if (mounted.current === false) {
-		mounted.current = true
-		tabsList.Func.mountSetTrigger(setTrigger)
-	}
-	/* 0=addition warning, 1=deletion warning, 2=content warning */
-	const currentmodal = useRef(0)
-
-	/* ****************************************
-	LISTENING FOR TRIGGERS FROM PARENT
-	*   addTrigger -> tab addition
-	*   deleteTrigger -> tab deletion
-	**************************************** */
-	if (addTrigger === true) {
-		if (numtabs >= 1) {
-			addRoutine()
-		} else {
-			setmodal(`ADDITION ERROR`, LIMIT_ERROR_MSG, 0)
+	/* mount container and initial selection to app */
+    const [mounted, setMounted] = useState(false)
+	useEffect(() => {
+		if (mounted === false) {	
+			TabUIHook.Container = new TabUIContainer(setTrigger)
+			console.log('TABUIHOOK MOUNT SUCCESSFUL')
+			setMounted(true)
+        } else if (selected === null) {
+			setSelected(TabUIHook.Container.Trackers.Func.get_latest())
+			console.log('DEFAULT SELECTION MOUNT SUCCESSFUL')
 		}
-	} else if (deleteTrigger === true) {
-		if (numtabs > 1) {
-			deleteRoutine()
-		} else {
-			setmodal(`DELETION ERROR`, DELETION_ERROR_MSG, 1)
-		}
-	} else if (contentTrigger === true) {
-		contentRoutine()
-	}
+    }, [mounted])
 
 	/* ****************************************
 	ADD TAB
 	**************************************** */
-	addRoutine = () => {
+	const addRoutine = () => {
+		console.log('ADDROUTINE')
 		try {
-			/* add a tab of the chosen type to the queue */
-			pendingType.current = selectedComponent.current
-			setPending(true)
-		} catch (error) {
-			console.error(error)
-			return
-		}
-	}
-
-	/* ****************************************
-	DELETE TAB
-	**************************************** */
-	deleteRoutine = () => {
-		getSelected(Object.keys(tabsList.Unselected)[0])
-	}
-	
-	/* ****************************************
-	EXPORT TABs
-	**************************************** */
-	contentRoutine = () => {
-		const url = getTabStringify(tabsList)
-		if(url !== -1) {
-				seturl(`${BASE_URL}${url}`)
-		} else {
-				setmodal(`ERROR!`, INPUT_ERROR_MSG, 2)
+            const tempnumTabs = TabUIHook.Container.add(GraphKeys[selectedComponent], numTabs)
+			if (tempnumTabs !== -1) {
+				setnumTabs(tempnumTabs)
+			} else {
+				throw new Error(`Could not add new tab. Reversing trigger`)
+			}
+		} catch (e) {
+			ErrorOut.current = true
+			setPending(false)
+			console.error(`error in Tabs.addRoutine: ${e}`)
 		}
 	}
 	
@@ -115,117 +73,161 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	CHANGE SELECTED TAB
 	**************************************** */
 	/* triggers the change event on button click */
-	const selectionAction = (name) =>
-	{
-		changeName.current = name
-		setChange(true)
-	}
-
-	 /* handles change in selected tab */
-	const getSelected = (name) =>
-	{   
-		const templist = {...tabsList}
-		const selected = tabsList.Selected
-		const selection = tabsList.Unselected[name]
-		/* delete selection from set of unselected tabs */
-		delete templist.Unselected[name]
-		/* deselect currently selected tab */
-		selected.deselect()
-		/* if no deletion requested, push it to list of unselected tabs */
-		/* otherwise, get its parent and call for deletion */
-		if (deleteTrigger === false) {   
-			templist.Unselected[selected.name] = selected
-		} else {
-			selected.parent.removeTab(selected.index)
+	const selectionAction = (name) => {
+		try {
+			const newSelection = TabUIHook.Container.get_selected(selected, name)
+			if (newSelection !== -1) {
+				setSelected(newSelection)
+			} else {
+				throw new Error(`Error in Tabs.selectionAction`)
+			}
+		} catch (e) {
+			console.error(`${e}`)
 		}
-		/* apply appropriate flag to new selection */
-		selection.select()
-		/* set new selection */
-		templist.Selected = selection
-		settabsList({...templist})
 	}
 
 	/* ****************************************
-	PENDING USEEFFECT
-	*   pending in 'true' state tells us
-			there is a request to add a tab
-	*   if pending is false, addition is
-			complete, and signaled to parent
+	DELETE TAB
 	**************************************** */
-	useEffect(() => 
-	{
-		if (pending === true) {
-			try {
-				console.log(`pending set to ${pendingType.current}`)
-				/* temporary list for adding to tabs collection */
-				let templist = {...tabsList}
-				templist[pendingType.current].add(numtabs, setTrigger)
-				numtabs += 1 // only increments once addition successful
-				/* update name lists as well for display */
-				templist.Unselected[templist[pendingType.current].getLatest().name] = templist[pendingType.current].getLatest()
-				/* formalize tabs collection additions, indicate queue empty */
-				settabsList({...templist})
-			} catch (error) {
-				console.log(error)
-			} 
-		} else {
-			setTrigger('add', false)
-		}
-	}, [pending])
-
-	/* ****************************************
-	TABSLIST USEEFFECT
-	*   if tabsList is changed while there is
-			a rq for addition, we know to update
-			the pending state
-	*   the alternative is that tabsList was
-			changed via tab selection or deletion,
-			so we send the corresponding 
-			completion signal
-	**************************************** */
-	useEffect(() =>
-	{
-		if (pending === true) {
+	const deleteRoutine = () => {
+		const newSelection = TabUIHook.Container.del(selected)
+		try {
+			if (newSelection !== -1) {
+				setSelected(newSelection)
+			} else {
+				throw new Error(`Error in Tabs.deleteRoutine`)
+			}
+		} catch (e) {
+			ErrorOut.current = true
 			setPending(false)
-		} else if (change === true) {
-			setChange(false)
-		} else {
-			setTrigger('delete', false)
+			console.error(`${e}`)
 		}
-	}, [tabsList])
+	}
+	
+	/* ****************************************
+	SELECTED USEEFFECT
+	**************************************** */
+	useEffect(() => {
+		if ((mounted === true) && (selected !== null)) {
+			if (deleteTrigger === true) {
+				const tempnumTabs = numTabs + 1
+				setnumTabs(tempnumTabs)
+			}
+		}
+	}, [selected])
+	
+	/* ****************************************
+	NUMTABS USEEFFECT
+	**************************************** */
+	useEffect(() => {
+		if ((mounted === true) && (selected !== null)) {
+			if (pending === true) {
+				setPending(false)
+			}
+		}
+	}, [numTabs])
+	
+	/* ****************************************
+	EXPORT TABS
+	**************************************** */
+	const contentRoutine = () => {
+		const url = TabUIHook.Container.stringify_tabs()
+		if(url !== -1) {
+			seturl(`${BASE_URL}${url}`)
+		} else {
+			setmodal(`ERROR!`, INPUT_ERROR_MSG, 2)
+			ErrorOut.current = true
+		}
+	}
 
 	/* ****************************************
-	CHANGE USEEFFECT
-	*   triggered when tab changed by selection
-	*   not triggered by deletion
+	LISTENING FOR TRIGGERS FROM PARENT
+	*	useEffect ensures it runs AFTER render 
+	*   addTrigger -> tab addition
+	*   deleteTrigger -> tab deletion
 	**************************************** */
-	useEffect(() =>
-	{
-		if (change === true) {
-			getSelected(changeName.current)
+	useEffect(() => {
+		if ((mounted === true) && (selected !== null)) {
+			if ((pending && ErrorOut) === false) {
+				if (addTrigger === true) {
+					if (numTabs <= limit) {
+						setPending(true)
+						addRoutine()
+					} else {
+						setmodal(`ADDITION ERROR`, LIMIT_ERROR_MSG, 0)
+						setTrigger('add', false)
+					}
+				} else if (deleteTrigger === true) {
+					if (numTabs > 1) {
+						setPending(true)
+						deleteRoutine()
+					} else {
+						setmodal(`DELETION ERROR`, DELETION_ERROR_MSG, 1)
+						setTrigger('delete', false)
+					}
+				} else if (contentTrigger === true) {
+					setPending(true)
+					contentRoutine()
+				}
+			} else {
+				ErrorOut.current = false
+				if (addTrigger === true) {
+					setTrigger('add', false)
+				} else if (deleteTrigger === true) {
+					setTrigger('delete', false)
+				} else if (contentTrigger === true) {
+					setTrigger('content', false)
+				}
+			}
 		}
-	}, [change])
+	})
 
 	/* ****************************************
 	RENDERING
 	**************************************** */
 	const getCard = () => {
-		return tabsList.Selected.display(userframe)
+        console.log('getting card')
+        try {
+            return selected.display(userframe)
+        } catch (e) {
+            console.log(`error with displaying card: ${e}`)
+            return `N/A`
+        }
+	}
+
+    const getSelectedDisplay = () => {
+        console.log('getting selected name')
+        try {
+            return selected.name
+        } catch (e) {
+            console.log(`error with displaying name: ${e}`)
+            return `N/A`
+        }
+    }
+
+	const get_unselected_names = () => {
+		try {
+			const unselected = TabUIHook.Container.get_unselected()
+			return unselected
+		} catch (e) {
+			console.error(`Error in Tabs.get_unselected_names: ${e}`)
+			return []
+		}
 	}
 			
 	return(
-		<div class="container container-lg my-3">
-			<CustomDiv idIn="numTabs" inputData={numtabs}/>
-			<ul class="nav nav-tabs">
-				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="#"><div class="mobile-body">{tabsList.Selected.name}</div></a>
+		<div className="container container-lg my-3">
+			<CustomDiv idIn="numTabs" inputData={numTabs}/>
+			<ul className="nav nav-tabs">
+				<li className="nav-item">
+					<a className="nav-link active" aria-current="page" href="#"><div className="mobile-body">{getSelectedDisplay()}</div></a>
 				</li>
 				{
 					<>
-						{Object.keys(tabsList.Unselected).map((tab) => (
-							<li class="page-item">
-								<a class="page-link" href="#" onClick={() => {selectionAction(tab)}}>
-									<div class="mobile-body">{tab}</div>
+						{(get_unselected_names()).map((tab) => (
+							<li className="page-item">
+								<a className="page-link" href="#" onClick={() => {selectionAction(tab)}}>
+									<div className="mobile-body">{tab}</div>
 								</a>
 							</li>
 						))}
