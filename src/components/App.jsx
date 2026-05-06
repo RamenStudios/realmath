@@ -77,6 +77,7 @@ export default function App({userframe})
     }
 
     useEffect(() => {
+<<<<<<< HEAD
         console.log(`pending useeffect, currently ${pending}`)
         if (pending === true) {
             console.log(`label: ${label.current}`)
@@ -86,6 +87,18 @@ export default function App({userframe})
                 setModalVis(true)
             }
         }
+=======
+     if (pending === true) {
+		 let modal = null
+        if (label.current === `QR`) {
+            modal = new bootstrap.Modal(document.getElementById('qrModal'))
+        } else {
+            modal = new bootstrap.Modal(document.getElementById('modal'))
+        }
+		modal.show()
+        setPending(false)
+     }   
+>>>>>>> f09e6a336afbaa7cdc8b1f948ab9afc80a535e8e
     }, [pending])
 
     useEffect(() => {
