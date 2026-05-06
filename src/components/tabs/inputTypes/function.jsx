@@ -13,7 +13,7 @@ const FunctionInput = ({leftIn, rightIn, parent, userframe}) =>
     try{
         document.getElementById('leftMathField').setValue(leftIn)
         document.getElementById('rightMathField').setValue(rightIn)
-    }catch(error){
+    } catch(error) {
         console.log(error)
     }
 

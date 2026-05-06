@@ -7,14 +7,8 @@ import { useState, useEffect, useRef } from "react"
 export const Selector = ({setmodal, userframe, setTrigger, updateSelectedRef}) =>
 {
     console.log(`DSELECTOR`)
-
-	const [selection, setSelection] = useState('Function (xyz)')
 	
-	const selectEvent = (key) => {
-		setSelection(key)
-	}
-	
-	const defineSelection = () => {
+	const defineSelection = (selection = 'Function (xyz)') => {
 		updateSelectedRef(selection)
 		setmodal(`${selection} Definition`, `${GraphComponents[selection]['def']}`)
 	}
@@ -26,7 +20,7 @@ export const Selector = ({setmodal, userframe, setTrigger, updateSelectedRef}) =
     if(userframe === 'desktop'){
         return(
             <div className="row">
-                <div className="col-lg-7 col-sm-12 mb-2"><SelectorDropdown setSelection={selectEvent}/></div>
+                <div className="col-lg-7 col-sm-12 mb-2"><SelectorDropdown/></div>
                 <div className="col-lg-2 col-sm-6 mb-2"><SelectorDefine userframe={userframe} defineSelection={defineSelection}/></div>
                 <div className="col-lg-2 col-sm-6 mb-2"><SelectorAdd userframe={userframe} setTrigger={addSelection}/></div>
             </div>

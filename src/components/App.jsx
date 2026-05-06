@@ -10,7 +10,6 @@ import { useState, useEffect, useRef } from "react"
 import { ErrorBoundary } from "./ErrorBoundary"
 
 const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
-const URL = {current:''}
 
 export default function App({userframe})
 {
@@ -18,14 +17,19 @@ export default function App({userframe})
 
     const label = useRef('Placeholder')
     const content = useRef('Placeholder')
+    const [URL, setURL] = useState('/')
     const [pending, setPending] = useState(false)
-    const [addTrigger, setaddTrigger] = useState(false)
-    const [deleteTrigger, setdeleteTrigger] = useState(false)
-    const [contentTrigger, setcontentTrigger] = useState(false)
+    const addTrigger = useRef(false)
+    const deleteTrigger = useRef(false)
+    const contentTrigger = useRef(false)
+    const [eventTrigger, setEventTrigger] = useState(false)    // reload call
     const [selectedComponent, setSelectedComponent] = useState('Function (xyz)')
+    const [qrModalVis, setqrModalVis] = useState(false)
+    const [modalVis, setModalVis] = useState(false)
     
     /* updates component selected by selector */
     const updateSelectedRef = (selection) => {
+        console.log(selection)
         setSelectedComponent(selection)
     }
 
@@ -40,52 +44,61 @@ export default function App({userframe})
         }
     }
 
-
-
 	/* set qr url */
-    const setURL = (urlin) => {
+    const setURLHook = (urlin) => {
+        console.log(`setting url`)
         label.current = `QR`
-        URL.current = `${BASE_URL}${urlin}`
+        setTrigger('content', false)
+        setURL(`${BASE_URL}${urlin}`)
     }
+    /* then pending */
+    useEffect(() => {
+        setPending(true)
+    }, [URL])
 
 	/* components can set these triggers for universal processes */
-    const setTrigger = (trigger, flag) => {
+    const setTrigger = (trigger, flag, reload=true) => {
         console.log(`CALLING SETTRIGGER ${trigger} ${flag}`)
         switch(trigger){
             case 'add' || 0:
-                if (addTrigger !== flag) {
-                    setaddTrigger(flag)
-                }
+                addTrigger.current = flag
                 break
             case 'delete' || 1:
-                if (deleteTrigger !== flag) {
-                    setdeleteTrigger(flag)
-                }
+                deleteTrigger.current = flag
                 break
             case 'content' || 2:
-                if (contentTrigger !== flag) {
-                    setcontentTrigger(flag)
-                }
+                label.current = `QR`
+                contentTrigger.current = flag
                 break
+        }
+        if (reload) {
+            setEventTrigger(!eventTrigger)
         }
     }
 
     useEffect(() => {
-     if (pending === true) {
-        if (label.current === `QR`) {
-            document.getElementById('qrModal').show()
-        } else {
-            document.getElementById('modal').show()
+        console.log(`pending useeffect, currently ${pending}`)
+        if (pending === true) {
+            console.log(`label: ${label.current}`)
+            if (label.current === `QR`) {
+                setqrModalVis(true)
+            } else {
+                setModalVis(true)
+            }
         }
-        setPending(false)
-     }   
     }, [pending])
+
+    useEffect(() => {
+        console.log(`qr vis: ${qrModalVis}`)
+        console.log(`modal vis: ${modalVis}`)
+        setPending(false)
+    }, [qrModalVis, modalVis])
 
     return(
         <div>
             <ErrorBoundary fallback={<p>Something went wrong</p>}>
-            <Modal inlabel={label} incontent={content}/>
-            <QRModal url={URL}/>
+            <Modal inlabel={label} incontent={content} vis={modalVis} onclose={() => {setModalVis(false)}}/>
+            <QRModal url={URL} vis={qrModalVis} onclose={() => {setqrModalVis(false)}}/>
             <Header userframe={userframe}/>
             <div className="container-lg">
                 <About userframe={userframe}/>
@@ -97,7 +110,7 @@ export default function App({userframe})
 				/>
                 <Tabs 
                     setmodal={setModal} 
-                    seturl={setURL} 
+                    seturl={setURLHook} 
                     userframe={userframe}
                     addTrigger={addTrigger}
                     deleteTrigger={deleteTrigger}

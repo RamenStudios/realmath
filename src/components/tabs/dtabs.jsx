@@ -142,13 +142,11 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	/* ****************************************
 	LISTENING FOR TRIGGERS FROM PARENT
 	*	useEffect ensures it runs AFTER render 
-	*	always update URL
 	*   addTrigger -> tab addition
 	*   deleteTrigger -> tab deletion
 	**************************************** */
 	useEffect(() => {
 		if ((mounted === true) && (selected !== null)) {
-			seturl(TabUIHook.Container.stringify_tabs())
 			if ((pending && ErrorOut) === false) {
 				if (addTrigger === true) {
 					setPending(true)

@@ -81,7 +81,7 @@ export class TabUIContainer {
             if (unselectedNames.length > 0) {
                 return unselectedNames
             } else {
-                throw new Error(`No tabs are currently Unselected!`)
+                return []
             }
         } catch (e) {
             console.error(`Error in TabUIContainer.get_unselected(): ${e}`)
