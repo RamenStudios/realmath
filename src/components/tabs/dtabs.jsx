@@ -65,8 +65,8 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 		} catch (e) {
 			console.error(`error in Tabs.addRoutine: ${e}`)
 			ErrorOut.current = true
-			setPending(false)
 		}
+		setPending(false)
 	}
 	
 	/* ****************************************
@@ -120,6 +120,7 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	PENDING USEEFFECT
 	**************************************** */
 	useEffect(() => {
+		console.log(`PENDING USEEFFECT, PENDING=${pending}`)
 		if ((mounted === true) && (selected !== null)) {
 			if (pending === false) {
 				resetTriggers()
