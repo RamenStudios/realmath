@@ -1,23 +1,22 @@
-import { use, useEffect, useState } from 'react';
-import { HelpMessage } from './HelpMessage';
+import { use, useEffect, useState } from 'react'
+import { HelpMessage } from './HelpMessage'
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
 
-export const Modal = ({inlabel, incontent, vis, onclose}) =>
-{
-	console.log(`MODAL ${inlabel.current} ${vis}`)
-	
+export const RamenModal = ({inlabel, incontent, show, handleClose}) =>
+{	
 	const getContent = () => {
-		return inlabel.current == `HELP/FAQ` ? `${HelpMessage}` : incontent.current
+		return inlabel == `HELP/FAQ` ? HelpMessage : incontent
 	}
+
+	console.log(`returning modal`)
 	
-	<div className="modal" id={`modal ${vis ? 'open' : ''}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1">
-		<div className="modal-dialog">
-			<div className="modal-content">
-				<div className="modal-header">
-					<h1 className="modal-title fs-5" id="modalLabel">{inlabel.current}</h1>
-					<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={onclose}></button>
-				</div>
-				<div className="modal-body">{getContent}</div>
-			</div>
-		</div>
-	</div>
+	return (
+		<Modal show={show} onHide={handleClose}>
+			<Modal.Header closeButton>
+				<Modal.Title>{inlabel}</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>{incontent}</Modal.Body>
+		</Modal>
+	)
 }

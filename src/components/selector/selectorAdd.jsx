@@ -1,7 +1,12 @@
 import $ from 'jquery'
 
-export const SelectorAdd = ({userframe, setTrigger}) =>
+export const SelectorAdd = ({userframe, addSelection}) =>
 {
+
+    const triggerAddition = () => {
+        addSelection(document.getElementById('selector').value)
+    }
+
     if (userframe == 'desktop') {
         return(
             <div className="d-grid gap-2">
@@ -9,7 +14,7 @@ export const SelectorAdd = ({userframe, setTrigger}) =>
                     type="button" 
                     className="btn btn-primary" 
                     id="selectorAdd" 
-                    onClick={setTrigger}
+                    onClick={triggerAddition}
                 >
                     <div className="light-grey italic bold">ADD!</div>
                 </button>
@@ -22,7 +27,7 @@ export const SelectorAdd = ({userframe, setTrigger}) =>
                     type="button" 
                     className="btn btn-primary" 
                     id="selectorAdd" 
-                    onClick={setTrigger}
+                    onClick={triggerAddition}
                 >
                     <div className="mobile-body light-grey italic bold">ADD!</div>
                 </button>

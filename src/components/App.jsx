@@ -4,7 +4,7 @@ import { About } from "./about/dabout"
 import { Selector } from "./selector/dselector"
 import { Tabs } from "./tabs/dtabs"
 import { BottomButtons } from "./bottomButtons/dbuttons"
-import { Modal } from "../common/utilities/modal"
+import { RamenModal } from "../common/utilities/modal"
 import { QRModal } from "../common/utilities/qrModal"
 import { useState, useEffect, useRef } from "react"
 import { ErrorBoundary } from "./ErrorBoundary"
@@ -17,20 +17,28 @@ export default function App({userframe})
 
     const label = useRef('Placeholder')
     const content = useRef('Placeholder')
-    const [URL, setURL] = useState('/')
-    const [pending, setPending] = useState(false)
+    const URL = useRef('/')
+    
     const addTrigger = useRef(false)
     const deleteTrigger = useRef(false)
     const contentTrigger = useRef(false)
+    const modalTrigger = useRef(false)
+    
     const [eventTrigger, setEventTrigger] = useState(false)    // reload call
-    const [selectedComponent, setSelectedComponent] = useState('Function (xyz)')
-    const [qrModalVis, setqrModalVis] = useState(false)
-    const [modalVis, setModalVis] = useState(false)
+    const selectedComponent = useRef('Function (xyz)')
+    const [show, setShow] = useState(false)
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     
     /* updates component selected by selector */
     const updateSelectedRef = (selection) => {
         console.log(selection)
-        setSelectedComponent(selection)
+        if (addTrigger.current === false) {
+            modalTrigger.current = true
+        }
+        selectedComponent.current = (selection)
+        setEventTrigger(!eventTrigger)
     }
 
 	/* set modal content and adjust trigger flag if needed */
@@ -39,22 +47,25 @@ export default function App({userframe})
         content.current = newcontent
 		if (error !== null) {
             setTrigger(error, false)
-        } else {
-            setPending(true)
-        }
+        } 
     }
+
+    /* event calls on reload */
+    useEffect(() => {
+        console.log(`selectedComponent useEffect, contentTrigger is ${contentTrigger.current}`)
+        if (modalTrigger.current === true) {
+            modalTrigger.current = false
+            handleShow()
+        }
+    })
 
 	/* set qr url */
     const setURLHook = (urlin) => {
         console.log(`setting url`)
         label.current = `QR`
+        url.current = (`${BASE_URL}${urlin}`)
         setTrigger('content', false)
-        setURL(`${BASE_URL}${urlin}`)
     }
-    /* then pending */
-    useEffect(() => {
-        setPending(true)
-    }, [URL])
 
 	/* components can set these triggers for universal processes */
     const setTrigger = (trigger, flag, reload=true) => {
@@ -76,29 +87,16 @@ export default function App({userframe})
         }
     }
 
-    useEffect(() => {
-        console.log(`pending useeffect, currently ${pending}`)
-        if (pending === true) {
-            console.log(`label: ${label.current}`)
-            if (label.current === `QR`) {
-                setqrModalVis(true)
-            } else {
-                setModalVis(true)
-            }
-        }
-    }, [pending])
-
-    useEffect(() => {
-        console.log(`qr vis: ${qrModalVis}`)
-        console.log(`modal vis: ${modalVis}`)
-        setPending(false)
-    }, [qrModalVis, modalVis])
+    const resetTriggers = () => {
+        addTrigger.current = false
+        deleteTrigger.current = false
+        contentTrigger.current = false
+    }
 
     return(
         <div>
             <ErrorBoundary fallback={<p>Something went wrong</p>}>
-            <Modal inlabel={label} incontent={content} vis={modalVis} onclose={() => {setModalVis(false)}}/>
-            <QRModal url={URL} vis={qrModalVis} onclose={() => {setqrModalVis(false)}}/>
+            <RamenModal inlabel={label.current} incontent={content.current} show={show} handleClose={handleClose}/>
             <Header userframe={userframe}/>
             <div className="container-lg">
                 <About userframe={userframe}/>
@@ -117,6 +115,7 @@ export default function App({userframe})
                     contentTrigger={contentTrigger}
                     setTrigger={setTrigger}
                     selectedComponent={selectedComponent}
+                    resetTriggers={resetTriggers}
                 />
                 <BottomButtons userframe={userframe} setTrigger={setTrigger} setmodal={setModal}/>
             </div>

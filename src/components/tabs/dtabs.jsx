@@ -24,14 +24,14 @@ const TabUIHook = {}
 /* quick n dirty error flag solution */
 const ErrorOut = {current: false}
 
-export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, contentTrigger, setTrigger, selectedComponent}) => 
+export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, contentTrigger, setTrigger, selectedComponent, resetTriggers}) => 
 {
     console.log(`DTABS`)
 	/* ****************************************
 	INITIALIZING TABS
 	**************************************** */
 	/* # of tabs is dynamic */
-	const [numTabs, setnumTabs] = useState(1)
+	const numTabs = useRef(1)
 	/* selected/displayed tab affects render */
 	const [selected, setSelected] = useState(null)
 	/* pending flag prevents double render */
@@ -53,18 +53,19 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	ADD TAB
 	**************************************** */
 	const addRoutine = () => {
-		console.log('ADDROUTINE')
+		console.log(`ADDROUTINE, pending=${pending}`)
 		try {
-            const tempnumTabs = TabUIHook.Container.add(GraphKeys[selectedComponent], numTabs)
+            const tempnumTabs = TabUIHook.Container.add(GraphKeys[selectedComponent.current], numTabs.current)
 			if (tempnumTabs !== -1) {
-				setnumTabs(tempnumTabs)
+				numTabs.current = (tempnumTabs)
 			} else {
-				throw new Error(`Could not add new tab. Reversing trigger`)
+				console.error(`Could not add new tab. Reversing trigger`)
+				ErrorOut.current = true
 			}
 		} catch (e) {
+			console.error(`error in Tabs.addRoutine: ${e}`)
 			ErrorOut.current = true
 			setPending(false)
-			console.error(`error in Tabs.addRoutine: ${e}`)
 		}
 	}
 	
@@ -109,22 +110,30 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	useEffect(() => {
 		if ((mounted === true) && (selected !== null)) {
 			if (deleteTrigger === true) {
-				const tempnumTabs = numTabs + 1
-				setnumTabs(tempnumTabs)
+				const tempnumTabs = numTabs.current - 1
+				numTabs.current = (tempnumTabs)
 			}
 		}
 	}, [selected])
 	
 	/* ****************************************
-	NUMTABS USEEFFECT
+	PENDING USEEFFECT
 	**************************************** */
 	useEffect(() => {
 		if ((mounted === true) && (selected !== null)) {
-			if (pending === true) {
-				setPending(false)
+			if (pending === false) {
+				resetTriggers()
+			} else {
+				if (addTrigger.current === true) {
+					addRoutine()
+				} else if (deleteTrigger.current === true) {
+					deleteRoutine()
+				} else if (contentTrigger.current === true) {
+					contentRoutine()
+				}
 			}
 		}
-	}, [numTabs])
+	}, [pending])
 	
 	/* ****************************************
 	EXPORT TABS
@@ -146,27 +155,21 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	*   deleteTrigger -> tab deletion
 	**************************************** */
 	useEffect(() => {
+		console.log(`dtabs reloaded, mounted=${mounted}, selected=`)
+		console.log(selected)
+		console.log(`triggers are add=${addTrigger.current}, del=${deleteTrigger.current}, content=${contentTrigger.current}`)
 		if ((mounted === true) && (selected !== null)) {
 			if ((pending && ErrorOut) === false) {
-				if (addTrigger === true) {
+				if (addTrigger.current === true) {
 					setPending(true)
-					addRoutine()
-				} else if (deleteTrigger === true) {
+				} else if (deleteTrigger.current === true) {
 					setPending(true)
-					deleteRoutine()
-				} else if (contentTrigger === true) {
+				} else if (contentTrigger.current === true) {
 					setPending(true)
-					contentRoutine()
 				}
 			} else {
 				ErrorOut.current = false
-				if (addTrigger === true) {
-					setTrigger('add', false)
-				} else if (deleteTrigger === true) {
-					setTrigger('delete', false)
-				} else if (contentTrigger === true) {
-					setTrigger('content', false)
-				}
+				resetTriggers()
 			}
 		}
 	})
