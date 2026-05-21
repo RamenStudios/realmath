@@ -208,7 +208,7 @@ export class Tab
                                 id="deleteComponent" 
                                 type="button" 
                                 className="btn btn-danger" 
-                                onClick={() => {this.parent.setTrigger('delete', true)}}
+                                onClick={() => {this.parent.setTrigger(1, true)}}
                             >
                                 <div className="light-grey italic bold">REMOVE</div>
                             </button>
@@ -222,7 +222,7 @@ export class Tab
                             id="deleteComponent" 
                             type="button" 
                             className="btn btn-danger" 
-                            onClick={() => {this.parent.setTrigger('delete', true)}}
+                            onClick={() => {this.parent.setTrigger(1, true)}}
                         >
                             <div className="mobile-body light-grey italic bold">REMOVE</div>
                         </button>

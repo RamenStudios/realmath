@@ -4,17 +4,17 @@ import { SelectorDefine } from "./selectorDefine"
 import { GraphComponents } from '../../common/utilities/graphComponents'
 import { useState, useEffect, useRef } from "react"
 
-export const Selector = ({setmodal, userframe, setTrigger, updateSelectedRef}) =>
+export const Selector = ({setModal, userframe, setTrigger, eventTrigger, updateSelectedRef}) =>
 {
-    console.log(`DSELECTOR`)
+    console.log(`DSELECTOR ${eventTrigger}`)
 	
 	const defineSelection = (selection = 'Function (xyz)') => {
-		setmodal(`${selection} Definition`, `${GraphComponents[selection]['def']}`)
+		setModal(`${selection} Definition`, `${GraphComponents[selection]['def']}`)
 		updateSelectedRef(selection)
 	}
 	
 	const addSelection = (selection) => {
-		setTrigger('add', true, false)
+		setTrigger(0, true, false)
 		updateSelectedRef(selection)
 	}
 	

@@ -19,10 +19,19 @@ export default function App({userframe})
     const content = useRef('Placeholder')
     const URL = useRef('/')
     
-    const addTrigger = useRef(false)
-    const deleteTrigger = useRef(false)
-    const contentTrigger = useRef(false)
-    const modalTrigger = useRef(false)
+    /*
+        * Flag for the different event triggers
+        * * Single int switch is faster for such limited options
+        * 0 = add
+        * 1 = delete
+        * 3 = content (qr)
+        * 4 = modal
+        * -1 = default (no event)
+    */
+    const triggerFlag = useRef(-1)
+    const resetTriggers = () => {
+        setTrigger(-1, false)
+    }
     
     const [eventTrigger, setEventTrigger] = useState(false)    // reload call
     const selectedComponent = useRef('Function (xyz)')
@@ -34,27 +43,36 @@ export default function App({userframe})
     /* updates component selected by selector */
     const updateSelectedRef = (selection) => {
         console.log(selection)
-        if (addTrigger.current === false) {
-            modalTrigger.current = true
+        if (triggerFlag.current !== 0) {
+            triggerFlag.current = 4
         }
         selectedComponent.current = (selection)
         setEventTrigger(!eventTrigger)
     }
 
 	/* set modal content and adjust trigger flag if needed */
-    const setModal = (newlabel, newcontent, error = null) => {
+    /* signal tells us if anything diff from normal 
+        * signal ints correspond to trigger flag ints
+    */
+    const setModal = (newlabel, newcontent, signal = null) => {
         label.current = newlabel
         content.current = newcontent
-		if (error !== null) {
-            setTrigger(error, false)
-        } 
+		switch (signal) {
+            case null:
+                break
+            case 4:
+                setTrigger(signal, true)
+                break
+            default:
+                setTrigger(signal, false)
+        }
     }
 
     /* event calls on reload */
     useEffect(() => {
-        console.log(`selectedComponent useEffect, contentTrigger is ${contentTrigger.current}`)
-        if (modalTrigger.current === true) {
-            modalTrigger.current = false
+        console.log(`selectedComponent useEffect, triggerFlag is ${triggerFlag.current}`)
+        if (triggerFlag.current === 4) {
+            resetTriggers()
             handleShow()
         }
     })
@@ -64,33 +82,23 @@ export default function App({userframe})
         console.log(`setting url`)
         label.current = `QR`
         url.current = (`${BASE_URL}${urlin}`)
-        setTrigger('content', false)
+        setTrigger(3, false)
     }
 
 	/* components can set these triggers for universal processes */
     const setTrigger = (trigger, flag, reload=true) => {
-        console.log(`CALLING SETTRIGGER ${trigger} ${flag}`)
-        switch(trigger){
-            case 'add' || 0:
-                addTrigger.current = flag
-                break
-            case 'delete' || 1:
-                deleteTrigger.current = flag
-                break
-            case 'content' || 2:
-                label.current = `QR`
-                contentTrigger.current = flag
-                break
+        console.log(`CALLING SETTRIGGER ${trigger}`)
+        if (flag === true) {
+            console.log(`setting trigger to ${flag}`)
+            triggerFlag.current = trigger
+        } else {
+            triggerFlag.current = -1
         }
         if (reload) {
+            console.log(`setTrigger reload, eventTrigger currently ${eventTrigger}`)
+            console.log(`setting eventTrigger to ${!eventTrigger}`)
             setEventTrigger(!eventTrigger)
         }
-    }
-
-    const resetTriggers = () => {
-        addTrigger.current = false
-        deleteTrigger.current = false
-        contentTrigger.current = false
     }
 
     return(
@@ -101,23 +109,26 @@ export default function App({userframe})
             <div className="container-lg">
                 <About userframe={userframe}/>
                 <Selector 
-                    setmodal={setModal} 
+                    setModal={setModal} 
                     userframe={userframe} 
                     updateSelectedRef={updateSelectedRef}
                     setTrigger={setTrigger}
+                    eventTrigger={eventTrigger}
 				/>
                 <Tabs 
-                    setmodal={setModal} 
+                    setModal={setModal} 
                     seturl={setURLHook} 
                     userframe={userframe}
-                    addTrigger={addTrigger}
-                    deleteTrigger={deleteTrigger}
-                    contentTrigger={contentTrigger}
+                    triggerFlag={triggerFlag}
                     setTrigger={setTrigger}
                     selectedComponent={selectedComponent}
                     resetTriggers={resetTriggers}
                 />
-                <BottomButtons userframe={userframe} setTrigger={setTrigger} setmodal={setModal}/>
+                <BottomButtons 
+                    userframe={userframe} 
+                    setTrigger={setTrigger} 
+                    setModal={setModal}
+                />
             </div>
             <Footer userframe={userframe}/></ErrorBoundary>
         </div>

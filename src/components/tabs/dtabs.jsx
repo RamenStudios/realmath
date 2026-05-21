@@ -2,6 +2,16 @@ import { useRef, useState, useEffect } from 'react'
 import { TabUIContainer } from './tabuihook'
 import { CustomDiv } from '../../common/utilities/customPropDiv'
 
+/*
+	* Flag for the different event triggers
+	* * Single int switch is faster for such limited options
+	* 0 = add
+	* 1 = delete
+	* 3 = content (qr)
+	* 4 = modal
+	* -1 = default (no event)
+*/
+
 /* useful constants */
 const BASE_URL = 'https://ndlearning.8thwall.app/realmath/'
 const DELETION_ERROR_MSG = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
@@ -24,7 +34,7 @@ const TabUIHook = {}
 /* quick n dirty error flag solution */
 const ErrorOut = {current: false}
 
-export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, contentTrigger, setTrigger, selectedComponent, resetTriggers}) => 
+export const Tabs = ({setModal, seturl, userframe, triggerFlag, setTrigger, selectedComponent, resetTriggers}) => 
 {
     console.log(`DTABS`)
 	/* ****************************************
@@ -76,6 +86,7 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	const selectionAction = (name) => {
 		try {
 			const newSelection = TabUIHook.Container.get_selected(selected, name)
+			resetTriggers()
 			if (newSelection !== -1) {
 				setSelected(newSelection)
 			} else {
@@ -90,9 +101,13 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	DELETE TAB
 	**************************************** */
 	const deleteRoutine = () => {
+		console.log(`deleteRoutine running`)
 		const newSelection = TabUIHook.Container.del(selected)
 		try {
 			if (newSelection !== -1) {
+				numTabs.current -= 1
+				console.log(`newSelection after deletion is:`)
+				console.log(newSelection)
 				setSelected(newSelection)
 			} else {
 				throw new Error(`Error in Tabs.deleteRoutine`)
@@ -109,10 +124,7 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	**************************************** */
 	useEffect(() => {
 		if ((mounted === true) && (selected !== null)) {
-			if (deleteTrigger === true) {
-				const tempnumTabs = numTabs.current - 1
-				numTabs.current = (tempnumTabs)
-			}
+			setPending(false)
 		}
 	}, [selected])
 	
@@ -125,12 +137,16 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 			if (pending === false) {
 				resetTriggers()
 			} else {
-				if (addTrigger.current === true) {
-					addRoutine()
-				} else if (deleteTrigger.current === true) {
-					deleteRoutine()
-				} else if (contentTrigger.current === true) {
-					contentRoutine()
+				switch (triggerFlag.current) {
+					case 0:
+						addRoutine()
+						break
+					case 1:
+						deleteRoutine()
+						break
+					case 3:
+						contentRoutine()
+						break
 				}
 			}
 		}
@@ -144,7 +160,7 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 		if(url !== -1) {
 			seturl(`${BASE_URL}${url}`)
 		} else {
-			setmodal(`ERROR!`, INPUT_ERROR_MSG, 2)
+			setModal(`ERROR!`, INPUT_ERROR_MSG, 2)
 			ErrorOut.current = true
 		}
 	}
@@ -152,25 +168,21 @@ export const Tabs = ({setmodal, seturl, userframe, addTrigger, deleteTrigger, co
 	/* ****************************************
 	LISTENING FOR TRIGGERS FROM PARENT
 	*	useEffect ensures it runs AFTER render 
-	*   addTrigger -> tab addition
-	*   deleteTrigger -> tab deletion
 	**************************************** */
 	useEffect(() => {
 		console.log(`dtabs reloaded, mounted=${mounted}, selected=`)
 		console.log(selected)
-		console.log(`triggers are add=${addTrigger.current}, del=${deleteTrigger.current}, content=${contentTrigger.current}`)
-		if ((mounted === true) && (selected !== null)) {
-			if ((pending && ErrorOut) === false) {
-				if (addTrigger.current === true) {
-					setPending(true)
-				} else if (deleteTrigger.current === true) {
-					setPending(true)
-				} else if (contentTrigger.current === true) {
-					setPending(true)
+		console.log(`trigger is ${triggerFlag.current}`)
+		if (triggerFlag.current !== 4) {
+			if ((mounted === true) && (selected !== null)) {
+				if ((pending && ErrorOut) === false) {
+					if ((triggerFlag.current !== -1)) {
+						setPending(true)
+					}
+				} else {
+					ErrorOut.current = false
+					resetTriggers()
 				}
-			} else {
-				ErrorOut.current = false
-				resetTriggers()
 			}
 		}
 	})

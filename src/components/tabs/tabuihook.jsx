@@ -30,7 +30,7 @@ export class TabUIContainer {
 		}
     }
     
-    del (selected) {
+    del (selected, numTabs) {
 		if (numTabs > 1) {
 			try {
 			   this.get_selected(selected, this.Next, true)

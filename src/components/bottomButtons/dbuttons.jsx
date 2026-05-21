@@ -3,18 +3,18 @@ import { useState, useEffect } from 'react';
 import { HelpMessage } from "../../common/utilities/HelpMessage";
 import { ShowModal } from '../../common/services/ModalService';
 
-export const BottomButtons = ({userframe, setTrigger, setmodal}) =>
+export const BottomButtons = ({userframe, setTrigger, setModal}) =>
 {
     /* call content trigger */
     const clickTrigger = () => {
-        setTrigger('content', true)
+        setTrigger(3, true)
     }
 
     // sets new content and calls reload when button clicked
     const getHelp = () =>
     {
 			try {
-				setmodal(`HELP/FAQ`, `${HelpMessage}`)
+				setModal(`HELP/FAQ`, `${HelpMessage}`, 4)
 			} catch(e) {
 				console.log(`Cannot set modal in DBUTTONS: ${e}`)
 			}
