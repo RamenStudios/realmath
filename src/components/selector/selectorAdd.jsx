@@ -4,6 +4,7 @@ export const SelectorAdd = ({userframe, addSelection}) =>
 {
 
     const triggerAddition = () => {
+        console.log(`adding a ${document.getElementById('selector').value}`)
         addSelection(document.getElementById('selector').value)
     }
 

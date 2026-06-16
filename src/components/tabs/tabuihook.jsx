@@ -1,13 +1,13 @@
 import { TabTracker } from "./tabclasses";
 
 export class TabUIContainer {
-    constructor (setTrigger) {
+    constructor (setDel) {
         this.Trackers = {
-            Func: new TabTracker('Func', setTrigger, true),
-            Pt: new TabTracker('Pt', setTrigger),
-            Vec: new TabTracker('Vec', setTrigger),
-            VFld: new TabTracker('VFld', setTrigger),
-            SCrv: new TabTracker('SCrv', setTrigger),
+            Func: new TabTracker('Func', setDel, true),
+            Pt: new TabTracker('Pt', setDel),
+            Vec: new TabTracker('Vec', setDel),
+            VFld: new TabTracker('VFld', setDel),
+            SCrv: new TabTracker('SCrv', setDel),
         }
         this.Unselected = {}
         this.Next = null
@@ -33,8 +33,7 @@ export class TabUIContainer {
     del (selected, numTabs) {
 		if (numTabs > 1) {
 			try {
-			   this.get_selected(selected, this.Next, true)
-			   return 1
+			   return this.get_selected(selected, this.Next, true)
 			} catch (e) {
 				console.error(`Error in TabUIContainer.del(): ${e}`)
 				return -1

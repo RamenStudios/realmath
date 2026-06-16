@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useReducer } from 'react'
 import { TabUIContainer } from './tabuihook'
 import { CustomDiv } from '../../common/utilities/customPropDiv'
 
@@ -29,163 +29,119 @@ const GraphKeys =   {
                         "Vector Field": 'VFld', 
                         "Space Curve r(t)": 'SCrv',
                     }
-/* contains necessary UI functions while sidestepping SOME useState/useEffect mess */
-const TabUIHook = {}
-/* quick n dirty error flag solution */
-const ErrorOut = {current: false}
 
-export const Tabs = ({setModal, seturl, userframe, triggerFlag, setTrigger, selectedComponent, resetTriggers}) => 
+const reducer = (state, action) => {
+	const temp = {...state}
+	/* selection helper */
+	switch (action.type) {
+		case 'NUM':
+			temp.action = 'NUM'
+			console.log(action)
+			try {
+				temp.numTabs = action.numTabs
+			} catch (e) {
+				console.error(`error in numTab change: ${e}`)
+			}
+			if (action.selected !== undefined) {
+				temp.selected = {...action.selected}
+			}
+			break
+		case "SEL":
+			temp.action = 'SEL'
+			temp.actionCalls += 1
+			temp.newSel = action.name
+			break
+	}
+	return {...temp}
+}
+
+export const Tabs = ({userframe, parentDispatch, parentState, seturl}) => 
 {
     console.log(`DTABS`)
+
 	/* ****************************************
 	INITIALIZING TABS
 	**************************************** */
-	/* # of tabs is dynamic */
-	const numTabs = useRef(1)
-	/* selected/displayed tab affects render */
-	const [selected, setSelected] = useState(null)
-	/* pending flag prevents double render */
-	const [pending, setPending] = useState(false)
-	/* mount container and initial selection to app */
-    const [mounted, setMounted] = useState(false)
-	useEffect(() => {
-		if (mounted === false) {	
-			TabUIHook.Container = new TabUIContainer(setTrigger)
-			console.log('TABUIHOOK MOUNT SUCCESSFUL')
-			setMounted(true)
-        } else if (selected === null) {
-			setSelected(TabUIHook.Container.Trackers.Func.get_latest())
-			console.log('DEFAULT SELECTION MOUNT SUCCESSFUL')
+	const tabs = useRef(new TabUIContainer(() => {state.parentDispatch({type: 'DEL'})}))
+	const [state, dispatch] = useReducer(reducer, {
+		parentDispatch: parentDispatch,
+		numTabs: 1,
+		selected: tabs.current.Trackers.Func.get_latest(),
+		newSel: null,
+		action: null,
+		actionCalls: 0,
+	})
+
+	console.log(tabs.current)
+
+	/* url helper */
+	const sendURL = () => {
+		const url = tabs.current.stringify_tabs()
+		if(url !== -1) {
+			seturl(`${BASE_URL}${url}`)
 		}
-    }, [mounted])
+	}
 
 	/* ****************************************
-	ADD TAB
+	LISTENING FOR ADDITION/DELETION
 	**************************************** */
-	const addRoutine = () => {
-		console.log(`ADDROUTINE, pending=${pending}`)
-		try {
-            const tempnumTabs = TabUIHook.Container.add(GraphKeys[selectedComponent.current], numTabs.current)
-			if (tempnumTabs !== -1) {
-				numTabs.current = (tempnumTabs)
-			} else {
-				console.error(`Could not add new tab. Reversing trigger`)
-				ErrorOut.current = true
+	useEffect(() => {
+		if (parentState.action === 'ADD') {
+			if (state.numTabs < 3) {
+				const tempnumTabs = tabs.current.add(GraphKeys[parentState.component], state.numTabs)
+				if (tempnumTabs !== -1) {
+					sendURL()
+					dispatch({
+						type: 'NUM',
+						numTabs: tempnumTabs,
+					})
+				}
 			}
-		} catch (e) {
-			console.error(`error in Tabs.addRoutine: ${e}`)
-			ErrorOut.current = true
+		} else if (parentState.action === 'DEL') {
+			if (state.numTabs > 1) {
+				const newSelection = tabs.current.del(state.selected)
+				sendURL()
+				if (newSelection !== -1) {
+					dispatch({
+						type: 'NUM',
+						numTabs: state.numTabs - 1,
+						selected: newSelection,
+					})
+				}
+			}
 		}
-		setPending(false)
-	}
-	
+	}, [parentState.actionCalls])
+
 	/* ****************************************
-	CHANGE SELECTED TAB
+	LISTENING FOR CHANGE DISPATCH
+	**************************************** */
+	useEffect(() => {
+		if (state.action === 'SEL') {
+			try {
+				console.log(tabs.current)
+				const newSelection = tabs.current.get_selected(state.selected, state.newSel)
+				console.log(tabs.current)
+				if (newSelection !== -1) {
+					state.selected = newSelection
+				} else {
+					throw new Error(`Error in Tabs.selectionAction`)
+				}
+			} catch (e) {
+				console.error(`${e}`)
+			}
+		}
+	}, state.actionCalls)
+
+	/* ****************************************
+	ONCLICK CHANGE SELECTED TAB
 	**************************************** */
 	/* triggers the change event on button click */
 	const selectionAction = (name) => {
-		try {
-			const newSelection = TabUIHook.Container.get_selected(selected, name)
-			resetTriggers()
-			if (newSelection !== -1) {
-				setSelected(newSelection)
-			} else {
-				throw new Error(`Error in Tabs.selectionAction`)
-			}
-		} catch (e) {
-			console.error(`${e}`)
-		}
+		dispatch({
+			type: 'SEL',
+			name: name
+		})
 	}
-
-	/* ****************************************
-	DELETE TAB
-	**************************************** */
-	const deleteRoutine = () => {
-		console.log(`deleteRoutine running`)
-		const newSelection = TabUIHook.Container.del(selected)
-		try {
-			if (newSelection !== -1) {
-				numTabs.current -= 1
-				console.log(`newSelection after deletion is:`)
-				console.log(newSelection)
-				setSelected(newSelection)
-			} else {
-				throw new Error(`Error in Tabs.deleteRoutine`)
-			}
-		} catch (e) {
-			ErrorOut.current = true
-			setPending(false)
-			console.error(`${e}`)
-		}
-	}
-	
-	/* ****************************************
-	SELECTED USEEFFECT
-	**************************************** */
-	useEffect(() => {
-		if ((mounted === true) && (selected !== null)) {
-			setPending(false)
-		}
-	}, [selected])
-	
-	/* ****************************************
-	PENDING USEEFFECT
-	**************************************** */
-	useEffect(() => {
-		console.log(`PENDING USEEFFECT, PENDING=${pending}`)
-		if ((mounted === true) && (selected !== null)) {
-			if (pending === false) {
-				resetTriggers()
-			} else {
-				switch (triggerFlag.current) {
-					case 0:
-						addRoutine()
-						break
-					case 1:
-						deleteRoutine()
-						break
-					case 3:
-						contentRoutine()
-						break
-				}
-			}
-		}
-	}, [pending])
-	
-	/* ****************************************
-	EXPORT TABS
-	**************************************** */
-	const contentRoutine = () => {
-		const url = TabUIHook.Container.stringify_tabs()
-		if(url !== -1) {
-			seturl(`${BASE_URL}${url}`)
-		} else {
-			setModal(`ERROR!`, INPUT_ERROR_MSG, 2)
-			ErrorOut.current = true
-		}
-	}
-
-	/* ****************************************
-	LISTENING FOR TRIGGERS FROM PARENT
-	*	useEffect ensures it runs AFTER render 
-	**************************************** */
-	useEffect(() => {
-		console.log(`dtabs reloaded, mounted=${mounted}, selected=`)
-		console.log(selected)
-		console.log(`trigger is ${triggerFlag.current}`)
-		if (triggerFlag.current !== 4) {
-			if ((mounted === true) && (selected !== null)) {
-				if ((pending && ErrorOut) === false) {
-					if ((triggerFlag.current !== -1)) {
-						setPending(true)
-					}
-				} else {
-					ErrorOut.current = false
-					resetTriggers()
-				}
-			}
-		}
-	})
 
 	/* ****************************************
 	RENDERING
@@ -193,7 +149,7 @@ export const Tabs = ({setModal, seturl, userframe, triggerFlag, setTrigger, sele
 	const getCard = () => {
         console.log('getting card')
         try {
-            return selected.display(userframe)
+            return state.selected.display(userframe)
         } catch (e) {
             console.log(`error with displaying card: ${e}`)
             return `N/A`
@@ -203,7 +159,7 @@ export const Tabs = ({setModal, seturl, userframe, triggerFlag, setTrigger, sele
     const getSelectedDisplay = () => {
         console.log('getting selected name')
         try {
-            return selected.name
+            return state.selected.name
         } catch (e) {
             console.log(`error with displaying name: ${e}`)
             return `N/A`
@@ -212,7 +168,7 @@ export const Tabs = ({setModal, seturl, userframe, triggerFlag, setTrigger, sele
 
 	const get_unselected_names = () => {
 		try {
-			const unselected = TabUIHook.Container.get_unselected()
+			const unselected = tabs.current.get_unselected()
 			return unselected
 		} catch (e) {
 			console.error(`Error in Tabs.get_unselected_names: ${e}`)

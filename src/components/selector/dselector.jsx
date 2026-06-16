@@ -4,18 +4,24 @@ import { SelectorDefine } from "./selectorDefine"
 import { GraphComponents } from '../../common/utilities/graphComponents'
 import { useState, useEffect, useRef } from "react"
 
-export const Selector = ({setModal, userframe, setTrigger, eventTrigger, updateSelectedRef}) =>
+export const Selector = ({parentDispatch, userframe}) =>
 {
-    console.log(`DSELECTOR ${eventTrigger}`)
+    console.log(`DSELECTOR`)
 	
 	const defineSelection = (selection = 'Function (xyz)') => {
-		setModal(`${selection} Definition`, `${GraphComponents[selection]['def']}`)
-		updateSelectedRef(selection)
+		parentDispatch({
+            type: 'DEF',
+            label: `${selection} Definition`, 
+            content: `${GraphComponents[selection]['def']}`,
+            component: selection,
+        })
 	}
 	
 	const addSelection = (selection) => {
-		setTrigger(0, true, false)
-		updateSelectedRef(selection)
+		parentDispatch({
+            type: 'ADD',
+            component: selection,
+        })
 	}
 	
     if(userframe === 'desktop'){

@@ -6,131 +6,106 @@ import { Tabs } from "./tabs/dtabs"
 import { BottomButtons } from "./bottomButtons/dbuttons"
 import { RamenModal } from "../common/utilities/modal"
 import { QRModal } from "../common/utilities/qrModal"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useReducer } from "react"
 import { ErrorBoundary } from "./ErrorBoundary"
 
 const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 
+const reducer = (state, action) => {
+    const temp = {...state}
+    temp.actionCalls += 1
+    temp.action = action.type
+    // this is just a helper
+    const updateMod = () => {
+        temp.label = action.label
+        temp.content = action.content
+        temp.vis = action.vis
+    }
+    // main switches
+    switch (action.type) {
+        case 'MOD':
+            updateMod()
+            break
+        case 'DEF':
+            updateMod()
+            temp.component = action.component
+            break
+        case 'VIS':
+            temp.vis = action.vis
+            break
+        case 'ADD':
+            temp.component = action.component
+            break
+        default:
+            console.log('no action taken')
+    }
+    return {...temp}
+}
+
+const initializer = (state) => {
+    return {...state, 
+        component: 'Function (xyz)',
+        label: 'Placeholder',
+        content: 'Placeholder',
+    }
+}
+
 export default function App({userframe})
 {
     console.log(`APP: User is accessing from ${userframe}`)
+    /* ****************************************
+    INITIALIZING APP STATE
+    **************************************** */
+    const [state, dispatch] = useReducer(reducer, {
+        component: null,
+        label: null,
+        content: null,
+        vis: false,
+        action: null,
+        actionCalls: 0,
+    }, initializer)
+    const url = useRef('/')
 
-    const label = useRef('Placeholder')
-    const content = useRef('Placeholder')
-    const URL = useRef('/')
-    
-    /*
-        * Flag for the different event triggers
-        * * Single int switch is faster for such limited options
-        * 0 = add
-        * 1 = delete
-        * 3 = content (qr)
-        * 4 = modal
-        * -1 = default (no event)
-    */
-    const triggerFlag = useRef(-1)
-    const resetTriggers = () => {
-        setTrigger(-1, false)
+    const handleClose = () => dispatch({type: 'VIS', vis: false})
+    const handleShow = () => dispatch({type: 'VIS', vis: true})
+
+    const seturl = (input) => {
+        url.current = `${input}`
     }
-    
-    const [eventTrigger, setEventTrigger] = useState(false)    // reload call
-    const selectedComponent = useRef('Function (xyz)')
-    const [show, setShow] = useState(false)
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-    
-    /* updates component selected by selector */
-    const updateSelectedRef = (selection) => {
-        console.log(selection)
-        if (triggerFlag.current !== 0) {
-            triggerFlag.current = 4
-        }
-        selectedComponent.current = (selection)
-        setEventTrigger(!eventTrigger)
-    }
-
-	/* set modal content and adjust trigger flag if needed */
-    /* signal tells us if anything diff from normal 
-        * signal ints correspond to trigger flag ints
-    */
-    const setModal = (newlabel, newcontent, signal = null) => {
-        label.current = newlabel
-        content.current = newcontent
-		switch (signal) {
-            case null:
-                break
-            case 4:
-                setTrigger(signal, true)
-                break
-            default:
-                setTrigger(signal, false)
-        }
-    }
-
-    /* event calls on reload */
-    useEffect(() => {
-        console.log(`selectedComponent useEffect, triggerFlag is ${triggerFlag.current}`)
-        if (triggerFlag.current === 4) {
-            resetTriggers()
-            handleShow()
-        }
-    })
-
-	/* set qr url */
-    const setURLHook = (urlin) => {
-        console.log(`setting url`)
-        label.current = `QR`
-        url.current = (`${BASE_URL}${urlin}`)
-        setTrigger(3, false)
-    }
-
-	/* components can set these triggers for universal processes */
-    const setTrigger = (trigger, flag, reload=true) => {
-        console.log(`CALLING SETTRIGGER ${trigger}`)
-        if (flag === true) {
-            console.log(`setting trigger to ${flag}`)
-            triggerFlag.current = trigger
-        } else {
-            triggerFlag.current = -1
-        }
-        if (reload) {
-            console.log(`setTrigger reload, eventTrigger currently ${eventTrigger}`)
-            console.log(`setting eventTrigger to ${!eventTrigger}`)
-            setEventTrigger(!eventTrigger)
-        }
+    const showURL = () => {
+        dispatch({
+            type: 'MOD',
+            label: null,
+            content: `${url.current}`,
+            vis: true
+        })
     }
 
     return(
         <div>
             <ErrorBoundary fallback={<p>Something went wrong</p>}>
-            <RamenModal inlabel={label.current} incontent={content.current} show={show} handleClose={handleClose}/>
+            <RamenModal parentState={state} handleClose={handleClose}/>
             <Header userframe={userframe}/>
             <div className="container-lg">
                 <About userframe={userframe}/>
                 <Selector 
-                    setModal={setModal} 
-                    userframe={userframe} 
-                    updateSelectedRef={updateSelectedRef}
-                    setTrigger={setTrigger}
-                    eventTrigger={eventTrigger}
+                    parentDispatch={dispatch}
+                    userframe={userframe}
 				/>
                 <Tabs 
-                    setModal={setModal} 
-                    seturl={setURLHook} 
+                    parentDispatch={dispatch}
                     userframe={userframe}
-                    triggerFlag={triggerFlag}
-                    setTrigger={setTrigger}
-                    selectedComponent={selectedComponent}
-                    resetTriggers={resetTriggers}
+                    parentState={state}
+                    seturl={seturl}
                 />
                 <BottomButtons 
                     userframe={userframe} 
-                    setTrigger={setTrigger} 
-                    setModal={setModal}
+                    parentDispatch={dispatch}
+                    showURL={showURL}
                 />
             </div>
-            <Footer userframe={userframe}/></ErrorBoundary>
+            <Footer userframe={userframe}/>
+            </ErrorBoundary>
         </div>
     )
 }

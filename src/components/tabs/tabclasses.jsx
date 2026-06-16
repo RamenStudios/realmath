@@ -208,7 +208,7 @@ export class Tab
                                 id="deleteComponent" 
                                 type="button" 
                                 className="btn btn-danger" 
-                                onClick={() => {this.parent.setTrigger(1, true)}}
+                                onClick={() => {this.parent.setDel()}}
                             >
                                 <div className="light-grey italic bold">REMOVE</div>
                             </button>
@@ -222,7 +222,7 @@ export class Tab
                             id="deleteComponent" 
                             type="button" 
                             className="btn btn-danger" 
-                            onClick={() => {this.parent.setTrigger(1, true)}}
+                            onClick={() => {this.parent.setDel()}}
                         >
                             <div className="mobile-body light-grey italic bold">REMOVE</div>
                         </button>
@@ -244,11 +244,11 @@ export class Tab
 /* ************************************ */
 export class TabTracker
 {
-    constructor(type, setTrigger, defaultIn=false) {
+    constructor(type, setDel, defaultIn=false) {
         this.type = type
         this.current = {}
         this.index = 0
-        this.setTrigger = setTrigger
+        this.setDel = setDel
         this.default = defaultIn
         if(defaultIn)
         {
