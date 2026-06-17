@@ -13,7 +13,6 @@ const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 
 const reducer = (state, action) => {
     const temp = {...state}
-    temp.actionCalls += 1
     temp.action = action.type
     // this is just a helper
     const updateMod = () => {
@@ -35,6 +34,13 @@ const reducer = (state, action) => {
             break
         case 'ADD':
             temp.component = action.component
+            temp.actionCalls += 1
+            break
+        case 'DEL':
+            temp.actionCalls += 1
+            break
+        case 'QR':
+            temp.actionCalls += 1
             break
         default:
             console.log('no action taken')
@@ -69,16 +75,26 @@ export default function App({userframe})
     const handleClose = () => dispatch({type: 'VIS', vis: false})
     const handleShow = () => dispatch({type: 'VIS', vis: true})
 
-    const seturl = (input) => {
-        url.current = `${input}`
+    const showURL = (act = false) => {
+        if (act === true) {
+            dispatch({
+                type: 'MOD',
+                label: null,
+                content: `${url.current}`,
+                vis: true
+            })
+        } else {
+            dispatch({
+                type: 'QR'
+            })
+        }
     }
-    const showURL = () => {
-        dispatch({
-            type: 'MOD',
-            label: null,
-            content: `${url.current}`,
-            vis: true
-        })
+
+    const seturl = (input, act = false) => {
+        url.current = `${input}`
+        if (act === true) {
+            showURL(act)
+        }
     }
 
     return(

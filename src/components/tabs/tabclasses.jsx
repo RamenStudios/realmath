@@ -64,14 +64,17 @@ export class Tab
         this.set_update()
     }
     // just makes life easier tbh
-    select() {
+    select () {
         this.selected = true
     }
-    deselect() {
+    deselect () {
         this.selected = false
     }
+    get_loc () {
+        return [this.parent.type, this.index]
+    }
     // caches value, making it accessible even when another tab is shown
-    set_update() {
+    set_update () {
         this.update = () => 
         {
             /* switch case is for object data saving */
@@ -147,7 +150,6 @@ export class Tab
                     } else {
                         // regex to detect variables
                         const regex = /[^a-z]*(?<var>[xyz])/g
-                        console.log(inputval.search(regex))
                         if (inputval.search(regex) === -1) {
                             throw new Error(`no valid variables found`)
                         }
@@ -195,11 +197,10 @@ export class Tab
         return true
     }
     // passes any necessary input to display container before user sees it
-    display(userframe)
-    {
+    display (userframe) {
         console.log(`displaying card`)
         const button = () => {
-            if(userframe === 'desktop'){
+            if (userframe === 'desktop') {
                 return(
                     <div className="row mt-2 justify-content-end">
                         <div className="col col-8 d-md-none"></div>
@@ -215,7 +216,7 @@ export class Tab
                         </div>
                     </div>
                 )
-            }else{
+            } else {
                 return(
                     <div className="row mt-2">
                         <button 
@@ -230,7 +231,7 @@ export class Tab
                 )
             }
         }
-        return(
+        return (
 			<div className="card">
 				<div className="card-body">
 					<div className="row justify-content-center">{this.card(this.props, this, userframe)}</div>
@@ -255,6 +256,10 @@ export class TabTracker
             console.error(`default tracker detected`)
             this.add(0)
         }
+    }
+
+    get_at (index) {
+        return this.current[index]
     }
 	
     get_latest () {
@@ -285,8 +290,13 @@ export class TabTracker
 	
 	stringify () {
 		const tempDict = {}
+        console.log(`stringify for ${this.type} tracker`)
+        console.log(this.current)
+        if (Object.keys(this.current).length < 1) {
+            console.error(`No tabs in this tracker!`)
+            return 0
+        }
 		try {
-			const tempDict = {}
 			for (const key in this.current) {
 				if (this.current[key].check_valid() === true) {
 					tempDict[this.current[key].name] = this.current[key].props
@@ -296,6 +306,7 @@ export class TabTracker
 			}
 		} catch (e) {
             console.error(`Error with ${this.type} TAB STRINGIFY: ${e}`)
+            return -1
         }
 		return tempDict
 	}

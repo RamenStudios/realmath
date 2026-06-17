@@ -1,6 +1,5 @@
 import "https://esm.run/@cortex-js/compute-engine";
 import { useState, useEffect } from 'react';
-import { HelpMessage } from "../../common/utilities/HelpMessage";
 import { ShowModal } from '../../common/services/ModalService';
 
 export const BottomButtons = ({userframe, parentDispatch, showURL}) =>
@@ -16,7 +15,8 @@ export const BottomButtons = ({userframe, parentDispatch, showURL}) =>
         parentDispatch({
             type: 'MOD',
             label: 'HELP/FAQ',
-            content: `${HelpMessage}`,
+            content: null,
+            vis: true,
         })
     }
 

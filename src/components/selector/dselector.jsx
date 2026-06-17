@@ -14,6 +14,7 @@ export const Selector = ({parentDispatch, userframe}) =>
             label: `${selection} Definition`, 
             content: `${GraphComponents[selection]['def']}`,
             component: selection,
+            vis: true,
         })
 	}
 	

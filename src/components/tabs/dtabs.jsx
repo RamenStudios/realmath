@@ -1,21 +1,11 @@
 import { useRef, useState, useEffect, useReducer } from 'react'
 import { TabUIContainer } from './tabuihook'
-import { CustomDiv } from '../../common/utilities/customPropDiv'
-
-/*
-	* Flag for the different event triggers
-	* * Single int switch is faster for such limited options
-	* 0 = add
-	* 1 = delete
-	* 3 = content (qr)
-	* 4 = modal
-	* -1 = default (no event)
-*/
 
 /* useful constants */
+const TAB_LIMIT = 5
 const BASE_URL = 'https://ndlearning.8thwall.app/realmath/'
 const DELETION_ERROR_MSG = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
-const LIMIT_ERROR_MSG = `There can only be a maximum of three components!`
+const LIMIT_ERROR_MSG = `There can only be a maximum of ${TAB_LIMIT} components! This is to prevent issues with rendering and latency.`
 const INPUT_ERROR_MSG = `If you are seeing this message, there was a problem with your inputs! 
                          Input fields cannot be left empty. Function inputs must include at least one variable on at least one side of the equation.
                          Additionally, the assignment character '=' will cause your input to throw an error!`
@@ -43,13 +33,17 @@ const reducer = (state, action) => {
 				console.error(`error in numTab change: ${e}`)
 			}
 			if (action.selected !== undefined) {
-				temp.selected = {...action.selected}
+				temp.selected = [...action.selected]
 			}
 			break
 		case "SEL":
 			temp.action = 'SEL'
-			temp.actionCalls += 1
-			temp.newSel = action.name
+			if (action.newloc !== undefined) {
+				temp.newSel = [...action.newloc]
+				temp.actionCalls += 1
+			} else {
+				temp.selected = [...action.loc]
+			}
 			break
 	}
 	return {...temp}
@@ -66,7 +60,7 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 	const [state, dispatch] = useReducer(reducer, {
 		parentDispatch: parentDispatch,
 		numTabs: 1,
-		selected: tabs.current.Trackers.Func.get_latest(),
+		selected: ['Func', 1],
 		newSel: null,
 		action: null,
 		actionCalls: 0,
@@ -74,11 +68,23 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 
 	console.log(tabs.current)
 
+	/* modal helper */
+	const sendModal = (label, content) => {
+		parentDispatch({
+			type: 'MOD',
+			label: label,
+			content: content,
+			vis: true,
+		})
+	}
+
 	/* url helper */
-	const sendURL = () => {
+	const sendURL = (act = false) => {
 		const url = tabs.current.stringify_tabs()
 		if(url !== -1) {
-			seturl(`${BASE_URL}${url}`)
+			seturl(`${BASE_URL}${url}`, act)
+		} else if (act === true) {
+			sendModal('INPUT ERROR', INPUT_ERROR_MSG)
 		}
 	}
 
@@ -86,29 +92,41 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 	LISTENING FOR ADDITION/DELETION
 	**************************************** */
 	useEffect(() => {
-		if (parentState.action === 'ADD') {
-			if (state.numTabs < 3) {
-				const tempnumTabs = tabs.current.add(GraphKeys[parentState.component], state.numTabs)
-				if (tempnumTabs !== -1) {
+		switch (parentState.action) {
+			case 'ADD':
+				if (state.numTabs < TAB_LIMIT) {
+					const tempnumTabs = tabs.current.add(GraphKeys[parentState.component], state.numTabs)
+					if (tempnumTabs !== -1) {
+						sendURL()
+						dispatch({
+							type: 'NUM',
+							numTabs: tempnumTabs,
+						})
+					}
+				} else {
+					sendModal('COMPONENT LIMIT REACHED', LIMIT_ERROR_MSG)
+				}
+				break
+			case 'DEL':
+				if (state.numTabs > 1) {
+					const newSelection = tabs.current.del(state.selected)
 					sendURL()
-					dispatch({
-						type: 'NUM',
-						numTabs: tempnumTabs,
-					})
+					if (newSelection !== -1) {
+						dispatch({
+							type: 'NUM',
+							numTabs: state.numTabs - 1,
+							selected: newSelection.get_loc(),
+						})
+					}
+				} else {
+					sendModal('DELETION ERROR', DELETION_ERROR_MSG)
 				}
-			}
-		} else if (parentState.action === 'DEL') {
-			if (state.numTabs > 1) {
-				const newSelection = tabs.current.del(state.selected)
-				sendURL()
-				if (newSelection !== -1) {
-					dispatch({
-						type: 'NUM',
-						numTabs: state.numTabs - 1,
-						selected: newSelection,
-					})
-				}
-			}
+				break
+			case 'QR':
+				sendURL(true)
+				break
+			default:
+				console.log('no action triggered by parent')
 		}
 	}, [parentState.actionCalls])
 
@@ -118,11 +136,12 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 	useEffect(() => {
 		if (state.action === 'SEL') {
 			try {
-				console.log(tabs.current)
 				const newSelection = tabs.current.get_selected(state.selected, state.newSel)
-				console.log(tabs.current)
 				if (newSelection !== -1) {
-					state.selected = newSelection
+					dispatch({
+						type: 'SEL',
+						loc: newSelection.get_loc()
+					})
 				} else {
 					throw new Error(`Error in Tabs.selectionAction`)
 				}
@@ -130,16 +149,16 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 				console.error(`${e}`)
 			}
 		}
-	}, state.actionCalls)
+	}, [state.actionCalls])
 
 	/* ****************************************
 	ONCLICK CHANGE SELECTED TAB
 	**************************************** */
 	/* triggers the change event on button click */
-	const selectionAction = (name) => {
+	const selectionAction = (loc) => {
 		dispatch({
 			type: 'SEL',
-			name: name
+			newloc: loc
 		})
 	}
 
@@ -149,29 +168,29 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 	const getCard = () => {
         console.log('getting card')
         try {
-            return state.selected.display(userframe)
+            return tabs.current.get_at(state.selected).display(userframe)
         } catch (e) {
-            console.log(`error with displaying card: ${e}`)
+            console.error(`error with displaying card: ${e}`)
             return `N/A`
         }
 	}
 
-    const getSelectedDisplay = () => {
+    const getName = () => {
         console.log('getting selected name')
         try {
-            return state.selected.name
+            return tabs.current.get_at(state.selected).name
         } catch (e) {
-            console.log(`error with displaying name: ${e}`)
+            console.error(`error with displaying name: ${e}`)
             return `N/A`
         }
     }
 
-	const get_unselected_names = () => {
+	const get_unselected = () => {
 		try {
 			const unselected = tabs.current.get_unselected()
 			return unselected
 		} catch (e) {
-			console.error(`Error in Tabs.get_unselected_names: ${e}`)
+			console.error(`Error in Tabs.get_unselected: ${e}`)
 			return []
 		}
 	}
@@ -180,21 +199,21 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 		<div className="container container-lg my-3">
 			<ul className="nav nav-tabs">
 				<li className="nav-item">
-					<a className="nav-link active" aria-current="page" href="#"><div className="mobile-body">{getSelectedDisplay()}</div></a>
+					<a className="nav-link active" aria-current="page" href="#"><div className="mobile-body">{getName()}</div></a>
 				</li>
 				{
 					<>
-						{(get_unselected_names()).map((tab) => (
+						{(get_unselected()).map((tab) => (
 							<li className="page-item">
-								<a className="page-link" href="#" onClick={() => {selectionAction(tab)}}>
-									<div className="mobile-body">{tab}</div>
+								<a className="page-link" href="#" onClick={() => {selectionAction(tab[1])}}>
+									<div className="mobile-body">{tab[0]}</div>
 								</a>
 							</li>
 						))}
 					</>
 				}
 			</ul>
-			{getCard(userframe)}
+			{getCard()}
 		</div>
 	)
 }
