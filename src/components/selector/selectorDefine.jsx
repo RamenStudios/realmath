@@ -1,7 +1,3 @@
-import { useState, useEffect, useRef } from 'react';
-import { GraphComponents } from '../../common/utilities/graphComponents';
-import { ShowModal } from '../../common/services/ModalService';
-
 export const SelectorDefine = ({userframe, defineSelection}) =>
 {
     const defineSelectedComponent = () => {

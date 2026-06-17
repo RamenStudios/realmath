@@ -11,14 +11,14 @@ const INPUT_ERROR_MSG = `If you are seeing this message, there was a problem wit
                          Additionally, the assignment character '=' will cause your input to throw an error!`
 const VIEW_ERROR_MSG = `You should not be able to see this message! If you can, please report it as a bug.`
 
-/* limit elements to avoid crashes */
-const GraphKeys =   {
-                        "Function (xyz)": 'Func', 
-                        "Point (xyz)": 'Pt', 
-                        "Vector <a,b,c>": 'Vec', 
-                        "Vector Field": 'VFld', 
-                        "Space Curve r(t)": 'SCrv',
-                    }
+/* shorten GraphKeys for display */
+const GraphAlts =   [
+						'Func',
+						'Pt',
+						'Vec',
+						'VFld',
+						'SCrv'
+					]
 
 const reducer = (state, action) => {
 	const temp = {...state}
@@ -95,7 +95,7 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 		switch (parentState.action) {
 			case 'ADD':
 				if (state.numTabs < TAB_LIMIT) {
-					const tempnumTabs = tabs.current.add(GraphKeys[parentState.component], state.numTabs)
+					const tempnumTabs = tabs.current.add(GraphAlts[parentState.component], state.numTabs)
 					if (tempnumTabs !== -1) {
 						sendURL()
 						dispatch({

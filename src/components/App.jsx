@@ -1,16 +1,35 @@
-import { Footer } from "./footer/dfooter"
-import { Header } from "./header/dheader"
-import { About } from "./about/dabout"
-import { Selector } from "./selector/dselector"
-import { Tabs } from "./tabs/dtabs"
-import { BottomButtons } from "./bottomButtons/dbuttons"
-import { RamenModal } from "../common/utilities/modal"
-import { QRModal } from "../common/utilities/qrModal"
-import { useState, useEffect, useRef, useReducer } from "react"
+import { Footer } from "./Footer"
+import { Header } from "./Header"
+import { About } from "./About"
+import { Selector } from "./Selector/Selector"
+import { Tabs } from "./Tabs/dtabs"
+import { BottomButtons } from "./Buttons"
+import { RamenModal } from "./RamenModal"
+import { useRef, useReducer } from "react"
 import { ErrorBoundary } from "./ErrorBoundary"
 
 const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
+/* *********************************
+*   Int switch makes life simpler
+*   * 0 = Function (xyz)
+*   * 1 = Point (xyz)
+*   * 2 = Vector <a,b,c>
+*   * 3 = Vector Field
+*   * 4 = Space Curve r(t)
+********************************* */
+const GraphKeys =   [
+                        "Function (xyz)", 
+                        "Point (xyz)", 
+                        "Vector <a,b,c>", 
+                        "Vector Field", 
+                        "Space Curve r(t)"
+                    ]
 
+/* ****************************************
+*   REDUCER DISPATCH FOR APP USEREDUCER
+*   *   actionCall changes allow us to signal
+    *   state changes in child components
+**************************************** */
 const reducer = (state, action) => {
     const temp = {...state}
     temp.action = action.type
@@ -19,6 +38,7 @@ const reducer = (state, action) => {
         temp.label = action.label
         temp.content = action.content
         temp.vis = action.vis
+        temp.modalCalls += 1
     }
     // main switches
     switch (action.type) {
@@ -26,10 +46,12 @@ const reducer = (state, action) => {
             updateMod()
             break
         case 'DEF':
-            updateMod()
             temp.component = action.component
+            updateMod()
+            temp.label = action.type
             break
         case 'VIS':
+            console.log(`modal vis ${action.vis}`)
             temp.vis = action.vis
             break
         case 'ADD':
@@ -48,14 +70,6 @@ const reducer = (state, action) => {
     return {...temp}
 }
 
-const initializer = (state) => {
-    return {...state, 
-        component: 'Function (xyz)',
-        label: 'Placeholder',
-        content: 'Placeholder',
-    }
-}
-
 export default function App({userframe})
 {
     console.log(`APP: User is accessing from ${userframe}`)
@@ -63,13 +77,14 @@ export default function App({userframe})
     INITIALIZING APP STATE
     **************************************** */
     const [state, dispatch] = useReducer(reducer, {
-        component: null,
-        label: null,
-        content: null,
+        component: 0,
+        label: 'DEF',
+        content: 'Placeholder',
         vis: false,
         action: null,
         actionCalls: 0,
-    }, initializer)
+        modalCalls: 0,
+    })
     const url = useRef('/')
 
     const handleClose = () => dispatch({type: 'VIS', vis: false})
@@ -100,17 +115,23 @@ export default function App({userframe})
     return(
         <div>
             <ErrorBoundary fallback={<p>Something went wrong</p>}>
-            <RamenModal parentState={state} handleClose={handleClose}/>
+            <RamenModal 
+                parentState={state} 
+                handleClose={handleClose}
+                GraphKeys={GraphKeys}
+            />
             <Header userframe={userframe}/>
             <div className="container-lg">
                 <About userframe={userframe}/>
                 <Selector 
                     parentDispatch={dispatch}
                     userframe={userframe}
+                    GraphKeys={GraphKeys}
 				/>
                 <Tabs 
                     parentDispatch={dispatch}
                     userframe={userframe}
+                    GraphKeys={GraphKeys}
                     parentState={state}
                     seturl={seturl}
                 />

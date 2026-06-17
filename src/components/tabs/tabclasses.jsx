@@ -1,11 +1,8 @@
-import { FunctionInputContainer } from "./inputTypes/function"
-import { PointInputContainer } from "./inputTypes/point";
-import { VectorInputContainer } from "./inputTypes/vector";
-import { SpaceCurveInputContainer } from "./inputTypes/spacecurve";
-import { VectorFieldInputContainer } from "./inputTypes/vectorfield";
-import { useRef, useState, useEffect } from 'react';
-
-// TODO: FIX DELETION
+import { FunctionInputContainer } from "../../common/utilities/inputTypes/function"
+import { PointInputContainer } from "../../common/utilities/inputTypes/point"
+import { VectorInputContainer } from "../../common/utilities/inputTypes/vector"
+import { SpaceCurveInputContainer } from "../../common/utilities/inputTypes/spacecurve"
+import { VectorFieldInputContainer } from "../../common/utilities/inputTypes/vectorfield"
 
 // makes setting alias and input field faster
 const InputCards    =   {
