@@ -1,6 +1,5 @@
-import React from "react";
-import { MathField } from "../../../common/utilities/mathfield";
-import { useRef, useState, useEffect } from 'react';
+import React from "react"
+import { MathField } from "../mathfield"
 
 const VectorInput = ({vecIn, posIn, parent}) =>
 {
