@@ -13,6 +13,7 @@
     "axios": "^1.10.0",
     "bootstrap": "^5.3.8",
     "jquery": "^3.7.1",
+    "lz-string": "^1.5.0",
     "mathlive": "^0.105.3",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",

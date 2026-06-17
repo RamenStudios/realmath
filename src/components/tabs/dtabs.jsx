@@ -3,7 +3,6 @@ import { TabUIContainer } from './tabuihook'
 
 /* useful constants */
 const TAB_LIMIT = 5
-const BASE_URL = 'https://ndlearning.8thwall.app/realmath/'
 const DELETION_ERROR_MSG = `You cannot delete all components-- empty graphs are considered invalid. Try adding another first!`
 const LIMIT_ERROR_MSG = `There can only be a maximum of ${TAB_LIMIT} components! This is to prevent issues with rendering and latency.`
 const INPUT_ERROR_MSG = `If you are seeing this message, there was a problem with your inputs! 
@@ -82,7 +81,7 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 	const sendURL = (act = false) => {
 		const url = tabs.current.stringify_tabs()
 		if(url !== -1) {
-			seturl(`${BASE_URL}${url}`, act)
+			seturl(`${url}`, act)
 		} else if (act === true) {
 			sendModal('INPUT ERROR', INPUT_ERROR_MSG)
 		}

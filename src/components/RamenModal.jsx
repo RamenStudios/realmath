@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react'
 import { HelpMessage, Definitions } from '../common/utilities/ContentExports'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import { QRCode } from 'react-qrcode-logo';
+import { QRCode } from 'react-qrcode-logo'
+import { compressToEncodedURIComponent } from 'lz-string'
+
+const BASE_URL = 'https://ndlearning.8thwall.app/ar-math-viewer/'
 
 /* helper */
 const ModalType = (label) => {
@@ -63,14 +66,16 @@ export const RamenModal = ({parentState, handleClose, GraphKeys}) =>
 	const getContent = () => {
 		switch (type) {
 			case 0:
+				console.log(compressToEncodedURIComponent(parentState.content))
+				const url = `${BASE_URL}${parentState.content}`
 				return(
 					<Modal.Body>
 						<div className="row">
 							Your graph has been sent to the 8th Wall AR visualizer! Scan the QR code with your mobile device to view it. 
 						</div>
 						<div className="row mt-3 gx-0">
-							<div className="col-6 text-start">If you’re already on mobile, just tap <a id="qrLink" href={parentState.content}>HERE</a> to view!</div>
-							<div className="col-6"><QRCode value={parentState.content} quietZone={5}/></div>
+							<div className="col-6 text-start">If you’re already on mobile, just tap <a id="qrLink" href={url}>HERE</a> to view!</div>
+							<div className="col-6"><QRCode value={url} quietZone={5}/></div>
 						</div>
 					</Modal.Body>
 				)
