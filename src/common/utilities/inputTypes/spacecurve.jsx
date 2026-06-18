@@ -1,5 +1,5 @@
 import React from "react"
-import { MathField } from "../mathfield"
+import { MathField } from "../Mathfield"
 
 const SpaceCurveInput = ({xIn, yIn, zIn, parent}) =>
 {

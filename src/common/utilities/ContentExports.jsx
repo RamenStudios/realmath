@@ -1,3 +1,6 @@
+import { InputHelpMessageContainer } from './InputHelpMessageContainer'
+import { InputDefMessageContainer } from './InputDefMessageContainer'
+
 export const HelpMessage = () => {
     return (
     <>
@@ -18,79 +21,57 @@ export const HelpMessage = () => {
               </p>
             </div>
           </div>
-          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-            <p>
-              Realmath's function input is styled as two input fields, one on each side of the '=' sign. Think of it as loosely being F(xy) = z. 
-              This does <b>not</b> mean you need to have x and y on the left and z on the right-- in fact, you only <i>need</i> to include one variable, and it can be in whichever field you'd like. 
-              However, it <b>does</b> mean that both input fields need to have some input in them, as Realmath cannot do implicit equations. 
-              Additionally, variables must be written outright, not as 'function of' (so, z rather than F(x,y)). This is just a quirk of how equations are processed.
-            </p> <p>
-              <b><i>VALID INPUT EXAMPLE:</i></b>
-              <div className="row">
-                  <div className="col-lg-5" >
-                      <math-span>{'\frac{2}{x}'}</math-span>
-                  </div>
-                  <div className="col">=</div>
-                  <div className="col-lg-5" >
-                      <math-span>1</math-span>
-                  </div>
-              </div>
-            </p> <p>
-              <b><i>INVALID INPUT EXAMPLE:</i></b>
-              <div className="row">
-                  <div className="col-lg-5" >
-                      <math-span>F(z)</math-span>
-                  </div>
-                  <div className="col">=</div>
-                  <div className="col-lg-5" >
-                      <math-span>xy</math-span>
-                  </div>
-              </div>
-            </p>
+          <div class="tab-pane fade" id="pills-func" role="tabpanel" aria-labelledby="pills-func-tab" tabindex="1">
+            <InputHelpMessageContainer type={0} />
           </div>
-          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-            <p>
-              Realmath's point input is styled as 3 input fields, representing the x, y, and z coordinates of a point in 3D space. 
-              Each input field <b>only accepts constants</b> or expressions that can be simplified to a constant. This means 'sqrt{'{2}'}' is valid, but '2x' is not.
-            </p> <p>
-              <b><i>VALID INPUT EXAMPLES:</i></b>
-                <div className="row">
-                  <div className="col">x</div>
-                  <div className="col-lg-2" >
-                      <math-span>1</math-span>
-                  </div>
-                  <div className="col">y</div>
-                  <div className="col-lg-2" >
-                      <math-span>1</math-span>
-                  </div>
-                  <div className="col">z</div>
-                  <div className="col-lg-2" >
-                      <math-span>1</math-span>
-                  </div>
-              </div>
-            </p>
+          <div class="tab-pane fade" id="pills-pt" role="tabpanel" aria-labelledby="pills-pt-tab" tabindex="2">
+            <InputHelpMessageContainer type={1} />
+          </div>
+          <div class="tab-pane fade" id="pills-vec" role="tabpanel" aria-labelledby="pills-vec-tab" tabindex="3">
+            <InputHelpMessageContainer type={2} />
+          </div>
+          <div class="tab-pane fade" id="pills-vfld" role="tabpanel" aria-labelledby="pills-vfld-tab" tabindex="4">
+            <InputHelpMessageContainer type={3} />
+          </div>
+          <div class="tab-pane fade" id="pills-srcv" role="tabpanel" aria-labelledby="pills-srcv-tab" tabindex="5">
+            <InputHelpMessageContainer type={4} />
           </div>
         </div>
       </div>
-          <div class="modal-footer">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                  Home
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-                  Function (xyz)
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                  Point (xyz)
-                </button>
-              </li>
-            </ul>
-          </div>
+      <div class="modal-footer">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+              FAQ
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-func-tab" data-bs-toggle="pill" data-bs-target="#pills-func" type="button" role="tab" aria-controls="pills-func" aria-selected="false">
+              Function (xyz)
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-pt-tab" data-bs-toggle="pill" data-bs-target="#pills-pt" type="button" role="tab" aria-controls="pills-pt" aria-selected="false">
+              Point (xyz)
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-vec-tab" data-bs-toggle="pill" data-bs-target="#pills-vec" type="button" role="tab" aria-controls="pills-vec" aria-selected="false">
+              Vector
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-vfld-tab" data-bs-toggle="pill" data-bs-target="#pills-vfld" type="button" role="tab" aria-controls="pills-vfld" aria-selected="false">
+              Vector Field
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-scrv-tab" data-bs-toggle="pill" data-bs-target="#pills-scrv" type="button" role="tab" aria-controls="pills-scrv" aria-selected="false">
+              Space Curve
+            </button>
+          </li>
+        </ul>
+      </div>
     </>
     )
 }
@@ -99,40 +80,9 @@ export const Definitions = ({component}) => {
     console.log('entered Definitions export')
     console.log(component)
     try{
-        switch (Number(component)) {
-            case 0:
-                return (
-                    <div>A basic function f(u,v) evaluated on the x, y, z coordinate plane.</div>
-                )
-                break
-            case 1:
-                return (
-                    <div>A set of coordinates (x,y,z)</div>
-                )
-                break
-            case 2:
-                return (
-                    <div>
-                        A vector is an object with direction and magnitude. 
-                        There is one exception to this definition: the zero vector, {'<0,0,0>'}, which has magnitude 0, has no specified direction.
-                    </div>
-                )
-                break
-            case 3:
-                return (
-                    <div>A basic function f(u,v) evaluated on the x, y, z coordinate plane.</div>
-                )
-                break
-            case 4:
-                return (
-                    <div>A basic function f(u,v) evaluated on the x, y, z coordinate plane.</div>
-                )
-                break
-            default:
-                return (
-                    <div>Component {component} not found!</div>
-                )
-        }
+      return (
+        <InputDefMessageContainer type={Number(component)} />
+      )
     } catch (e) {
         console.error(e)
         return (
