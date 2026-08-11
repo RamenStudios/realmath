@@ -1,6 +1,5 @@
-import React from "react";
-import { MathField } from "../../../common/utilities/mathfield";
-import { useRef, useState, useEffect } from 'react';
+import React from "react"
+import { MathField } from "../Mathfield"
 
 const VectorFieldInput = ({xIn, yIn, zIn, parent}) =>
 {
@@ -19,21 +18,21 @@ const VectorFieldInput = ({xIn, yIn, zIn, parent}) =>
 
     return(
             <div>
-                <div class="row">
-                    <div class="col-2">M</div>
-                    <div class="col-10" >
+                <div className="row">
+                    <div className="col-2">M</div>
+                    <div className="col-10" >
                         <MathField idIn='xMathField' valueIn={xIn} onInput={parent.update} />
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-2">N</div>
-                    <div class="col-10" >
+                <div className="row mt-2">
+                    <div className="col-2">N</div>
+                    <div className="col-10" >
                         <MathField valueIn={yIn} idIn='yMathField' onInput={parent.update} />
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-2">P</div>
-                    <div class="col-10" >
+                <div className="row mt-2">
+                    <div className="col-2">P</div>
+                    <div className="col-10" >
                         <MathField valueIn={zIn} idIn='zMathField' onInput={parent.update} />
                     </div>
                 </div>

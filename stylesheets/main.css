@@ -22,6 +22,8 @@ math-field::part(virtual-keyboard-toggle) {
   display: none;
 }
 
+.katex-display { overflow: auto hidden }
+
 * {
    font-family: "Instrument Sans", sans-serif;
    font-optical-sizing: auto;

@@ -1,6 +1,5 @@
 import React from "react";
-import { MathField } from "../../../common/utilities/mathfield";
-import { useRef, useState, useEffect } from 'react';
+import { MathField } from "../Mathfield"
 
 const PointInput = ({xIn, yIn, zIn, parent}) =>
 {
@@ -18,17 +17,17 @@ const PointInput = ({xIn, yIn, zIn, parent}) =>
     }
 
     return(
-        <div class="row">
-            <div class="col">x</div>
-            <div class="col-lg-2" >
+        <div className="row">
+            <div className="col">x</div>
+            <div className="col-lg-2" >
                 <MathField idIn='xMathField' valueIn={xIn} onInput={parent.update} />
             </div>
-            <div class="col">y</div>
-            <div class="col-lg-2" >
+            <div className="col">y</div>
+            <div className="col-lg-2" >
                 <MathField valueIn={yIn} idIn='yMathField' onInput={parent.update} />
             </div>
-            <div class="col">z</div>
-            <div class="col-lg-2" >
+            <div className="col">z</div>
+            <div className="col-lg-2" >
                 <MathField valueIn={zIn} idIn='zMathField' onInput={parent.update} />
             </div>
         </div>
