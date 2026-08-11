@@ -1,8 +1,8 @@
-import { FunctionInputContainer } from "../../common/utilities/inputTypes/function"
-import { PointInputContainer } from "../../common/utilities/inputTypes/point"
-import { VectorInputContainer } from "../../common/utilities/inputTypes/vector"
-import { SpaceCurveInputContainer } from "../../common/utilities/inputTypes/spacecurve"
-import { VectorFieldInputContainer } from "../../common/utilities/inputTypes/vectorfield"
+import { FunctionInputContainer } from "../../common/utilities/inputTypes/Function"
+import { PointInputContainer } from "../../common/utilities/inputTypes/Point"
+import { VectorInputContainer } from "../../common/utilities/inputTypes/Vector"
+import { SpaceCurveInputContainer } from "../../common/utilities/inputTypes/SpaceCurve"
+import { VectorFieldInputContainer } from "../../common/utilities/inputTypes/VectorField"
 
 // makes setting alias and input field faster
 const InputCards    =   {
