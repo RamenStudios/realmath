@@ -67,7 +67,7 @@ export const RamenModal = ({parentState, handleClose, GraphKeys}) =>
 		switch (type) {
 			case 0:
 				console.log(compressToEncodedURIComponent(parentState.content))
-				const url = `${BASE_URL}${parentState.content}`
+				const url = `${BASE_URL}${compressToEncodedURIComponent(parentState.content)}`
 				return(
 					<Modal.Body>
 						<div className="row">

@@ -60,16 +60,64 @@ math-field::part(virtual-keyboard-toggle) {
 }
 
 .title {
-   font-size: 125%;
+   font-size: 1.25em;
+   line-height: 1.25em;
+}
+
+.site-title-container {
+   margin-left: 0;
+   place-items: center;
 }
 
 .site-title {
-   font-size: 225%;
+   position:relative;
+   top: -0.35em;
+   font-size: 10vw;
+   margin-top: 0;
 }
 
 .subtitle {
-   font-size: 107%;
+   font-size: 4vw;
+   margin-bottom: 0;
 }
+
+.site-title-color {
+   max-height: 17vw;
+   padding-bottom: 1rem;
+   padding-top: 0;
+}
+
+.body-text {
+   padding: 1em;
+   font-size: 0.85em;
+   text-align: justify;
+   text-align-last: center;
+}
+
+ @media (min-width: 750px) {
+   .site-title-container {
+      margin-left: 3rem;
+      place-items: start;
+   }
+   .site-title {
+      font-size: 5vw;
+   }
+   .subtitle {
+      font-size: 1.75vw;
+   }
+   .title {
+      font-size: 2em;
+   }
+   .site-title-color {
+      max-height: 10vw;
+   }
+ }
+
+ @media (min-width: 938px) {
+   .site-title-color {
+      max-height: 8vw;
+   }
+ }
 
 .text-larger {
    font-size: 110%;

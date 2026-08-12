@@ -10,17 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.10.0",
     "bootstrap": "^5.3.8",
     "jquery": "^3.7.1",
     "katex": "^0.17.0",
     "lz-string": "^1.5.0",
-    "mathlive": "^0.105.3",
+    "mathlive": "^0.110.0",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
-    "react-qrcode-logo": "^3.0.0",
-    "uuid": "^11.1.0"
+    "react-qrcode-logo": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
