@@ -1,4 +1,7 @@
 import "https://esm.run/@cortex-js/compute-engine";
+import { DGridButton } from './Modular/Buttons/DGridButton'
+
+const ButtonTextClass = "light-grey italic bold"
 
 export const BottomButtons = ({userframe, parentDispatch, showURL}) =>
 {
@@ -23,59 +26,30 @@ export const BottomButtons = ({userframe, parentDispatch, showURL}) =>
         window.location.reload()
     }
 
-    if(userframe === 'desktop')
-    {
-        return(
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-lg-5 col-sm-12 mb-2"><div className="d-grid gap-2">
-                        <button type="button" className="btn btn-primary" id="visualizeButton" onClick={clickTrigger}>
-                            <div className="light-grey italic bold">VISUALIZE IT!</div>
-                        </button>
-                    </div></div>
-                    <div className="col-lg-2 col-sm-4 mb-2"><div className="d-grid">
-                        <button type="button" className="btn btn-secondary" onClick={getHelp}>
-                            <div className="light-grey italic bold">HELP</div>
-                        </button>
-                    </div></div>
-                    <div className="col-lg-2 col-sm-4 mb-2"><div className="d-grid">
-                        <button type="button" className="btn btn-secondary" onClick={reload}>
-                            <div className="light-grey italic bold">RESET</div>
-                        </button>
-                    </div></div>
-                    <div className="col-lg-3 col-sm-4 mb-2"><div className="d-grid">
-                        <button type="button" className="btn btn-secondary">
-                            <a className="light-grey italic bold" href="mailto:arodri37@nd.edu">REPORT BUG</a>
-                        </button>
-                    </div></div>
-                </div>
-            </div>
-        )
-    }else{
-        return(
-            <div className="container">
-                <div className="row mb-2">
-                    <button type="button" className="btn btn-primary" id="visualizeButton" onClick={clickTrigger}>
-                            <div className="mobile-body light-grey italic bold">VISUALIZE IT!</div>
-                    </button>
-                </div>
-                <div className="row mb-2">
-                    <button type="button" className="btn btn-secondary" onClick={getHelp}>
-                        <div className="mobile-body light-grey italic bold">HELP</div>
-                    </button>
-                </div>
-                <div className="row mb-2">
-                    <button type="button" className="btn btn-secondary" onClick={reload}>
-                        <div className="mobile-body light-grey italic bold">RESET</div>
-                    </button>
-                </div>
-                <div className="row">
-                    <button type="button" className="btn btn-secondary">
-                        <a className="light-grey italic bold" href="mailto:arodri37@nd.edu">REPORT BUG</a>
-                    </button>
-                </div>
-            </div>
-        )
+    const TheseButtons = (container, className, color, id, callback, label) => {
+        return  {
+                    container: container,
+                    className: className,
+                    color: color,
+                    id: id,
+                    callback: callback,
+                    label: label,
+                }
     }
+
+    const ButtonProps = [
+                            TheseButtons("col-lg-5 col-12 mb-2", ButtonTextClass, "primary", "visualizeButton", clickTrigger, "VISUALIZE IT!"),
+                            TheseButtons("col-lg-2 col-6 mb-2", ButtonTextClass, "secondary", "helpButton", getHelp, "HELP"),
+                            TheseButtons("col-lg-2 col-6 mb-2", ButtonTextClass, "secondary", "resetButton", reload, "RESET"),
+                            TheseButtons("col-lg-3 col-12 mb-2", null, "secondary", "reportButton", clickTrigger, (()=>{return(<a className="light-grey italic bold" href="mailto:arodri37@nd.edu">REPORT BUG</a>)})),
+                        ]
+
+    return (
+        <div className="container-fluid">
+            <div className="row">
+                {ButtonProps.map((props) => (DGridButton({...props})))}
+            </div>
+        </div>
+    )
     
 }

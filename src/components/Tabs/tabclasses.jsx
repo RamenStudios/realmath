@@ -197,36 +197,20 @@ export class Tab
     display (userframe) {
         console.log(`displaying card`)
         const button = () => {
-            if (userframe === 'desktop') {
-                return(
-                    <div className="row mt-2 justify-content-end">
-                        <div className="col col-8 d-md-none"></div>
-                        <div className="col col-lg-2 col-md-12 mx-2">
-                            <button 
-                                id="deleteComponent" 
-                                type="button" 
-                                className="btn btn-danger" 
-                                onClick={() => {this.parent.setDel()}}
-                            >
-                                <div className="light-grey italic bold">REMOVE</div>
-                            </button>
-                        </div>
-                    </div>
-                )
-            } else {
-                return(
-                    <div className="row mt-2">
-                        <button 
+            return(
+                <div className="row mt-3 justify-content-end">
+                    <div className="col-lg-2 col-12 mx-2">
+                        <div class="d-grid"><button 
                             id="deleteComponent" 
                             type="button" 
                             className="btn btn-danger" 
                             onClick={() => {this.parent.setDel()}}
                         >
-                            <div className="mobile-body light-grey italic bold">REMOVE</div>
-                        </button>
+                            <div className="light-grey italic bold">REMOVE</div>
+                        </button></div>
                     </div>
-                )
-            }
+                </div>
+            )
         }
         return (
 			<div className="card">

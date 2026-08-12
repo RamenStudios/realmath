@@ -47,6 +47,11 @@ math-field::part(virtual-keyboard-toggle) {
    font-size: 0.85rem;
 }
 
+/* 
+======================================================
+   TEXT STYLES
+======================================================
+*/
 .semibold, .subtitle, .mobile-subtitle {
    font-weight: 650;
 }
@@ -94,6 +99,11 @@ math-field::part(virtual-keyboard-toggle) {
    text-align-last: center;
 }
 
+/* 
+======================================================
+   TEXT STYLE RESPONSIVE BREAKPOINTS
+======================================================
+*/
  @media (min-width: 750px) {
    .site-title-container {
       margin-left: 3rem;
