@@ -154,7 +154,8 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 	ONCLICK CHANGE SELECTED TAB
 	**************************************** */
 	/* triggers the change event on button click */
-	const selectionAction = (loc) => {
+	const selectionAction = (loc, e=null) => {
+		e.preventDefault()
 		dispatch({
 			type: 'SEL',
 			newloc: loc
@@ -204,7 +205,7 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 					<>
 						{(get_unselected()).map((tab) => (
 							<li className="page-item">
-								<a className="page-link" href="#" onClick={() => {selectionAction(tab[1])}}>
+								<a className="page-link" href="#" onClick={(e) => {selectionAction(tab[1], e)}}>
 									<div className="mobile-body">{tab[0]}</div>
 								</a>
 							</li>
