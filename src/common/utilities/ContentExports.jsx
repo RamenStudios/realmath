@@ -6,7 +6,7 @@ export const HelpMessage = () => {
     <>
       <div class="modal-body">
         <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabIndex="0">
             <div className="justify-content-start">
               <p>
                 Realmath is a tool allowing you to visualize up to 5 graphical components in Augmented Reality (AR)! 
@@ -21,19 +21,19 @@ export const HelpMessage = () => {
               </p>
             </div>
           </div>
-          <div class="tab-pane fade" id="pills-func" role="tabpanel" aria-labelledby="pills-func-tab" tabindex="1">
+          <div class="tab-pane fade" id="pills-func" role="tabpanel" aria-labelledby="pills-func-tab" tabIndex="1">
             <InputHelpMessageContainer type={0} />
           </div>
-          <div class="tab-pane fade" id="pills-pt" role="tabpanel" aria-labelledby="pills-pt-tab" tabindex="2">
+          <div class="tab-pane fade" id="pills-pt" role="tabpanel" aria-labelledby="pills-pt-tab" tabIndex="2">
             <InputHelpMessageContainer type={1} />
           </div>
-          <div class="tab-pane fade" id="pills-vec" role="tabpanel" aria-labelledby="pills-vec-tab" tabindex="3">
+          <div class="tab-pane fade" id="pills-vec" role="tabpanel" aria-labelledby="pills-vec-tab" tabIndex="3">
             <InputHelpMessageContainer type={2} />
           </div>
-          <div class="tab-pane fade" id="pills-vfld" role="tabpanel" aria-labelledby="pills-vfld-tab" tabindex="4">
+          <div class="tab-pane fade" id="pills-vfld" role="tabpanel" aria-labelledby="pills-vfld-tab" tabIndex="4">
             <InputHelpMessageContainer type={3} />
           </div>
-          <div class="tab-pane fade" id="pills-srcv" role="tabpanel" aria-labelledby="pills-srcv-tab" tabindex="5">
+          <div class="tab-pane fade" id="pills-scrv" role="tabpanel" aria-labelledby="pills-srcv-tab" tabIndex="5">
             <InputHelpMessageContainer type={4} />
           </div>
         </div>
