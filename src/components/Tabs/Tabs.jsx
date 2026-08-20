@@ -196,7 +196,7 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 	}
 			
 	return(
-		<div className="container container-lg my-3">
+		<div className="container container-lg mb-3 mt-lg-1">
 			<ul className="nav nav-tabs">
 				<li className="nav-item">
 					<a className="nav-link active" aria-current="page" href="#"><div className="mobile-body">{getName()}</div></a>

@@ -1,7 +1,7 @@
 export const About = ({userframe}) =>
 {
     return(
-        <div className="mb-3 justify-content-center">
+        <div className="mb-md-3 mb-0 py-0 justify-content-center">
             <div className="row">
                 <div className="title">Visualize complex math formulas with RealMath™!</div>
             </div>

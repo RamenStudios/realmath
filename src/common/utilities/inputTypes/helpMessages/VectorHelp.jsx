@@ -1,12 +1,28 @@
-export const VectorHelp = ({math}) => {
-    return (
-        <div>
+export const VectorHelp = () => {
+    const Text = () => {
+        return (
             <p>
-                vectorhelp
-                <b><i>The below input is valid...</i></b>
-            </p> <p>
-                But <b><i>the below input is invalid</i></b>, due to 
+                Vector Help
             </p>
-        </div>
-    )
+        )
+    }
+    const InvalidText = () => {
+        return "\"F(xy)\" and \"=\" in the first input field and nothing in the other."
+    }
+    const valid =   [
+                        '\\frac{2}{x}',
+                        '1'
+                    ]
+    const invalid = [
+                        [
+                            'F(xy)=3xy',
+                            ' '
+                        ],
+                        InvalidText
+                    ]
+    return  {
+                helpText: Text, 
+                valid: valid, 
+                invalid: invalid
+            }
 }

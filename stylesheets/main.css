@@ -70,6 +70,8 @@ math-field::part(virtual-keyboard-toggle) {
 }
 
 .site-title-container {
+   position: relative;
+   top: -0.325rem;
    margin-left: 0;
    place-items: center;
 }
@@ -104,6 +106,12 @@ math-field::part(virtual-keyboard-toggle) {
    TEXT STYLE RESPONSIVE BREAKPOINTS
 ======================================================
 */
+ @media (min-width: 446px) {
+   .site-title-container {
+      position: static;
+   }
+}
+
  @media (min-width: 750px) {
    .site-title-container {
       margin-left: 3rem;
