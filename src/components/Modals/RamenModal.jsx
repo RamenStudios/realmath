@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { HelpMessage, Definitions } from '../common/utilities/ContentExports'
+import { HelpMessage } from './help/HelpMessageContainer'
+import { Definitions } from './def/DefinitionsContainer'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import { QRCode } from 'react-qrcode-logo'

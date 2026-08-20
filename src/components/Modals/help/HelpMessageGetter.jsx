@@ -1,11 +1,11 @@
-import { FunctionHelp } from './inputTypes/helpMessages/FunctionHelp'
-import { PointHelp } from './inputTypes/helpMessages/PointHelp'
-import { VectorHelp } from './inputTypes/helpMessages/VectorHelp'
-import { SpaceCurveHelp } from './inputTypes/helpMessages/SpaceCurveHelp'
-import { VectorFieldHelp } from './inputTypes/helpMessages/VectorFieldHelp'
-import { Help } from './inputTypes/helpMessages/HelpTemplate'
+import { FunctionHelp } from './types/FunctionHelp'
+import { PointHelp } from './types/PointHelp'
+import { VectorHelp } from './types/VectorHelp'
+import { SpaceCurveHelp } from './types/SpaceCurveHelp'
+import { VectorFieldHelp } from './types/VectorFieldHelp'
+import { Help } from './HelpTemplate'
 
-export const InputHelpMessageContainer = ({type}) => {
+export const HelpMessageGetter = ({type}) => {
     switch (type) {
         case 0:
             return (

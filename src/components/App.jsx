@@ -4,7 +4,7 @@ import { About } from "./About"
 import { Selector } from "./Selector/Selector"
 import { Tabs } from "./Tabs/Tabs"
 import { BottomButtons } from "./Buttons"
-import { RamenModal } from "./RamenModal"
+import { RamenModal } from "./Modals/RamenModal"
 import { useRef, useReducer } from "react"
 import { ErrorBoundary } from "./ErrorBoundary"
 
