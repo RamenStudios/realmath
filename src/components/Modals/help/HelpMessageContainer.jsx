@@ -54,7 +54,7 @@ export const HelpMessage = () => {
                             class="nav-link" 
                             id={`pills-${tab[0]}-tab`} 
                             data-bs-toggle="pill" 
-                            data-bs-target={`pills-${tab[0]}`} 
+                            data-bs-target={`#pills-${tab[0]}`} 
                             type="button" 
                             role="tab" 
                             aria-controls={`pills-${tab[0]}`} 
