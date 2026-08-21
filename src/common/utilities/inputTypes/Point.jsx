@@ -19,11 +19,11 @@ const PointInput = ({xIn, yIn, zIn, parent}) =>
     return(
         <div className="row">
             <div className="col-2">x</div>
-            <div className="col-10" >
+            <div className="col-10 mb-1">
                 <MathField idIn='xMathField' valueIn={xIn} onInput={parent.update} />
             </div>
             <div className="col-2">y</div>
-            <div className="col-10" >
+            <div className="col-10 mb-1">
                 <MathField valueIn={yIn} idIn='yMathField' onInput={parent.update} />
             </div>
             <div className="col-2">z</div>

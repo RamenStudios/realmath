@@ -17,24 +17,18 @@ const SpaceCurveInput = ({xIn, yIn, zIn, parent}) =>
     }
 
     return(
-        <div>
-            <div className="row">
-                <div className="col-2">x(t)</div>
-                <div className="col-10" >
-                    <MathField idIn='xMathField' valueIn={xIn} onInput={parent.update} />
-                </div>
+        <div class="row">
+            <div className="col-2">x(t)</div>
+            <div className="col-10 mb-1">
+                <MathField idIn='xMathField' valueIn={xIn} onInput={parent.update} />
             </div>
-            <div className="row mt-2">
-                <div className="col-2">y(t)</div>
-                <div className="col-10" >
-                    <MathField valueIn={yIn} idIn='yMathField' onInput={parent.update} />
-                </div>
+            <div className="col-2">y(t)</div>
+            <div className="col-10 mb-1">
+                <MathField valueIn={yIn} idIn='yMathField' onInput={parent.update} />
             </div>
-            <div className="row mt-2">
-                <div className="col-2">z(t)</div>
-                <div className="col-10" >
-                    <MathField valueIn={zIn} idIn='zMathField' onInput={parent.update} />
-                </div>
+            <div className="col-2">z(t)</div>
+            <div className="col-10 mb-1">
+                <MathField valueIn={zIn} idIn='zMathField' onInput={parent.update} />
             </div>
         </div>
     )
