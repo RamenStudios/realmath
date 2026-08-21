@@ -105,7 +105,7 @@ export const RamenModal = ({parentState, handleClose, GraphKeys}) =>
 	}
 
 	return (
-		<Modal show={getShow()} onHide={handleClose}>
+		<Modal show={getShow()} onHide={handleClose} size='lg'>
 			<Modal.Header closeButton>
 				<Modal.Title>{getLabel()}</Modal.Title>
 			</Modal.Header>

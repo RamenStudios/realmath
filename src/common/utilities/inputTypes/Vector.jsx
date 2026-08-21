@@ -21,31 +21,31 @@ const VectorInput = ({vecIn, posIn, parent}) =>
         <>
             <div className="row">Vector</div>
             <div className="row">
-                <div className="col mx-0">x</div>
-                <div className="col-lg-2" >
+                <div className="col-2 mx-0">x</div>
+                <div className="col-10" >
                     <MathField idIn='vxMathField' valueIn={vecIn.x} onInput={parent.update} />
                 </div>
-                <div className="col mx-0">y</div>
-                <div className="col-lg-2" >
+                <div className="col-2 mx-0">y</div>
+                <div className="col-10" >
                     <MathField valueIn={vecIn.y} idIn='vyMathField' onInput={parent.update} />
                 </div>
-                <div className="col mx-0">z</div>
-                <div className="col-lg-2" >
+                <div className="col-2 mx-0">z</div>
+                <div className="col-10" >
                     <MathField valueIn={vecIn.z} idIn='vzMathField' onInput={parent.update} />
                 </div>
             </div>
             <div className="row">Initial Position/Intersecting Point</div>
             <div className="row">
-                <div className="col mx-0">x</div>
-                <div className="col-lg-2" >
+                <div className="col-2 mx-0">x</div>
+                <div className="col-10" >
                     <MathField idIn='xMathField' valueIn={posIn.x} onInput={parent.update} />
                 </div>
-                <div className="col mx-0">y</div>
-                <div className="col-lg-2" >
+                <div className="col-2 mx-0">y</div>
+                <div className="col-10" >
                     <MathField valueIn={posIn.y} idIn='yMathField' onInput={parent.update} />
                 </div>
-                <div className="col mx-0">z</div>
-                <div className="col-lg-2" >
+                <div className="col-2 mx-0">z</div>
+                <div className="col-10" >
                     <MathField valueIn={posIn.z} idIn='zMathField' onInput={parent.update} />
                 </div>
             </div>

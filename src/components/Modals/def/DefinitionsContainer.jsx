@@ -11,6 +11,6 @@ export const Definitions = ({component}) => {
         console.error(e)
         return (
             <div>Component {component} not found!</div>
-        )        
+        )
     }
 }
