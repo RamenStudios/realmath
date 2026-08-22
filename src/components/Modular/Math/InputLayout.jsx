@@ -1,6 +1,7 @@
 import { MathField, ReadOnlyMathField } from './MathField'
 
-const ColHelper = (row, blank) => {
+/* gets the column display based on props */
+const ColGetter = (row, blank) => {
     const GetContent = (col) => {
         if (col.isLabel === true) {
             return (
@@ -22,7 +23,7 @@ const ColHelper = (row, blank) => {
     return (
         <div className="row">
             {row.map((col) => (
-                <div className={col.className}>
+                <div className={`${col.className}`}>
                     {GetContent(col)}
                 </div>
             ))}
@@ -30,11 +31,11 @@ const ColHelper = (row, blank) => {
     )
 }
 
-export const InputLayout = (props) => {
-    const blank = props.blank
+/* the actual main layout export */
+export const InputLayout = (rows, blank) => {
     return (
         <>
-            {props.rows.map((row) => (ColHelper(row, blank)))}
+            {rows.map((row) => (ColGetter(row, blank)))}
         </>
     )
 }

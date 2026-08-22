@@ -37,31 +37,26 @@ math-field::part(virtual-keyboard-toggle) {
    --keycap-text:var(--nd-blue);
 }
 
-.mobile-site-title {
-   font-size: 1.5rem;
-}
-.mobile-title, .mobile-subtitle {
-   font-size: 1.05rem;
-}
-.mobile-body {
-   font-size: 0.85rem;
-}
-
 /* 
 ======================================================
    TEXT STYLES
 ======================================================
 */
-.semibold, .subtitle, .mobile-subtitle {
+.semibold, .subtitle {
    font-weight: 650;
 }
 
-.bold, .title, .mobile-title, .mobile-site-title, .site-title, .btntxt {
+.bold, .title, .site-title, .btntxt {
    font-weight: 900;
 }
 
-.title, .mobile-title, .italic, .btntxt {
+.title, .italic, .btntxt {
    font-style: italic;
+}
+
+.tab-text {
+   font-size: 0.75rem;
+   color: black;
 }
 
 .title {

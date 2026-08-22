@@ -41,6 +41,10 @@ export const MathField = (props) =>
             inputfield.executeCommand(['insert', '\\backslash'])
         }
     }
+
+    // failsafe in case of null defaults
+    let val = typeof(props.valueIn) == "string" ? props.valueIn : ""
+    
     mathVirtualKeyboard.layouts = layout
     return(
             <math-field
