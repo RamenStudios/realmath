@@ -156,6 +156,7 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 	/* triggers the change event on button click */
 	const selectionAction = (loc, e=null) => {
 		e.preventDefault()
+		e.target.blur()
 		dispatch({
 			type: 'SEL',
 			newloc: loc
@@ -199,14 +200,14 @@ export const Tabs = ({userframe, parentDispatch, parentState, seturl}) =>
 		<div className="container container-lg mb-3 mt-lg-1">
 			<ul className="nav nav-tabs">
 				<li className="nav-item">
-					<a className="nav-link active" aria-current="page" href="#"><div className="mobile-body">{getName()}</div></a>
+					<a className="nav-link active tab-text" aria-current="page" href="#">{getName()}</a>
 				</li>
 				{
 					<>
 						{(get_unselected()).map((tab) => (
-							<li className="page-item">
-								<a className="page-link" href="#" onClick={(e) => {selectionAction(tab[1], e)}}>
-									<div className="mobile-body">{tab[0]}</div>
+							<li className="nav-item">
+								<a className="nav-link tab-text" href="#" onClick={(e) => {selectionAction(tab[1], e)}}>
+									{tab[0]}
 								</a>
 							</li>
 						))}

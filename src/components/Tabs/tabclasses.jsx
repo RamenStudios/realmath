@@ -1,47 +1,51 @@
-import { FunctionInputContainer } from "../../common/utilities/inputTypes/Function"
-import { PointInputContainer } from "../../common/utilities/inputTypes/Point"
-import { VectorInputContainer } from "../../common/utilities/inputTypes/Vector"
-import { SpaceCurveInputContainer } from "../../common/utilities/inputTypes/SpaceCurve"
-import { VectorFieldInputContainer } from "../../common/utilities/inputTypes/VectorField"
+import { InputLayoutGetter } from '../Modular/Math/InputLayoutGetter'
 
 // makes setting alias and input field faster
 const InputCards    =   {
                             'Func'  :   {
                                 'alias': 1, 
-                                'card': FunctionInputContainer, 'props': {
-                                    'left':null, 
-                                    'right':null
+                                'props': {
+                                    'left':'0', 
+                                    'right':'0'
                                 }
                             },
                             'Pt'    :   {
                                 'alias': 2, 
-                                'card': PointInputContainer, 
-                                'props': {'x': null, 'y': null, 'z': null}
+                                'props': {
+                                    'x': '0', 
+                                    'y': '0', 
+                                    'z': '0'
+                                }
                             },
                             'Vec'   :   {
                                 'alias': 3, 
-                                'card': VectorInputContainer, 
                                 'props': {
-                                    'vec': {'x': null, 'y': null, 'z': null}, 
-                                    'init': {'x': null, 'y': null, 'z': null}
+                                    'vec': {
+                                        'x': '0', 
+                                        'y': '0', 
+                                        'z': '0'
+                                    }, 
+                                    'init': {
+                                        'x': '0', 
+                                        'y': '0', 
+                                        'z': '0'
+                                    }
                                 }
                             },
                             'VFld'  :   {
                                 'alias': 4, 
-                                'card': VectorFieldInputContainer, 
                                 'props': {
-                                    'x': null, 
-                                    'y': null,
-                                    'z': null,
+                                    'x': '0', 
+                                    'y': '0',
+                                    'z': '0',
                                 }
                             },
                             'SCrv'  :   {
                                 'alias': 5, 
-                                'card': SpaceCurveInputContainer, 
                                 'props': {
-                                    'x': null, 
-                                    'y': null,
-                                    'z': null,
+                                    'x': '0', 
+                                    'y': '0',
+                                    'z': '0',
                                 }
                             }
                         }
@@ -189,7 +193,6 @@ export class Tab
                 } catch (error) {
                     console.error(`error verifying value for tab ${this.name}!: ${error}`)
                 }
-                
         }
         return true
     }
@@ -215,7 +218,14 @@ export class Tab
         return (
 			<div className="card">
 				<div className="card-body">
-					<div className="row justify-content-center">{this.card(this.props, this, userframe)}</div>
+					<div className="row justify-content-center">
+                        <InputLayoutGetter 
+                            type={this.type} 
+                            props={this.props} 
+                            blank={false}
+                            update={this.update}
+                        />
+                    </div>
 					{button()}
 				</div>
 			</div>
